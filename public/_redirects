@@ -1,11 +1,35 @@
-/sobre            /sobre.html         200
-/termos           /termos.html        200
-/privacidade      /privacidade.html   200
-/defensoria    /index.html   200
-/defensoria/*  /index.html   200
-/oab           /index.html   200
-/oab/*         /index.html   200
-/tcdf          /index.html   200
-/tcdf/*        /index.html   200
-/atualizar-senha  /index.html   200
-/*              /index.html   200
+# ORDEM IMPORTA: a primeira regra que casar vence, e o curinga do fim
+# pegaria tudo. Páginas com arquivo próprio vêm antes.
+
+# Página inicial: convite, NÃO o simulador (etapa E5 da P1-15, 09/09/2026).
+# O "!" força a reescrita: sem ele, o Netlify serviria o index.html existente
+# (arquivo real vence regra de reescrita) e a raiz continuaria abrindo o
+# simulador. É a única regra deste arquivo que precisa de força.
+/                   /inicio.html           200!
+
+# Conta
+/login              /login.html            200
+/cadastro           /cadastro.html         200
+/recuperar-senha    /recuperar-senha.html  200
+
+# Institucionais
+/sobre              /sobre.html            200
+/termos             /termos.html           200
+/privacidade        /privacidade.html      200
+
+# O simulador. /dashboard é o destino de quem entra na conta.
+/dashboard          /index.html   200
+/dashboard/*        /index.html   200
+/treino             /index.html   200
+/treino/*           /index.html   200
+/defensoria         /index.html   200
+/defensoria/*       /index.html   200
+/oab                /index.html   200
+/oab/*              /index.html   200
+/tcdf               /index.html   200
+/tcdf/*             /index.html   200
+
+# Definição de nova senha: continua dentro do app (fluxo testado em 09/09/2026)
+/atualizar-senha    /index.html   200
+
+/*                  /index.html   200

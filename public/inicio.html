@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Subjetivando — simulador de banca para prova oral de Defensoria</title>
+    <meta name="description" content="Treine a prova oral de Defensoria Pública: questões de banca, cronômetro e padrão de resposta." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10.6' r='3.1' fill='%2338a372'/%3E%3Crect x='4.5' y='19' width='23' height='3.4' rx='1.7' fill='%2338a372' opacity='.85'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/assets/paginas.css" />
+  </head>
+  <body>
+    <div class="folha">
+      <header class="topo">
+        <a class="marca" href="/">Subjetivando</a>
+        <nav class="atalhos" aria-label="Navegação">
+          <a href="/sobre">Sobre</a>
+          <a href="/login">Entrar</a>
+        </nav>
+      </header>
+
+      <main class="convite">
+        <h1>Treine a prova oral<br />antes que ela treine você.</h1>
+        <p class="chamada">Questões que já caíram em bancas de Defensoria, sorteadas por disciplina, com cronômetro e padrão de resposta. Você fala em voz alta contra o tempo — como na prova.</p>
+
+        <div class="acoes">
+          <a class="botao-principal botao-link" href="/cadastro">Criar conta</a>
+          <p class="alternativa">Já possui uma conta? <a href="/login">Faça o login</a></p>
+        </div>
+
+        <p class="ja-logada" id="ja-logada" hidden>
+          Você já está conectada. <a href="/dashboard">Continuar de onde parou</a>
+        </p>
+
+        <ul class="destaques">
+          <li><strong>750 questões</strong> de Defensoria, 718 com padrão de resposta</li>
+          <li><strong>Cronômetro configurável</strong>, para treinar no tempo da banca</li>
+          <li><strong>Anotações e histórico</strong> que acompanham você em qualquer aparelho</li>
+        </ul>
+
+        <div class="caixa-aviso">
+          <p><strong>Em beta fechado e gratuito.</strong> Ainda não há gravação de áudio, transcrição nem correção por inteligência artificial — isso está no plano, mas não existe hoje.</p>
+          <p>O material é de estudo: não foi validado por examinador e não substitui gabarito oficial.</p>
+        </div>
+      </main>
+
+      <footer class="rodape">
+        <p>
+          Subjetivando · <a href="/sobre">Sobre</a> ·
+          <a href="/termos">Termos de uso</a> · <a href="/privacidade">Política de privacidade</a>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      /* Dica de interface, não controle de acesso: se houver sessão guardada
+         neste navegador, oferece o atalho para continuar. Não valida nada —
+         quem manda é a RLS do banco. Lê só a presença da chave, nunca o conteúdo. */
+      (function () {
+        try {
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (k && k.indexOf('sb-') === 0 && k.indexOf('-auth-token') > 0) {
+              var aviso = document.getElementById('ja-logada');
+              if (aviso) aviso.hidden = false;
+              return;
+            }
+          }
+        } catch (e) { /* navegador sem armazenamento: segue sem a dica */ }
+      })();
+    </script>
+  </body>
+</html>

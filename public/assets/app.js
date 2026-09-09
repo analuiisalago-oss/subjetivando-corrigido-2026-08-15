@@ -2431,7 +2431,13 @@
   }
   function fechar() { backdrop.classList.remove('open'); }
 
-  if ($('btnConta')) $('btnConta').addEventListener('click', () => abrir('login'));
+  /* 09/09/2026 — etapa E4 da P1-15: entrar e criar conta ganharam páginas
+     próprias (/login e /cadastro). O botão de conta leva para lá em vez de
+     abrir o modal, de modo que "criar conta" deixa de existir no contexto de
+     quem já está autenticado. O modal permanece neste arquivo porque continua
+     servindo à definição de nova senha em /atualizar-senha — fluxo testado de
+     ponta a ponta em 09/09/2026, que não se mexe. Ver PENDENCIAS.md. */
+  if ($('btnConta')) $('btnConta').addEventListener('click', () => { window.location.href = '/login'; });
   if ($('btnCloseAuth')) $('btnCloseAuth').addEventListener('click', fechar);
   backdrop.addEventListener('click', (e) => { if (e.target === backdrop) fechar(); });
 

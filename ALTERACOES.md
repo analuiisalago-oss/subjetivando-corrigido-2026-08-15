@@ -63,6 +63,111 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-09] PÁGINA INICIAL SEPARADA DO SIMULADOR (E5 DA P1-15)
+
+**Tipo:** funcionalidade  
+**Ambiente:** desenvolvimento local
+
+### Problema
+
+A raiz do site abria direto no simulador. Quem chegava pela primeira vez via a mesma tela de quem já usava, sem convite, sem explicação e sem caminho claro para criar conta.
+
+### Alteração
+
+- criada `public/inicio.html`: convite com "Criar conta" e "Já possui uma conta? Faça o login", três destaques do produto e o aviso honesto de que gravação, transcrição e correção por IA ainda não existem;
+- `public/_redirects`: `/` passa a servir `inicio.html` **com sinal de força** (`200!`), porque arquivo existente vence regra de reescrita e o `index.html` continuaria ganhando; `/dashboard` e `/treino` passam a servir o simulador;
+- `public/assets/conta.js`: destino após entrar e link de confirmação de cadastro passam a `/dashboard`;
+- `public/assets/paginas.css`: estilos do convite;
+- `scripts/audit_project.mjs`: 16 arquivos permitidos em `public/`.
+
+Nenhuma alteração no `app.js` nesta etapa.
+
+### Configuração externa exigida
+
+**`https://subjetivando.netlify.app/dashboard` precisa ser cadastrado nas Redirect URLs do Supabase.** Sem isso, o link de confirmação de cadastro não leva ao destino certo — é o mesmo tipo de defeito corrigido na P1-05 nesta data.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+A página inicial **não carrega recurso externo algum**. O atalho "continuar de onde parou" apenas verifica a presença da chave de sessão no `localStorage`, sem ler o conteúdo, e é dica de interface, não controle de acesso.
+
+### Testes executados
+
+- `node scripts/audit_project.mjs`: 16 arquivos, acervo íntegro: PASSOU;
+- `node scripts/teste_consentimento.mjs`: 5 de 5: PASSOU;
+- renderização a 1100px e 390px: sem transbordamento, sem erro de script, zero requisições externas: PASSOU;
+- com chave de sessão presente no navegador, o atalho aparece e aponta para `/dashboard`: PASSOU.
+
+### Itens não testados
+
+- se a regra forçada da raiz funciona no Netlify — só verificável depois de publicar;
+- fluxo completo de cadastro com o novo destino de confirmação.
+
+### Reversão
+
+Remover a regra de `/` no `_redirects` devolve a raiz ao simulador imediatamente.
+
+### Pendências relacionadas
+
+- E5 da P1-15 concluída; falta cadastrar a URL no Supabase.
+
+## [2026-09-09] PÁGINAS PRÓPRIAS DE ENTRAR, CRIAR CONTA E RECUPERAR SENHA (E4 DA P1-15)
+
+**Tipo:** funcionalidade  
+**Ambiente:** desenvolvimento local
+
+### Problema
+
+Entrar e criar conta viviam num modal sobre o simulador. Não havia endereço próprio, e "criar conta" aparecia em contexto de quem já estava autenticado.
+
+### Alteração
+
+- criadas `public/login.html`, `public/cadastro.html` e `public/recuperar-senha.html`;
+- criado `public/assets/conta.js`, que **reproduz fielmente** o que a camada de conta do `app.js` já fazia: mesmas validações, mesmas mensagens, mesmos parâmetros de API, mesmo dicionário de tradução de erros;
+- `public/assets/paginas.css` ganhou os estilos de formulário;
+- `public/_redirects` recebeu três regras, antes do curinga;
+- `scripts/audit_project.mjs` passou a aceitar 15 arquivos em `public/`;
+- **`public/assets/app.js`: uma linha.** O botão de conta passou a levar para `/login` em vez de abrir o modal.
+
+Não se mexeu na definição de nova senha em `/atualizar-senha`, que continua no `app.js` com o modal — fluxo comprovado nesta mesma data.
+
+### Banco de dados
+
+Nenhuma alteração. Nenhuma tabela, política ou configuração do Supabase foi tocada.
+
+### Segurança e privacidade
+
+**Defeito encontrado e corrigido antes de publicar:** a primeira versão de `conta.js` abortava se a biblioteca do Supabase não chegasse da CDN, e o formulário caía no envio nativo do navegador — o que recarregaria a página com e-mail e **senha na barra de endereço**. Corrigido registrando sempre os manipuladores de envio e verificando a biblioteca dentro deles. Verificado com a CDN bloqueada: o endereço não muda, a senha não aparece nele, e um aviso explica o que houve.
+
+As três páginas trazem `noindex` e não recebem nem enviam dado algum além do necessário à autenticação.
+
+### Testes executados
+
+- diferença linha a linha do `app.js`: **exatamente uma** alteração, o restante do arquivo de 3,3 MB inalterado: PASSOU;
+- `node --check` no `app.js` e no `conta.js`: PASSOU;
+- `node scripts/audit_project.mjs`: 15 arquivos, acervo íntegro: PASSOU;
+- `node scripts/teste_consentimento.mjs`: 5 de 5: PASSOU;
+- renderização das três páginas em navegador real, 1100px e 390px: sem transbordamento, sem erro de script, todos os campos com rótulo associado: PASSOU;
+- mostrar e ocultar senha, com a biblioteca indisponível: PASSOU;
+- envio do formulário com a biblioteca indisponível: endereço não muda, senha não vaza para a URL, aviso exibido: PASSOU.
+
+### Itens não testados
+
+- **entrar, criar conta e recuperar senha de verdade, contra o Supabase** — a CDN é bloqueada no ambiente de verificação, então o caminho completo só pode ser testado no site publicado;
+- comportamento do botão de conta no aplicativo depois da publicação;
+- redirecionamento de quem já está autenticado ao acessar `/login`.
+
+### Reversão
+
+`git revert` do commit. Os quatro arquivos novos somem, o `app.js` volta à linha anterior e o modal volta a abrir.
+
+### Pendências relacionadas
+
+- E4 da P1-15 concluída; P2-09 aberta para hospedar a biblioteca do Supabase localmente; parte da P1-14 entregue.
+
 ## [2026-09-09] PÁGINAS INSTITUCIONAIS COM ROTAS PRÓPRIAS (E3 DA P1-15)
 
 **Tipo:** funcionalidade e documentação  

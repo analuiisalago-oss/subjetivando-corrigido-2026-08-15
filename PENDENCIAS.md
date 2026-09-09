@@ -250,6 +250,13 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Estado:** NÃO INICIADA.
 
+### P2-09 — Hospedar a biblioteca do Supabase no próprio site
+
+**Estado:** NÃO INICIADA.  
+**Situação:** `/login`, `/cadastro` e `/recuperar-senha` carregam `@supabase/supabase-js` da CDN jsDelivr, como o app já fazia. Por isso essas três páginas **não têm** o "zero recursos externos" de `/sobre`, `/termos` e `/privacidade`.  
+**Consequência dupla:** o IP de quem abre a tela de entrar é entregue à jsDelivr, o que a política de privacidade precisa refletir; e, se a CDN falhar, a pessoa não consegue entrar — hoje isso é tratado com aviso explícito, não com falha silenciosa.  
+**Saída:** baixar a biblioteca para `public/assets/` e apontar as páginas para a cópia local. Resolve junto o achado antigo sobre dependência de CDNs.
+
 ### P2-08 — Completar as lacunas dos documentos institucionais
 
 **Estado:** ABERTA em 09/09/2026. As páginas existem; o conteúdo está incompleto e assinalado como tal.
@@ -334,8 +341,8 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 | E1 | Modelo de acesso aprovado | seção 2.6 de `ARQUITETURA.md` | concluída |
 | E2 | Mapa de rotas aprovado | seção 2.6 de `ARQUITETURA.md` | concluída |
 | E3 | `/sobre`, `/termos`, `/privacidade` | **CONCLUÍDA em 09/09/2026** — três páginas estáticas próprias | baixo |
-| E4 | Roteador, sem alterar tela alguma | cada destino ganha URL, título e histórico | médio |
-| E5 | Separar `/` do simulador | página pública nova | **alto** |
+| E4 | Páginas próprias de conta | **CONCLUÍDA em 09/09/2026** — `/login`, `/cadastro` e `/recuperar-senha` como arquivos próprios, sem roteador | baixo |
+| E5 | Separar `/` do simulador | **CONCLUÍDA em 09/09/2026** — `/` é convite; simulador em `/dashboard` | **alto** |
 | E6 | Guardas de rota e limpeza das sobreposições | redirecionamentos; controles fora de contexto deixam de existir | médio |
 | E7 | `/conta` | tela própria | baixo |
 
@@ -343,7 +350,25 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 Os três documentos estão em **rascunho, com as lacunas visivelmente assinaladas na própria página**: 10 na política de privacidade, 6 nos termos, 2 na página sobre. Nada foi inventado — o que falta aparece marcado como "a completar". Ver P2-08.
 
-**Próxima etapa: E4**, o roteador.
+**E4 concluída em 09/09/2026, por caminho diferente do planejado.** O plano previa construir um roteador dentro do `app.js` de 3,4 MB. Depois de a E3 provar o padrão de páginas estáticas, ficou claro que login, cadastro e recuperação **não precisam do roteador nem do acervo**: viraram `public/login.html`, `public/cadastro.html` e `public/recuperar-senha.html`, com `public/assets/conta.js` de 8 KB. Risco muito menor, mesmo resultado — endereço, título e recarga reais.
+
+**A única alteração no `app.js` foi de uma linha:** o botão de conta deixou de abrir o modal e passa a levar para `/login`. Conferido por diferença linha a linha que nada mais no arquivo mudou.
+
+**O que deliberadamente NÃO se mexeu:** a definição de nova senha em `/atualizar-senha` continua dentro do `app.js`, com o modal. Esse fluxo foi testado de ponta a ponta em 09/09/2026 e não há motivo para arriscá-lo. O modal permanece no arquivo por isso.
+
+**Defeito encontrado e corrigido durante a implementação:** na primeira versão, `conta.js` abortava inteiro se a biblioteca do Supabase não chegasse da CDN. Nesse caso o formulário caía no envio nativo do navegador e **recarregaria a página com o e-mail e a senha visíveis na barra de endereço**. Corrigido: os manipuladores de envio são sempre registrados, a verificação da biblioteca acontece dentro deles, e a pessoa recebe uma mensagem clara. Verificado com a CDN bloqueada: o endereço não muda, a senha não aparece nele e o aviso é exibido.
+
+**Melhorias da P1-14 já entregues aqui:** os campos de senha têm botão de mostrar e ocultar, e o requisito de oito caracteres aparece antes do erro.
+
+**E5 concluída em 09/09/2026.** `/` deixou de abrir o simulador e passou a ser `public/inicio.html`: um convite com "Criar conta" e "Já possui uma conta? Faça o login". O simulador passou a responder em `/dashboard` (e em `/treino`, `/defensoria`, `/oab`, `/tcdf`, que continuam apontando para o mesmo `index.html`).
+
+**Detalhe do Netlify que quase passou despercebido:** arquivo existente vence regra de reescrita. Como `index.html` existe, a regra `/ → /inicio.html 200` seria ignorada e a raiz continuaria abrindo o simulador. Resolvido com o sinal de força — `200!` —, que é a única regra do arquivo que precisa dele. Está comentado no próprio `_redirects`.
+
+**Mudança de destino:** `conta.js` passou a mandar para `/dashboard` depois de entrar, e o link de confirmação de cadastro passou a apontar para `/dashboard`. **Isso exige cadastrar `https://subjetivando.netlify.app/dashboard` nas Redirect URLs do Supabase** — sem isso, a confirmação de e-mail leva a pessoa para o lugar errado, exatamente o defeito da P1-05.
+
+**Ainda pendente da E5:** a página inicial mostra o atalho "continuar de onde parou" a partir da presença da chave de sessão no navegador. É dica de interface, não controle de acesso — quem manda continua sendo a RLS.
+
+**Próxima etapa: E6** — guardas de rota e limpeza das sobreposições dentro do aplicativo, e a cota de 5 questões do visitante.
 
 **E1 a E4 não bloqueiam o beta. A E5 bloqueia:** enquanto a página pública nova não estiver pronta, é melhor não abrir para ninguém. Se o beta for prioridade, parar na E4 e retomar depois.
 

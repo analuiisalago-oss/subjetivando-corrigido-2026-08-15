@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Entrar — Subjetivando</title>
+    <meta name="description" content="Entre na sua conta do Subjetivando." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10.6' r='3.1' fill='%2338a372'/%3E%3Crect x='4.5' y='19' width='23' height='3.4' rx='1.7' fill='%2338a372' opacity='.85'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/assets/paginas.css" />
+  </head>
+  <body>
+    <div class="folha">
+      <header class="topo">
+        <a class="marca" href="/">Subjetivando</a>
+        <nav class="atalhos" aria-label="Navegação">
+          <a href="/">Voltar ao treino</a>
+        </nav>
+      </header>
+      <main class="painel-conta" id="painel-conta" data-pagina="login">
+        <h1>Entrar</h1>
+        <p class="apoio">Use o e-mail e a senha da sua conta.</p>
+
+        <p class="aviso-conta" id="aviso" role="status" aria-live="polite" hidden></p>
+
+        <form id="form-login" novalidate>
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" autocomplete="email" required placeholder="voce@exemplo.com" />
+          </div>
+          <div class="campo">
+            <div class="linha-senha">
+              <label for="senha">Senha</label>
+              <button type="button" class="ver-senha" data-ver-senha="senha" aria-label="Mostrar a senha">mostrar</button>
+            </div>
+            <input type="password" id="senha" name="senha" autocomplete="current-password" required />
+          </div>
+          <button type="submit" class="botao-principal" id="btn-entrar">Entrar</button>
+        </form>
+
+        <div class="saidas">
+          <p><a href="/recuperar-senha">Esqueci minha senha</a></p>
+          <p>Ainda não tem conta? <a href="/cadastro">Criar conta</a></p>
+        </div>
+      </main>
+      <footer class="rodape">
+        <p>
+          Subjetivando · <a href="/sobre">Sobre</a> ·
+          <a href="/termos">Termos de uso</a> · <a href="/privacidade">Política de privacidade</a>
+        </p>
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/assets/conta.js"></script>
+  </body>
+</html>

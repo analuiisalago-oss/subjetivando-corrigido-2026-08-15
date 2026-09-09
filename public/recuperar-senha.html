@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Recuperar senha — Subjetivando</title>
+    <meta name="description" content="Receba um link para definir uma nova senha." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10.6' r='3.1' fill='%2338a372'/%3E%3Crect x='4.5' y='19' width='23' height='3.4' rx='1.7' fill='%2338a372' opacity='.85'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/assets/paginas.css" />
+  </head>
+  <body>
+    <div class="folha">
+      <header class="topo">
+        <a class="marca" href="/">Subjetivando</a>
+        <nav class="atalhos" aria-label="Navegação">
+          <a href="/">Voltar ao treino</a>
+        </nav>
+      </header>
+      <main class="painel-conta" id="painel-conta" data-pagina="recuperar">
+        <h1>Recuperar senha</h1>
+        <p class="apoio">Informe seu e-mail e enviaremos um link para você definir uma nova senha.</p>
+
+        <p class="aviso-conta" id="aviso" role="status" aria-live="polite" hidden></p>
+
+        <form id="form-recuperar" novalidate>
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" autocomplete="email" required placeholder="voce@exemplo.com" />
+          </div>
+          <button type="submit" class="botao-principal" id="btn-recuperar">Enviar link</button>
+        </form>
+
+        <div class="saidas">
+          <p>Lembrou a senha? <a href="/login">Entrar</a></p>
+          <p>O link chega por e-mail e pode cair na caixa de spam.</p>
+        </div>
+      </main>
+      <footer class="rodape">
+        <p>
+          Subjetivando · <a href="/sobre">Sobre</a> ·
+          <a href="/termos">Termos de uso</a> · <a href="/privacidade">Política de privacidade</a>
+        </p>
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/assets/conta.js"></script>
+  </body>
+</html>
