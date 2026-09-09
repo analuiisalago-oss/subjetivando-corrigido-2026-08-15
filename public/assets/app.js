@@ -2796,17 +2796,26 @@
     });
   }
 
+  /* A resposta do usuário é gravada nos dois sentidos, sim e não.
+     A versão anterior registrava só o "sim": a recusa não deixava rastro, e
+     bastava um novo carregamento de página — o retorno do link de confirmação
+     de e-mail, por exemplo, que zera o sessionStorage — para a pergunta
+     reaparecer, indefinidamente. Observado em teste real em 09/09/2026.
+     A marca é apagada no logout (ver o ramo "else" adiante), de modo que
+     "Cancelar" significa "agora não", e não "nunca mais". */
   function autorizarIncorporacao(uid) {
     const chave = CONSENTIMENTO + uid;
-    if (localStorage.getItem(chave) === 'sim' || !temDadosLocais()) {
+    const registrado = localStorage.getItem(chave);
+    if (registrado === 'sim' || !temDadosLocais()) {
       localStorage.setItem(chave, 'sim');
       return true;
     }
+    if (registrado === 'nao') return false; // recusa já registrada nesta conta
     const aceitou = window.confirm(
       'Este navegador tem progresso salvo antes do login. Deseja incorporar essas respostas, anotações e questões à sua conta?\n\n' +
       'Escolha “Cancelar” para manter os dados apenas neste dispositivo por enquanto.'
     );
-    if (aceitou) localStorage.setItem(chave, 'sim');
+    localStorage.setItem(chave, aceitou ? 'sim' : 'nao');
     return aceitou;
   }
 
@@ -2841,6 +2850,9 @@
         location.reload();
       }, 0);
     } else {
+      /* Sair da conta esquece a recusa: quem respondeu "agora não" volta a ser
+         perguntado no próximo login, sem precisar de controle novo na tela. */
+      if (usuario) localStorage.removeItem(CONSENTIMENTO + usuario.id);
       usuario = null;
       sincronizacaoAutorizada = false;
       sincronizacaoEmCurso = false;

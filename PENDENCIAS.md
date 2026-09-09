@@ -108,8 +108,15 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 ### P1-08 — Pedir confirmação para incorporar dados locais
 
-**Estado:** EM EXECUÇÃO. A confirmação existe e aparece, mas o teste real de 09/09/2026 mostrou defeito: a pergunta reapareceu depois da confirmação do e-mail, mesmo tendo sido recusada com "cancelar" no primeiro aparecimento.  
-**Conclusão exige:** a recusa deve ficar registrada e a pergunta não deve se repetir na mesma conta e no mesmo dispositivo sem ação do usuário. Verificar se a chave `subj_sync_consent_v1_<usuario>` é gravada no cancelamento e se é lida antes de reapresentar o pedido.
+**Estado:** CONCLUÍDA em 09/09/2026.
+
+**Causa raiz:** `autorizarIncorporacao` gravava apenas o "sim" em `subj_sync_consent_v1_<usuario>`. A recusa não deixava rastro, e o que segurava a pergunta entre uma vez e outra era `sessionStorage`, que morre com a aba. Qualquer novo carregamento de página com sessão ativa — o retorno do link de confirmação de e-mail, por exemplo — trazia a pergunta de volta, e ela voltaria a cada recarregamento, indefinidamente.
+
+**Correção:** a resposta passa a ser gravada nos dois sentidos e a recusa é respeitada. Para que "Cancelar" signifique "agora não" e não "nunca mais" — o que prenderia o usuário em "Sincronização pausada", já que não há controle na tela para reconsiderar —, a marca é apagada no logout. Quem recusou volta a ser perguntado no próximo login, usando o botão SAIR que já existe.
+
+**Nota de projeto:** a correção foi escrita para não depender de qual evento do Supabase dispara em cada caminho (`SIGNED_IN`, `INITIAL_SESSION`, retorno de link), porque isso não foi medido.
+
+**Teste automatizado:** `node scripts/teste_consentimento.mjs`. Extrai a função real de `public/assets/app.js` e verifica cinco casos; o decisivo é o segundo, em que a recusa já registrada não pode gerar nenhuma pergunta. Cinco de cinco passam.
 
 ### P1-09 — Implementar exclusão de conta e dados
 

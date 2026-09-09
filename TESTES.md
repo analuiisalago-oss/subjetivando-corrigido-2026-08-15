@@ -21,8 +21,11 @@ Antes de publicar:
 python scripts/build_public.py
 node --check public/assets/app.js
 node scripts/audit_project.mjs
+node scripts/teste_consentimento.mjs
 PYTHONPYCACHEPREFIX=/tmp/subjetivando-pycache python -m py_compile pipeline/*.py scripts/build_public.py
 ```
+
+`teste_consentimento.mjs` é teste de regressão da P1-08: extrai a função de autorização do `app.js` gerado e confirma que uma recusa já registrada não volta a perguntar. Ele sai com código 1 se algum caso falhar, e pode ser encadeado com `&&`.
 
 Além disso, valide todos os arquivos JSON. `audit_project.mjs` confirma as contagens dos seis acervos, IDs únicos, ausência de padrões de segredos privados e a lista fechada de arquivos em `public/`. O script de geração deve informar nove camadas JavaScript; qualquer quantidade diferente indica que a fonte mudou e o build precisa ser revisto.
 

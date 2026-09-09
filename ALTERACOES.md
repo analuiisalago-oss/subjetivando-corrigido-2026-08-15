@@ -63,6 +63,61 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-09] CORREÇÃO DA CONFIRMAÇÃO DE INCORPORAÇÃO DE DADOS LOCAIS
+
+**Tipo:** correção  
+**Ambiente:** desenvolvimento local
+
+### Problema
+
+Teste real mostrou que a pergunta sobre incorporar o progresso salvo antes do login reaparecia depois de ter sido recusada. `autorizarIncorporacao` gravava somente o "sim"; a recusa não deixava rastro. O que impedia a repetição era uma marca em `sessionStorage`, que morre com a aba — logo, qualquer novo carregamento de página com sessão ativa trazia a pergunta de volta, indefinidamente.
+
+### Alteração
+
+- a resposta passa a ser gravada nos dois sentidos, `sim` e `nao`;
+- a recusa registrada faz a função retornar sem perguntar;
+- ao sair da conta, a marca é apagada, de modo que "Cancelar" significa "agora não" e o usuário volta a ser perguntado no próximo login;
+- acrescentado `scripts/teste_consentimento.mjs`;
+- `TESTES.md` passou a incluir o novo comando na lista de validação automatizada que já existia.
+
+Optou-se por não depender de qual evento do Supabase dispara em cada caminho, por não ter sido medido.
+
+### Arquivos ou serviços afetados
+
+- `minha-banca.NOVO_3.html`, camada de sincronização;
+- `public/assets/app.js`, regenerado pelo build;
+- `scripts/teste_consentimento.mjs`, novo;
+- `TESTES.md` e `PENDENCIAS.md`.
+
+`public/index.html` e `public/assets/styles.css` não mudaram de tamanho.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Melhora: a recusa do usuário passa a ser respeitada de forma duradoura, em vez de ser reapresentada até que ele ceda.
+
+### Testes executados
+
+- `node scripts/teste_consentimento.mjs`: 5 de 5 casos, nenhuma falha. O caso decisivo — recusa já registrada — não produz nenhuma pergunta;
+- `node --check public/assets/app.js`: PASSOU;
+- `node scripts/audit_project.mjs`: PASSOU, acervo inalterado.
+
+### Itens não testados
+
+- o fluxo completo em navegador real, com login e logout, depois da publicação;
+- comportamento com duas abas abertas simultaneamente.
+
+### Reversão
+
+`git revert` do commit e novo `python3 scripts/build_public.py`.
+
+### Pendências relacionadas
+
+- P1-08 concluída. O diálogo continua sendo o `window.confirm` do navegador e o recarregamento após aceitar permanece — ambos registrados na P1-14 como experiência, não defeito.
+
 ## [2026-09-09] CORREÇÃO DE DOIS DEFEITOS DE LAYOUT NO CELULAR
 
 **Tipo:** correção  
