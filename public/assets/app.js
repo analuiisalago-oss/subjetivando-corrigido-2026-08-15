@@ -560,6 +560,20 @@
   const printWrap = document.getElementById('printWrap');
   const showPrint = (v) => { printWrap.style.display = v ? 'block' : 'none'; };
 
+  // Um sorteio novo precisa deixar o painel de resposta realmente vazio. Se o
+  // texto da questao anterior continuar no DOM, a camada de continuidade (D)
+  // o considera "ja renderizado", nao chama o render da questao atual e salva
+  // no instantaneo a QUESTAO NOVA junto da RESPOSTA VELHA. Depois de recarregar,
+  // esse instantaneo e reposto e o usuario ve resposta trocada.
+  function limparEspelho(){
+    if(espelhoText) espelhoText.textContent = '';
+    if(espelhoResumo) espelhoResumo.textContent = '';
+    const mt = document.getElementById('modeloText'); if(mt) mt.textContent = '';
+    const er = document.getElementById('espelhoRubric'); if(er) er.innerHTML = '';
+    const rt = document.getElementById('rubricTotal'); if(rt) rt.textContent = '';
+    if(pistasList) pistasList.innerHTML = '';
+  }
+
   // ---------- CATEGORIA (dropdown) ----------
   function buildCategorySelect(){
     const labels = currentLabels();
@@ -660,6 +674,7 @@
     drawActions.innerHTML = '<button class="btn primary" id="btnDraw" type="button">' + drawLabel + '</button>';
     document.getElementById('btnDraw').addEventListener('click', doDraw);
     espelhoActions.style.display = 'none';
+    limparEspelho();
     espelhoPanel.style.display = 'none';
     pistasPanel.style.display = 'none';
     currentOabItem = null;
@@ -751,6 +766,7 @@
     currentOabItem = item;
     currentDpeQ = null;
     btnPistas.style.display = '';
+    limparEspelho();
     espelhoPanel.style.display = 'none';
     if(!item){
       stateLabel.textContent = OAB_CATEGORY_LABELS[cat].toUpperCase();
@@ -818,6 +834,7 @@
     const tipo = state.tcdfSub === 'prova_peca' ? 'peca' : 'discursiva';
     const pool = TCDF_PROVAS[tipo] || [];
     currentOabItem = null; currentDpeQ = null;
+    limparEspelho();
     espelhoPanel.style.display = 'none'; pistasPanel.style.display = 'none';
     if(!pool.length){
       stateLabel.textContent = 'EM BREVE';
@@ -846,6 +863,7 @@
     const cat = state.category === 'qualquer' ? cats[Math.floor(Math.random()*cats.length)] : state.category;
     const pool = TCDF_DISCURSIVAS[cat] || [];
     currentOabItem = null; currentDpeQ = null;
+    limparEspelho();
     espelhoPanel.style.display = 'none';
     pistasPanel.style.display = 'none';
     espelhoActions.style.display = 'none';
@@ -873,6 +891,7 @@
     const cat = state.category === 'qualquer' ? cats[Math.floor(Math.random()*cats.length)] : state.category;
     const pool = DPE_ORAL_QUESTOES[cat] || [];
     currentOabItem = null;
+    limparEspelho();
     espelhoPanel.style.display = 'none';
     pistasPanel.style.display = 'none';
     if(!pool.length){
@@ -1902,7 +1921,7 @@
       pistasVisivel: btnPistas ? btnPistas.style.display !== 'none' : true,
       textoPistas: btnPistas ? btnPistas.textContent : '',
       imprimirVisivel: vis(printWrap),
-      v: 2
+      v: 3
     };
   }
   function salvar() {
@@ -1961,7 +1980,7 @@
   function restaurar() {
     let s = null;
     try { s = JSON.parse(localStorage.getItem(K_SESSAO) || 'null'); } catch (e) {}
-    if (!s || s.v !== 2) { restaurando = false; return; }
+    if (!s || s.v !== 3) { restaurando = false; return; }
 
     // 1. parâmetros — reencena os cliques para que o estado interno do app acompanhe
     clicarSeg('modeToggle', 'mode', s.modo);
