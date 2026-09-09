@@ -378,6 +378,33 @@ Os três documentos estão em **rascunho, com as lacunas visivelmente assinalada
 2. `v41.css` esconde OAB, TCDF e discursiva por CSS; com rotas passariam a existir dois mecanismos para o mesmo fim;
 3. `public/` é a fonte desde 09/09/2026 — `scripts/build_public.py` não pode ser executado durante esta implementação. Ver P2-06.
 
+### P1-16 — Identidade de questão e modelo de sessão
+
+**Estado:** PLANEJADA em 09/09/2026, execução não iniciada.
+
+**Problema:** nenhuma questão tem identidade própria. O aplicativo identifica uma questão pelo **hash do texto da pergunta** (`'q' + base36`, gravado como `questao_hash` no Supabase) — se o texto for corrigido, a questão vira outra e a anotação e o "já respondida" da pessoa se perdem. E a camada D restaura a tela **reproduzindo o HTML salvo do DOM**, sem saber de que questão se trata: ela redesenha pixels, não estado.
+
+Foi exatamente essa ausência de identidade que produziu o defeito da resposta trocada corrigido em 09/09/2026. Aquela correção fecha o sintoma — o painel agora é esvaziado a cada sorteio —, **não a fragilidade estrutural**. Enquanto a sessão for um retrato do DOM, qualquer alteração futura na tela pode reabrir a mesma classe de erro.
+
+**Constatação do diagnóstico, para não se perder:** não existe no código nenhum rótulo "QUESTÃO ID" nem número exibido de questão. Procurado em `app.js`, `index.html` e `v41.css`: não há. O único identificador existente é o hash do texto.
+
+**Etapas, em ordem:**
+
+| | Etapa | Entrega | Risco |
+|---|---|---|---|
+| F1 | Diagnóstico da associação pergunta/resposta e da origem do identificador | **CONCLUÍDA em 09/09/2026** — causa localizada na camada D; acervo íntegro; "QUESTÃO ID" não existe | nenhum |
+| F2 | Identificadores imutáveis por questão; acervo extraído do `app.js` para JSON | cada questão com id estável, independente do texto | **alto** |
+| F3 | Migração de `questao_hash` para `questao_id` no Supabase | anotações e "respondida" deixam de depender do texto | alto |
+| F4 | Modelo de sessão: trilha ordenada de questões e estado por questão | anotação, resposta revelada e "respondida" guardados por id | médio |
+| F5 | Anterior e próxima sem re-sortear e sem perder estado | navegação dentro da trilha | médio |
+| F6 | Endereço por questão, histórico do navegador e retomada de sessão | URL compartilhável; voltar e avançar funcionando | médio |
+
+**Fora deste escopo, por decisão da autora em 09/09/2026:** componentes responsivos, tokens de design e eliminação da cadeia de sobreposições de CSS. Esse trabalho será feito em outro lugar. Ver P2-05.
+
+**Critérios de aceitação a escrever antes da F2:** lista derivada das HIG e da WCAG, ainda não redigida.
+
+**Armadilha conhecida:** a F2 mexe no `app.js` de 3,4 MB, que é o mesmo arquivo redesenhado pelo Codex. Qualquer alteração precisa ser feita por âncora conferida, nunca por reescrita do arquivo, e `scripts/build_public.py` continua proibido. Ver P2-06.
+
 ### P3-09 — Adicionar SEO e compartilhamento
 
 **Estado:** NÃO INICIADA.  
@@ -400,6 +427,11 @@ Os três documentos estão em **rascunho, com as lacunas visivelmente assinalada
 Nenhum item P4 deve ser implementado enquanto houver pendência P0 ou P1 relevante.
 
 ## 7. CONCLUÍDAS
+
+### 2026-09-09 — Resposta trocada após recarregar a página
+
+Corrigido o defeito que exibia a resposta de uma questão anterior para a questão mostrada na tela. Causa: o painel de resposta não era esvaziado no sorteio, e a camada de continuidade tratava o texto remanescente como já renderizado, salvando no instantâneo a questão nova com a resposta velha. Acrescentada `limparEspelho()` nas cinco funções de sorteio e elevada a versão do instantâneo de 2 para 3, o que descarta os instantâneos já contaminados. Verificado no site publicado, na sequência exata que reproduzia o erro. Commit `01f59db`. Abre-se P1-16.
+
 
 ### 2026-09-09 — Autenticação comprovada de ponta a ponta
 

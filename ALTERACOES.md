@@ -63,6 +63,72 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-09] CORREÇÃO DA RESPOSTA TROCADA APÓS RECARREGAR A PÁGINA
+
+**Tipo:** correção  
+**Versão ou commit:** `01f59db`  
+**Ambiente:** produção — verificado em `https://subjetivando.netlify.app`
+
+### Problema
+
+Defeito relatado pela autora com prova visual: a tela mostrava a pergunta do ECA sobre criança apreendida em flagrante e o painel "Resposta / fundamentos esperados" exibia conteúdo de LINDB — vacatio legis, 45 dias, analogia e costumes. O mesmo texto da LINDB já havia aparecido em capturas anteriores, para outra pergunta.
+
+**O acervo não estava errado.** Conferido no `app.js`: aquela pergunta do ECA está pareada com a resposta correta — art. 103, art. 178 e encaminhamento ao Conselho Tutelar. Pergunta e resposta vivem no mesmo objeto (`{pergunta, resposta}`); não existe busca por posição em lista paralela. A hipótese anterior, de descompasso entre os 199 tópicos de `ORAL_TOPICS` e as 750 questões de `DPE_ORAL_QUESTOES`, estava errada e fica registrada como descartada.
+
+**A causa estava na camada D, "CONTINUIDADE AO RECARREGAR", do `app.js`.** A cadeia, lida linha a linha e depois reproduzida no site:
+
+1. o sorteio de uma questão nova escondia o painel de resposta (`espelhoPanel.style.display = 'none'`) mas **nunca apagava o texto dentro dele** — o `espelhoText` seguia com a resposta da questão anterior;
+2. antes de salvar o instantâneo da tela, `garantirCache()` decide se a resposta já está renderizada por um teste de tamanho: `espelhoText` com mais de 20 caracteres. Com o texto velho no lugar, o teste dava verdadeiro e a função voltava sem renderizar;
+3. o instantâneo era então gravado com a **questão nova e a resposta velha**;
+4. ao recarregar, a camada D repunha esse instantâneo e ligava o modo `restaurado`; nesse modo o botão "Ver resposta" é interceptado com `stopPropagation`, e o manipulador do aplicativo, que renderizaria a resposta certa, nunca chegava a rodar.
+
+Consequência prática: **em sessão contínua a resposta saía certa; o erro só aparecia depois de recarregar a página** — por isso parecia intermitente. É o defeito mais grave já encontrado no produto: resposta errada para quem estuda para concurso.
+
+### Alteração
+
+Somente em `public/assets/app.js`. Nenhum HTML, nenhum CSS, nada do desenho da v41.
+
+- criada `limparEspelho()`, logo após `showPrint`, com comentário explicando o motivo. Esvazia `espelhoText`, `espelhoResumo`, `modeloText`, `espelhoRubric`, `rubricTotal` e `pistasList`;
+- chamada nas **cinco** funções de sorteio, imediatamente antes de o painel ser escondido: `resetDrawArea`, `doDrawOab`, `doDrawTcdfProva`, `doDrawTcdfD` e `doDrawDpeQ`. Com o painel realmente vazio, o teste de `garantirCache()` passa a dar falso e a resposta da questão atual é renderizada antes de o instantâneo ser salvo;
+- versão do instantâneo elevada de `v: 2` para `v: 3`, nos dois pontos — na gravação e no teste de leitura de `restaurar()`.
+
+**Não se mexeu** na linha que esconde o painel dentro do manipulador de "Ocultar resposta": ali não há sorteio.
+
+Diferença total: 21 linhas inseridas, 2 removidas, 1 arquivo.
+
+### Arquivos ou serviços afetados
+
+- `public/assets/app.js` — único arquivo alterado.
+
+### Banco de dados
+
+Nenhuma alteração de esquema. A subida de versão do instantâneo **descarta os instantâneos já contaminados**, tanto no `localStorage` de cada navegador quanto na cópia que a camada de sincronização guarda no Supabase: `restaurar()` recusa qualquer instantâneo que não seja `v: 3`. Sem isso, quem já tinha usado o site continuaria vendo a resposta trocada mesmo depois da correção.
+
+### Segurança e privacidade
+
+Nenhum impacto. Nenhuma requisição nova, nenhum dado a mais gravado.
+
+### Testes executados
+
+- conferência das 8 âncoras de linha antes de gravar: 8 de 8. O script abortaria sem escrever se qualquer linha divergisse do esperado;
+- `node --check public/assets/app.js`: sintaxe válida;
+- teste funcional de 10 casos executando a `limparEspelho()` **extraída do arquivo já gravado**, não de uma cópia: prova que o painel fica vazio e que o teste `cheio()` da camada D passa de verdadeiro para falso — que é o elo causal da correção. 10 de 10;
+- **verificação no site publicado**, modo Defensorias → Prova oral → Questões passadas, na sequência exata que reproduzia o erro: sorteia Q1 (Sistema Nacional do Meio Ambiente) → painel vazio; "Ver resposta" → Lei 6.938/81, correta; sorteia Q2 (adimplemento substancial) → painel já com a resposta de Q2; instantâneo salvo com Q2 e a resposta de Q2 pareadas; **recarrega a página**; "Ver resposta" → STJ e adimplemento substancial, correta. Antes da correção, esse último passo devolveria a resposta do meio ambiente;
+- confirmado no site que o instantâneo antigo, em versão 2, foi descartado na primeira carga.
+
+### Itens não testados
+
+- o mesmo percurso nos modos OAB e TCDF, que usam `renderEspelho` em vez de `showResposta`. A correção é a mesma e as chamadas estão nas cinco funções de sorteio, mas só o percurso da prova oral da Defensoria foi percorrido de ponta a ponta;
+- comportamento com conta autenticada e sincronização ativa: o teste no site foi feito sem login, para não gravar dados de teste no Supabase.
+
+### Reversão
+
+`git revert 01f59db` devolve o arquivo ao estado anterior. Instantâneos gravados em `v: 3` passariam a ser recusados pela versão revertida, o que apenas faz a tela abrir vazia — não corrompe nada.
+
+### Pendências relacionadas
+
+- abre-se **P1-16**: a camada D restaura a tela por instantâneo do DOM, sem qualquer identidade de questão. Esta correção fecha o sintoma, não a fragilidade estrutural.
+
 ## [2026-09-09] PÁGINA INICIAL SEPARADA DO SIMULADOR (E5 DA P1-15)
 
 **Tipo:** funcionalidade  
