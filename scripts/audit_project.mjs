@@ -89,10 +89,14 @@ const expectedPublic = [
   '_headers',
   '_redirects',
   'assets/app.js',
+  'assets/paginas.css',
   'assets/styles.css',
   'assets/v41.css',
   'index.html',
+  'privacidade.html',
   'robots.txt',
+  'sobre.html',
+  'termos.html',
 ];
 function listFiles(directory, prefix = '') {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {

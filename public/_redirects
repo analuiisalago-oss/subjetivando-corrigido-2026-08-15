@@ -1,3 +1,6 @@
+/sobre            /sobre.html         200
+/termos           /termos.html        200
+/privacidade      /privacidade.html   200
 /defensoria    /index.html   200
 /defensoria/*  /index.html   200
 /oab           /index.html   200

@@ -63,21 +63,23 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
-## [2026-09-09] ADOÇÃO DO DESIGN v41 E MUDANÇA DA FONTE DO SITE
+## [2026-09-09] PÁGINAS INSTITUCIONAIS COM ROTAS PRÓPRIAS (E3 DA P1-15)
 
-**Tipo:** design, configuração e documentação  
-**Ambiente:** desenvolvimento local e Netlify
+**Tipo:** funcionalidade e documentação  
+**Ambiente:** desenvolvimento local
 
 ### Problema
 
-O redesenho produzido no Codex existia apenas como saída de build, em `public/`, sem contrapartida em `minha-banca.NOVO_3.html`. Como o Netlify executava `scripts/build_public.py` a cada publicação, o deploy regeneraria `public/` a partir da fonte antiga e apagaria o design novo sem emitir erro.
+Não existiam páginas de sobre, termos de uso e política de privacidade. A ausência dos dois últimos é bloqueio de lançamento: o site guarda dados pessoais de terceiros.
 
 ### Alteração
 
-- `public/index.html`, `public/assets/styles.css` e `public/assets/app.js` substituídos pelos do Codex; `public/assets/v41.css` acrescentado;
-- `netlify.toml` passou a trazer `command = ""`, com a explicação no próprio arquivo;
-- `README.md` e `TESTES.md` deixaram de instruir a execução do build e passaram a avisar do risco;
-- `minha-banca.NOVO_3.html` e `scripts/build_public.py` tornam-se histórico.
+- criadas `public/sobre.html`, `public/termos.html` e `public/privacidade.html`, como arquivos estáticos independentes do aplicativo;
+- criada `public/assets/paginas.css`, folha própria de 3,8 KB;
+- `public/_redirects` recebeu três regras antes do curinga, mapeando `/sobre`, `/termos` e `/privacidade`;
+- `scripts/audit_project.mjs` passou a aceitar os quatro arquivos novos na lista fechada de `public/`.
+
+Decisão de desenho: as páginas **não carregam recurso externo algum** — sem Tailwind, sem CDN de ícones, sem fontes do Google. Usam fontes do próprio sistema. Assim nenhum IP de quem as lê é entregue a terceiro, o que é especialmente pertinente numa política de privacidade. Também não dependem do roteador, que ainda não existe.
 
 ### Banco de dados
 
@@ -85,29 +87,30 @@ Nenhuma alteração.
 
 ### Segurança e privacidade
 
-Sem regressão identificada. A estrutura de acessibilidade corrigida em agosto está preservada. Registra-se que ocultar OAB, TCDF e discursiva por CSS não remove esses dados do arquivo público — ver P2-07.
+Melhora. As três páginas trazem `noindex`, não fazem requisição externa e a política declara com precisão o que o site coleta, inclusive o que ainda não existe — como a exclusão automática de conta.
 
 ### Testes executados
 
-- conferência de integridade do trabalho do Codex contra o estado anterior: as quatro correções de 09/09 e os blocos 15 e 16 do CSS estão presentes; `header`, `main`, `footer`, `aside`, skip-link e `sr-only` preservados: PASSOU;
-- contagem do acervo no `app.js` recebido: 750 · 55 · 55 · 6 · 37: PASSOU;
-- `node --check public/assets/app.js`: PASSOU;
-- conferência SHA-256 dos quatro arquivos depois de copiados para o projeto, contra os originais do Codex: idênticos: PASSOU.
+- renderização em navegador real, servida por HTTP: fundo, tipografia e largura de leitura corretas nos temas claro e escuro: PASSOU;
+- requisições externas por página: **zero**: PASSOU;
+- erros de script: **zero**: PASSOU;
+- transbordamento horizontal em 1100px e 390px: **zero**: PASSOU;
+- `node scripts/audit_project.mjs` com a árvore completa: 11 arquivos em `public/`, acervo íntegro: PASSOU;
+- `node scripts/teste_consentimento.mjs`: 5 de 5: PASSOU.
 
 ### Itens não testados
 
-- comportamento do site publicado depois deste deploy;
-- fluxo completo de treino e de conta sobre o design novo;
-- celular real;
+- comportamento das três rotas no Netlify depois da publicação;
+- leitura em aparelho real;
 - impressão.
 
 ### Reversão
 
-`git revert` do commit devolve os quatro arquivos e o `netlify.toml` anteriores. A pasta do Codex permanece no computador da autora como cópia de origem.
+Remover os quatro arquivos, desfazer as três regras de `_redirects` e a lista do `audit_project.mjs`.
 
 ### Pendências relacionadas
 
-- P2-06 aberta e aplicada; P2-07 aberta; P2-05 segue.
+- E3 da P1-15 concluída; P2-08 aberta com as lacunas de conteúdo.
 
 ## [2026-09-09] NORMALIZAÇÃO DE VALORES DO EXPORT — PRIMEIRO PASSO DO SISTEMA DE DESIGN
 

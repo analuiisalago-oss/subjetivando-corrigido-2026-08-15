@@ -250,6 +250,23 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Estado:** NÃO INICIADA.
 
+### P2-08 — Completar as lacunas dos documentos institucionais
+
+**Estado:** ABERTA em 09/09/2026. As páginas existem; o conteúdo está incompleto e assinalado como tal.
+
+**Faltam, e nenhuma pode ser suprida por inferência:**
+
+| Onde | O que falta |
+|---|---|
+| Todas | nome da responsável e e-mail de contato |
+| Privacidade | base legal; região do servidor Supabase e base legal da transferência internacional; prazos de retenção; prazo de atendimento a pedidos de exclusão e exportação; prazo para deixar de usar CDNs |
+| Termos | regras sobre a origem do acervo e direitos autorais; limitação de responsabilidade; foro |
+| Sobre | apresentação da responsável |
+
+**Ponto levantado em 09/09/2026 e não resolvido:** `pipeline/FONTES.md` e `pipeline/ESTADO.md` registram que o acervo veio de material compilado, e que o processamento removeu "URLs de curso" e cabeçalhos de "Material usado". Antes de abrir o site a terceiros, convém definir o enquadramento da origem dessas 750 questões e respostas. É matéria da autora, não do desenvolvimento, e fica registrada apenas para não passar em branco.
+
+**Verificado, e vale manter no texto:** o site não usa cookies — `document.cookie` não aparece uma única vez no código publicado — e não há rastreador algum. Conferido, não presumido.
+
 ### P2-06 — A pasta `public/` virou a fonte do site
 
 **Estado:** DECIDIDO E APLICADO em 09/09/2026.
@@ -302,11 +319,39 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 **Problema:** corrigidos os defeitos da P1-03, o celular passa a mostrar tudo, mas empilhado numa única coluna de cerca de 2.000px. Configuração no alto, questão no meio, cronômetro e anotação bem abaixo. Quem toca em "Iniciar tempo" vê o efeito longe do botão, às vezes fora da tela.  
 **Observação:** é decisão de design, não defeito. Exige escolher o que fica fixo, o que vira gaveta e onde mora o cronômetro. Não iniciar antes de o beta indicar se as pessoas usam pelo celular.
 
-### P3-10 — Criar páginas próprias de entrada e cadastro
+### P1-15 — Rotas reais e modelo de acesso
 
-**Estado:** NÃO INICIADA.  
-**Observado no teste real de 09/09/2026:** a autenticação é um modal sobre o simulador. Quem está deslogado vê a mesma tela de quem está logado, não existe endereço próprio para entrar ou criar conta, e a URL termina em `/#` depois das operações de conta.  
-**Observação:** pertence à decisão de "páginas reais" do Plano Mestre Integrado. É reestruturação de interface, não correção de defeito, e não deve ser iniciada antes de a primeira versão estar em uso.
+**Estado:** PLANEJADA em 09/09/2026, execução não iniciada. Modelo de acesso e mapa de rotas aprovados pela autora e registrados na seção 2.6 de `ARQUITETURA.md`.
+
+**Problema:** a autenticação é um modal sobre o simulador. Quem está deslogado vê a mesma tela de quem está logado, nenhuma tela tem endereço próprio, e controles aparecem fora de contexto — "criar nova conta" oferecido a quem já está autenticado, por exemplo. A causa não é de tela: é a ausência de modelo de acesso. O aplicativo mostra tudo a todos e oculta partes por CSS.
+
+**Decisões tomadas:** nível pago por funcionalidade e cota, não por exclusividade de conteúdo; visitante treina até 5 questões por dispositivo e depois é convidado a criar conta; roteador em JavaScript com History API, descartados arquivos HTML separados.
+
+**Etapas, em ordem:**
+
+| | Etapa | Entrega | Risco |
+|---|---|---|---|
+| E1 | Modelo de acesso aprovado | seção 2.6 de `ARQUITETURA.md` | concluída |
+| E2 | Mapa de rotas aprovado | seção 2.6 de `ARQUITETURA.md` | concluída |
+| E3 | `/sobre`, `/termos`, `/privacidade` | **CONCLUÍDA em 09/09/2026** — três páginas estáticas próprias | baixo |
+| E4 | Roteador, sem alterar tela alguma | cada destino ganha URL, título e histórico | médio |
+| E5 | Separar `/` do simulador | página pública nova | **alto** |
+| E6 | Guardas de rota e limpeza das sobreposições | redirecionamentos; controles fora de contexto deixam de existir | médio |
+| E7 | `/conta` | tela própria | baixo |
+
+**E3 concluída em 09/09/2026.** As três páginas foram feitas como arquivos estáticos independentes — `public/sobre.html`, `public/termos.html`, `public/privacidade.html` e a folha `public/assets/paginas.css` —, servidas por regras próprias em `_redirects`, antes do curinga. Decisão deliberada: são páginas de texto, não precisam do `app.js` de 3,4 MB nem do roteador, e **não carregam nenhum recurso externo** — nenhuma CDN, nenhuma fonte do Google, nenhum IP de leitor entregue a terceiro. Verificado em navegador: zero requisição externa, zero erro de script, zero transbordamento horizontal em 1100px e em 390px, temas claro e escuro.
+
+Os três documentos estão em **rascunho, com as lacunas visivelmente assinaladas na própria página**: 10 na política de privacidade, 6 nos termos, 2 na página sobre. Nada foi inventado — o que falta aparece marcado como "a completar". Ver P2-08.
+
+**Próxima etapa: E4**, o roteador.
+
+**E1 a E4 não bloqueiam o beta. A E5 bloqueia:** enquanto a página pública nova não estiver pronta, é melhor não abrir para ninguém. Se o beta for prioridade, parar na E4 e retomar depois.
+
+**Armadilhas conhecidas antes de começar:**
+
+1. a camada `rotas-layer` muda de modo **simulando um clique** em `#modeToggle`, que o `v41.css` oculta desde 09/09/2026 — o roteador precisa substituí-la, não empilhar sobre ela;
+2. `v41.css` esconde OAB, TCDF e discursiva por CSS; com rotas passariam a existir dois mecanismos para o mesmo fim;
+3. `public/` é a fonte desde 09/09/2026 — `scripts/build_public.py` não pode ser executado durante esta implementação. Ver P2-06.
 
 ### P3-09 — Adicionar SEO e compartilhamento
 

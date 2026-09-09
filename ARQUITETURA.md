@@ -58,17 +58,94 @@ O navegador armazena dados em `localStorage`, inclusive:
 
 As chaves exatas devem ser inventariadas em `BANCO-DE-DADOS.md` antes de refatorações.
 
-### 2.5. Rotas
+### 2.5. Rotas — estado atual
 
 | Rota | Área |
 |---|---|
-| `/` | página inicial |
+| `/` | abre direto no simulador |
 | `/defensoria` | Defensorias |
 | `/oab` | OAB 2ª fase |
 | `/tcdf` | TCDF |
 | `/atualizar-senha` | definição de nova senha após link do Supabase |
 
-Como se trata de uma aplicação de página única, o Netlify deve entregar `index.html` ao acessar ou atualizar essas rotas.
+Como se trata de uma aplicação de página única, o Netlify entrega `index.html` em qualquer caminho — a última regra de `public/_redirects` é um curinga `/* /index.html 200`.
+
+Esse desenho é o que será substituído pela seção 2.6. Suas limitações: `/` não distingue quem chega de quem já usa; nenhuma tela tem endereço próprio; e a troca de área é feita por uma camada que **simula um clique** no botão de modo — que hoje está oculto por CSS.
+
+### 2.6. Modelo de acesso e mapa de rotas — decidido em 09/09/2026
+
+#### Restrição de partida, medida
+
+Todo o acervo é entregue dentro de `public/assets/app.js`. Qualquer pessoa com o endereço baixa o arquivo com as 750 questões e suas respostas. Enquanto isso for verdade, **não existe como cobrar pelo conteúdo**: esconder controle não protege dado servido.
+
+Decisão da autora: o nível pago se define por **funcionalidade e cota**, não por exclusividade de acervo. Proteger o conteúdo de fato exigiria movê-lo para um backend — projeto de outra ordem de grandeza, fora do escopo atual.
+
+#### Os três níveis
+
+| | Visitante | Autenticado (beta gratuito) | Pago |
+|---|---|---|---|
+| Página pública, sobre, termos, privacidade | sim | sim | sim |
+| Treinar: sortear, cronômetro, padrão de resposta | **até 5 questões por dispositivo** | ilimitado | ilimitado |
+| Anotações e histórico | locais, perdidos ao limpar o navegador | na conta, em qualquer aparelho | idem |
+| Sincronização entre aparelhos | não | sim | sim |
+| Gravação, transcrição e correção por IA | não | não | sim, quando existir |
+
+A cota de 5 questões é contada no `localStorage` do dispositivo. **É atrito, não é tranca:** limpar os dados do navegador zera a contagem. Isso é aceitável para um nível gratuito e não deve ser confundido com proteção.
+
+A única barreira real do sistema continua sendo a RLS do Supabase, comprovada em 09/09/2026. Guarda de rota no navegador serve para clareza e conforto, nunca para segurança: toda regra que precise ser inviolável mora no banco ou num backend.
+
+#### Rotas públicas
+
+| URL | Página | Se estiver autenticado |
+|---|---|---|
+| `/` | apresentação: o que é, para quem, como funciona | permanece acessível |
+| `/login` | entrar | redireciona para `/hoje` |
+| `/cadastro` | criar conta | redireciona para `/hoje` |
+| `/recuperar-senha` | solicitar link | redireciona para `/hoje` |
+| `/atualizar-senha` | definir nova senha | apenas com token válido |
+| `/sobre` | método, responsável e limites | acessível |
+| `/termos` | termos de uso | acessível |
+| `/privacidade` | política de privacidade | acessível |
+
+#### Treino — aberto, com estado distinto
+
+| URL | Página |
+|---|---|
+| `/treino` | configuração: disciplina, fonte, tempo |
+| `/treino/questao` | questão sorteada, cronômetro, padrão de resposta |
+
+Visitante acessa as duas até esgotar a cota; depois disso, é convidado a criar conta.
+
+#### Rotas privadas
+
+| URL | Página | Se for visitante |
+|---|---|---|
+| `/hoje` | painel: retomar, últimas questões, progresso | `/login?destino=/hoje` |
+| `/historico` | histórico de questões | `/login?destino=/historico` |
+| `/anotacoes` | anotações | `/login?destino=/anotacoes` |
+| `/conta` | dados, senha, sair, excluir conta | `/login?destino=/conta` |
+
+#### As cinco regras que eliminam sobreposição
+
+1. **"Entrar" e "Criar conta" só existem em tela pública.** Nunca no painel ou no treino de quem já entrou.
+2. **Quem está autenticado nunca vê `/login` nem `/cadastro`.**
+3. **Quem não está autenticado nunca vê `/hoje`, `/historico`, `/anotacoes` ou `/conta`** — vai para `/login?destino=…` e, ao entrar, chega onde queria.
+4. **`/atualizar-senha` exige token de recuperação**; sem ele, encaminha para `/recuperar-senha` com explicação.
+5. **Cada rota tem dono único.** Nenhuma tela em dois endereços; nenhuma ação de conta em tela de treino.
+
+#### Decisão técnica: roteador em JavaScript, com History API
+
+Descartada a alternativa de arquivos HTML separados por rota, por um motivo concreto: os dados vivem num `app.js` de 3,3 MB. Páginas separadas exigiriam duplicá-lo em cada uma ou introduzir um empacotador — e o projeto acabou de tornar `public/` a fonte e desligar o build.
+
+O roteador entrega o que o plano exige: URL própria, título próprio, recarregamento e navegação por voltar e avançar. Não entrega HTML pré-renderizado para buscadores, o que é irrelevante enquanto o `robots.txt` bloqueia o site e as rotas privadas precisam de `noindex` de qualquer modo.
+
+#### Pendências abertas por este mapa
+
+- `/` deixa de abrir o simulador. É a mudança mais sensível: altera a primeira impressão do produto;
+- `/oab` e `/tcdf` precisam de destino definido — redirecionar para `/` ou responder 410 — coerente com o nicho decidido;
+- `/defensoria` provavelmente passa a `/treino`;
+- a camada de rotas atual precisa ser **substituída**, não estendida: ela muda de modo clicando num `#modeToggle` que o `v41.css` oculta;
+- `v41.css` esconde OAB, TCDF e discursiva por CSS. Com rotas, passa a haver dois mecanismos para o mesmo fim; escolher um.
 
 ## 3. FLUXOS PRINCIPAIS
 
