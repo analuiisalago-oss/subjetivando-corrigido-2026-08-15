@@ -250,6 +250,25 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Estado:** NÃO INICIADA.
 
+### P2-05 — Concluir o sistema de design
+
+**Estado:** EM EXECUÇÃO. Primeiro passo aplicado em 09/09/2026 (bloco 16 do CSS).
+
+**Diagnóstico medido nos 115 KB de marcação:** a interface é export do Pen.dev — 285 atributos `data-pencil-name`, 289 `div` para 55 `button`, 31 medidas fixas em pixel. O export traz os valores onde o cursor parou, não uma escala. O que produzia a aparência genérica era, sobretudo, `10px` sendo o tamanho de fonte dominante do site (37 usos de 78) somado a `tracking: 1px` sobre esses 10px (0,1em, em 25 usos).
+
+**Feito:** rótulos de 10px para 12px, grau menor de 9px para 11px, entreletras de 0,1em para 0,04em, respiro dos cartões de 40px para 24px (16px em tela estreita), raios de 24/40/62/70 unificados em 16px. Sem alterar marcação, cor, fonte ou script.
+
+**Falta:**
+
+- nomear as 26 cores hexadecimais como variáveis e eliminar os véus redundantes — quatro sobreposições de preto e branco com opacidades diferentes fazendo a mesma coisa;
+- reduzir os 13 valores de espaçamento a uma escala de cinco;
+- definir os componentes (botão primário, secundário, segmento, cartão, campo, modal) em vez de repetir listas de classes;
+- decidir sobre o uso de maiúsculas nos rótulos, que é escolha visual e não foi tocada.
+
+**Restrições que a continuação precisa respeitar:** a auditoria de acessibilidade fechou com zero violações axe-core, anel de foco autoral, landmarks e gestão de foco nos modais — nada disso pode regredir; `build_public.py` falha se o número de camadas `<script>` deixar de ser nove; o `!important` dos blocos 15 e 16 existe porque o Tailwind vem por CDN e entra na cascata depois desta folha.
+
+**Observação de método:** exportar de novo a partir de um editor de canvas reintroduz o mesmo problema — foi o export que causou o colapso de layout no celular corrigido nesta data. Usar ferramenta de design para decidir, não para gerar o código final.
+
 ### P3-11 — Reorganizar o simulador para tela estreita
 
 **Estado:** NÃO INICIADA.  

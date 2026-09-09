@@ -934,3 +934,52 @@
         .\[flex\:1_1_0\] { flex-basis: auto !important; }
         .topbar-keep { height: auto !important; min-height: 64px !important; }
       }
+
+
+      /* ------------------------------------------------------------------ */
+      /* 16. NORMALIZAÇÃO DE VALORES (09/09/2026) — primeiro passo do        */
+      /*     sistema de design. Aprovado por comparação visual em amostra.   */
+      /*                                                                     */
+      /* A marcação veio de export do Pen.dev (285 atributos                 */
+      /* data-pencil-name) e traz os valores onde o cursor parou, não uma    */
+      /* escala. Medido nos 115 KB de marcação, antes desta correção:        */
+      /*   tipografia : 10px usado 37x de 78 — o tamanho DOMINANTE do site   */
+      /*   tracking   : 1px sobre 10px = 0,1em, em 25 usos                   */
+      /*   padding    : 40px em 11 cartões — 80px da largura num celular     */
+      /*   raios      : 16px(23) 24px(19) 9999(13) 40px(3) 70px(1) 62px(1)   */
+      /*                                                                     */
+      /* Este bloco não altera marcação, cor, fonte nem script: só remapeia  */
+      /* as classes de valor absoluto para uma escala pequena e deliberada.  */
+      /* O `!important` é necessário pelo mesmo motivo do bloco 15 — o       */
+      /* Tailwind por CDN entra na cascata depois desta folha.               */
+      /*                                                                     */
+      /* Passo seguinte, ainda não feito: nomear as 26 cores hexadecimais    */
+      /* como variáveis e reduzir os véus redundantes. Ver PENDENCIAS.       */
+      /* ------------------------------------------------------------------ */
+      :root {
+        --t-micro: 12px;     /* rótulos: era 10px */
+        --t-mini: 11px;      /* menor grau: era 9px */
+        --tr-micro: 0.04em;  /* era 1px sobre 10px, ou seja 0,1em */
+        --e-cartao: 24px;    /* respiro interno dos cartões: era 40px */
+        --e-cartao-estreito: 16px;
+        --r-cartao: 16px;    /* um raio só para cartão: eram 24, 40, 62 e 70 */
+      }
+      .text-\[10px\]\/\[15px\], .text-\[10px\] {
+        font-size: var(--t-micro) !important;
+        line-height: 1.45 !important;
+      }
+      .text-\[9px\]\/\[14px\] {
+        font-size: var(--t-mini) !important;
+        line-height: 1.45 !important;
+      }
+      .tracking-\[1px\] { letter-spacing: var(--tr-micro) !important; }
+      .tracking-\[4px\], .tracking-\[3px\], .tracking-\[1\.8px\] { letter-spacing: 0.12em !important; }
+      .p-\[40px\] { padding: var(--e-cartao) !important; }
+      .p-\[48px\] { padding: var(--e-cartao) !important; }
+      .p-\[48px_32px\] { padding: var(--e-cartao) !important; }
+      .rounded-\[24px\], .rounded-\[40px\], .rounded-\[62px\], .rounded-\[70px\] {
+        border-radius: var(--r-cartao) !important;
+      }
+      @media (max-width: 1100px) {
+        :root { --e-cartao: var(--e-cartao-estreito); }
+      }

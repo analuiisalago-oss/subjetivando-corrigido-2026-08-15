@@ -63,6 +63,56 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-09] NORMALIZAÇÃO DE VALORES DO EXPORT — PRIMEIRO PASSO DO SISTEMA DE DESIGN
+
+**Tipo:** design  
+**Ambiente:** desenvolvimento local
+
+### Problema
+
+A interface é export do Pen.dev e carrega os valores onde o cursor parou, não uma escala. Medição nos 115 KB de marcação: `10px` era o tamanho de fonte dominante do site, com 37 usos de 78, acompanhado de `tracking: 1px` — 0,1em sobre 10px — em 25 usos; `p-[40px]` em 11 cartões, que consomem 80px da largura num celular; e raios em 16, 24, 40, 62 e 70px.
+
+### Alteração
+
+Bloco 16 do CSS, sem tocar em marcação, cor, fonte ou script: rótulos 10px→12px, grau menor 9px→11px, entreletras 0,1em→0,04em, respiro dos cartões 40px→24px (16px abaixo de 1100px), raios 24/40/62/70 unificados em 16px. Valores expostos como variáveis em `:root` para servirem de base ao restante do sistema.
+
+### Arquivos ou serviços afetados
+
+- `minha-banca.NOVO_3.html`, bloco de estilo;
+- `public/assets/styles.css`, regenerado pelo build.
+
+`public/index.html` e `public/assets/app.js` não mudaram de tamanho.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Sem impacto identificado. O anel de foco autoral e os contrastes aprovados na auditoria de agosto não foram tocados.
+
+### Testes executados
+
+- `python3 scripts/build_public.py`: PASSOU, alterou apenas `styles.css`;
+- `node --check public/assets/app.js`: PASSOU;
+- `node scripts/audit_project.mjs`: PASSOU, acervo inalterado;
+- `node scripts/teste_consentimento.mjs`: 5 de 5 casos;
+- comparação visual pela autora entre `_AMOSTRA-design.html` e o site publicado, em navegador real: aprovada.
+
+### Itens não testados
+
+- contraste recalculado depois da mudança de tamanho e entreletras;
+- leitura em aparelho real;
+- impressão.
+
+### Reversão
+
+O bloco 16 é contíguo e comentado; removê-lo e rodar o build devolve a aparência anterior.
+
+### Pendências relacionadas
+
+- P2-05 aberta com o que falta do sistema de design: nomear as cores, reduzir a escala de espaçamento, definir componentes e decidir o uso de maiúsculas.
+
 ## [2026-09-09] CORREÇÃO DA CONFIRMAÇÃO DE INCORPORAÇÃO DE DADOS LOCAIS
 
 **Tipo:** correção  

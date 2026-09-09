@@ -989,24 +989,15 @@
 
 
       /* ------------------------------------------------------------------ */
-      /* 16. NORMALIZAÇÃO DE VALORES (09/09/2026) — primeiro passo do        */
-      /*     sistema de design. Aprovado por comparação visual em amostra.   */
+      /* 16. AMOSTRA DE NORMALIZAÇÃO — arquivo _AMOSTRA-design.html          */
       /*                                                                     */
-      /* A marcação veio de export do Pen.dev (285 atributos                 */
-      /* data-pencil-name) e traz os valores onde o cursor parou, não uma    */
-      /* escala. Medido nos 115 KB de marcação, antes desta correção:        */
-      /*   tipografia : 10px usado 37x de 78 — o tamanho DOMINANTE do site   */
-      /*   tracking   : 1px sobre 10px = 0,1em, em 25 usos                   */
-      /*   padding    : 40px em 11 cartões — 80px da largura num celular     */
-      /*   raios      : 16px(23) 24px(19) 9999(13) 40px(3) 70px(1) 62px(1)   */
-      /*                                                                     */
-      /* Este bloco não altera marcação, cor, fonte nem script: só remapeia  */
-      /* as classes de valor absoluto para uma escala pequena e deliberada.  */
-      /* O `!important` é necessário pelo mesmo motivo do bloco 15 — o       */
-      /* Tailwind por CDN entra na cascata depois desta folha.               */
-      /*                                                                     */
-      /* Passo seguinte, ainda não feito: nomear as 26 cores hexadecimais    */
-      /* como variáveis e reduzir os véus redundantes. Ver PENDENCIAS.       */
+      /* Não altera marcação: só remapeia as classes de valor absoluto que    */
+      /* vieram do export do Pen.dev para uma escala pequena e deliberada.    */
+      /* Medições do export original, na marcação (115 KB, sem os dados):     */
+      /*   tipografia  : 10px usado 37x de 78 — o tamanho DOMINANTE do site   */
+      /*   tracking    : 1px sobre 10px = 0,1em, 25 usos                      */
+      /*   padding     : 40px em 11 cartões (80px da largura num celular)     */
+      /*   raios       : 16px(23) 24px(19) 9999(13) 40px(3) 70px(1) 62px(1)   */
       /* ------------------------------------------------------------------ */
       :root {
         --t-micro: 12px;     /* rótulos: era 10px */
@@ -1014,7 +1005,7 @@
         --tr-micro: 0.04em;  /* era 1px sobre 10px, ou seja 0,1em */
         --e-cartao: 24px;    /* respiro interno dos cartões: era 40px */
         --e-cartao-estreito: 16px;
-        --r-cartao: 16px;    /* um raio só para cartão: eram 24, 40, 62 e 70 */
+        --r-cartao: 16px;    /* um raio só para cartão: era 24, 40, 62 e 70 */
       }
       .text-\[10px\]\/\[15px\], .text-\[10px\] {
         font-size: var(--t-micro) !important;
