@@ -18,3 +18,6 @@ private/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Cópias de trabalho para comparação visual — nunca versionar
+_AMOSTRA*.html
