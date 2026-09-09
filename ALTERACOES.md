@@ -63,6 +63,70 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-09] CONTROLE DE VERSÃO, PUBLICAÇÃO CONTÍNUA E COMPROVAÇÃO DA RLS
+
+**Tipo:** configuração, segurança e documentação  
+**Responsável:** Ana Luísa, com assistência de IA  
+**Versão ou commit:** `3152d52`, etiqueta `publicado-2026-08-15`  
+**Ambiente:** desenvolvimento local, GitHub, Netlify e Supabase de produção
+
+### Problema
+
+O que estava publicado não estava sob controle de versão. O único repositório Git existente ficava em `_versoes_antigas/backup-2026-08-15/`, tinha um único commit, nenhum remoto e guardava o estado anterior às correções de 15/08/2026. A publicação era manual, por arrastar pasta, o que impedia saber com certeza qual versão estava no ar. A RLS do Supabase permanecia não comprovada.
+
+### Alteração
+
+- criado repositório Git na pasta de trabalho, com commit inicial de 123 arquivos e etiqueta `publicado-2026-08-15`;
+- `.gitignore` reforçado por acréscimo, com `node_modules/`, `dist/`, `*.zip`, `.DS_Store`, `Thumbs.db` e `desktop.ini`; nada foi removido;
+- `core.autocrlf` e `core.filemode` definidos como `false` no repositório, para o Git no Windows não acusar alteração falsa nos 123 arquivos;
+- repositório publicado como **privado** no GitHub;
+- Netlify ligado ao repositório, com publicação contínua a partir da branch `main`, comando de build `python3 scripts/build_public.py` e diretório publicado `public`;
+- pendências atualizadas: P0-01 e P1-02 concluídas, P0-02 com avanço registrado, P1-13 aberta.
+
+### Arquivos ou serviços afetados
+
+- `.gitignore`;
+- `PENDENCIAS.md`;
+- `ALTERACOES.md`;
+- configuração do projeto no Netlify;
+- repositório novo no GitHub.
+
+Nenhum arquivo da aplicação foi alterado.
+
+### Banco de dados
+
+Nenhuma alteração. Apenas consultas de leitura.
+
+### Segurança e privacidade
+
+Confirmado que o isolamento entre usuários funciona. Varredura de segredos repetida antes do commit, sem chave privada. `private/` fora do versionamento e repositório privado.
+
+### Testes executados
+
+- `build_public.py` em cópia isolada reproduz `public/` com SHA-256 idêntico ao publicado: PASSOU;
+- `node --check public/assets/app.js`: PASSOU;
+- `node scripts/audit_project.mjs`: PASSOU, com o aviso conhecido dos marcadores editoriais;
+- contagem do acervo publicado: 750 questões DPE (718 com resposta), 55 OAB, 55 temas TCDF, 6 provas, 37 discursivas: PASSOU;
+- hashes dos arquivos servidos em produção conferidos contra os locais: `app.js` e `styles.css` idênticos; `index.html` difere apenas por comentário injetado pelo próprio Netlify: PASSOU;
+- RLS: leitura anônima retorna 0 linhas nas seis tabelas e gravação anônima é recusada pela política: PASSOU;
+- chamada anônima de `lidar_novo_usuario()` por RPC: recusada com `PGRST202`: PASSOU.
+
+### Itens não testados
+
+- cadastro, confirmação de e-mail, login e recuperação de senha com endereço real;
+- sincronização entre dois dispositivos e entre dois usuários autenticados;
+- layout em celular real;
+- backup e restauração do Supabase.
+
+### Reversão
+
+Apagar a pasta `.git` devolve o projeto ao estado anterior. No Netlify, desligar a publicação contínua devolve o modo manual. O ZIP `subjetivando-corrigido-2026-08-15.zip` permanece como cópia externa.
+
+### Pendências relacionadas
+
+- P0-01 e P1-02 concluídas; P0-02 com avanço; P1-13 aberta; P0-03, P1-05 e P1-03 seguem abertas.
+
+
 ## [2026-08-15] CONSOLIDAÇÃO SEGURA DA VERSÃO DE BETA
 
 **Tipo:** correção, segurança, design, configuração e documentação  

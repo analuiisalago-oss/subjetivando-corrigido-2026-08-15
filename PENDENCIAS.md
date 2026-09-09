@@ -25,11 +25,18 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 ### P0-01 — Auditar RLS do Supabase
 
-**Estado:** EM ANÁLISE  
-**Objetivo:** garantir que cada usuário só acesse seus próprios dados.  
-**Conclusão exige:** políticas documentadas e testes com dois usuários em todas as tabelas.
+**Estado:** CONCLUÍDA em 09/09/2026.  
+**Objetivo:** garantir que cada usuário só acesse seus próprios dados.
 
-**Avanço:** criada consulta somente leitura em `supabase/auditoria_rls.sql`. Execução e testes no painel ainda pendentes.
+**Evidência documental:** `auditoria_rls.sql` executado no SQL Editor. RLS ativada (`relrowsecurity = true`) nas seis tabelas `anotacoes`, `perfis`, `questoes_customizadas`, `questoes_usadas`, `respostas` e `sessoes`. Existem 20 políticas, todas comparando `auth.uid()` com a coluna de proprietário (`usuario_id`, ou `id` em `perfis`).
+
+**Evidência prática:** sessão anônima no site publicado, usando o cliente Supabase da própria aplicação, retornou 0 linhas nas seis tabelas e teve a gravação recusada com `new row violates row-level security policy`. O isolamento foi comprovado contra a API pública, não apenas inferido das políticas.
+
+**Observações que não bloqueiam:**
+
+- as políticas estão atribuídas ao papel `public`, que inclui `anon`. Isso é seguro porque `auth.uid()` é nulo em sessão anônima e a comparação nunca resulta verdadeira. Restringir ao papel `authenticated` é endurecimento opcional, não correção;
+- `perfis`, `questoes_customizadas`, `questoes_usadas` e `sessoes` não possuem política de DELETE, logo nenhuma exclusão é permitida nelas. Conferir se apagar tema personalizado e reiniciar questões usadas funcionam por atualização da linha — ver P1-13;
+- o alerta do linter sobre `lidar_novo_usuario()` não é explorável pela API pública: a chamada anônima por RPC retorna `PGRST202`, porque o PostgREST não expõe funções de gatilho. Executar `corrigir_funcao_lidar_novo_usuario.sql` passa a ser endurecimento opcional.
 
 ### P0-02 — Inventariar e proteger segredos
 
@@ -37,7 +44,7 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 **Objetivo:** confirmar que nenhuma chave secreta foi incluída em HTML, GitHub ou arquivos compartilhados.  
 **Conclusão exige:** inventário, rotação de segredos eventualmente expostos e variáveis de ambiente configuradas.
 
-**Avanço:** o backup não contém segredo privado identificável. Ainda falta verificar histórico de repositório, Netlify e variáveis externas.
+**Avanço:** o backup não contém segredo privado identificável. Varredura repetida em 09/09/2026 antes do primeiro commit: as únicas ocorrências de `ANTHROPIC_API_KEY`, `service_role` e `sb_secret` são nomes de variáveis em documentação e scripts, sem valor real. O repositório foi criado como privado e `private/` ficou fora do versionamento. Ainda falta verificar as variáveis de ambiente configuradas no Netlify e no Supabase.
 
 ### P0-03 — Confirmar backups do Supabase
 
@@ -52,7 +59,7 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 ### P1-02 — Corrigir e testar `_redirects`
 
-**Estado:** EM EXECUÇÃO. Arquivo corrigido e incluída rota de recuperação e regra geral; falta testar no Netlify.  
+**Estado:** CONCLUÍDA em 09/09/2026. O painel do Netlify registra as 8 regras processadas sem erro nos deploys de 15/08/2026 e de 09/09/2026.  
 **Rotas:** `/`, `/defensoria`, `/oab`, `/tcdf` e regra geral da aplicação.
 
 ### P1-03 — Corrigir responsividade
@@ -96,6 +103,12 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Estado:** EM EXECUÇÃO. Auditoria automatizada anterior aprovada; faltam teste responsivo e leitor de tela real.  
 **Inclui:** teclado, leitor de tela, modais, redução de movimento e textos pequenos.
+
+### P1-13 — Conferir exclusão sincronizada de temas e reinício de questões usadas
+
+**Estado:** NÃO INICIADA.  
+**Problema:** as tabelas `questoes_customizadas`, `questoes_usadas`, `sessoes` e `perfis` não têm política de DELETE, então nenhuma linha pode ser apagada por usuário. Se a aplicação depender de DELETE para apagar um tema personalizado ou reiniciar questões usadas, a operação falha silenciosamente na nuvem e diverge do estado local.  
+**Conclusão exige:** verificar no código se essas operações usam UPDATE da linha inteira; se usarem DELETE, criar a política correspondente ou alterar a operação.
 
 ### P1-12 — Consolidar o acervo revisado na interface atual
 
@@ -222,6 +235,10 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 Nenhum item P4 deve ser implementado enquanto houver pendência P0 ou P1 relevante.
 
 ## 7. CONCLUÍDAS
+
+### 2026-09-09 — Controle de versão, publicação contínua e comprovação da RLS
+
+Projeto colocado sob Git com commit inicial e etiqueta `publicado-2026-08-15`, publicado em repositório privado no GitHub e ligado ao Netlify por publicação contínua a partir da branch `main`. O deploy manual por arrastar pasta foi encerrado. RLS auditada no painel e comprovada na prática contra a API pública. Fecham-se P0-01 e P1-02; abre-se P1-13.
 
 ### 2026-08-15 — Criação da documentação permanente
 
