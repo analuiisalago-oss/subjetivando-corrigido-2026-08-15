@@ -1,0 +1,2057 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Treine provas orais e discursivas jurídicas com sorteio de questões, cronômetro, padrões de resposta e acompanhamento do progresso." />
+    <meta name="theme-color" content="#121614" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Subjetivando</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='9' cy='13.5' r='2.5' fill='%2338a372' opacity='.45'/%3E%3Ccircle cx='16' cy='10.6' r='3.1' fill='%2338a372'/%3E%3Ccircle cx='23' cy='13.5' r='2.5' fill='%2338a372' opacity='.45'/%3E%3Crect x='4.5' y='19' width='23' height='3.4' rx='1.7' fill='%2338a372' opacity='.85'/%3E%3Crect x='8' y='24.6' width='16' height='2.2' rx='1.1' fill='%2338a372' opacity='.28'/%3E%3C/svg%3E" />
+    <script>
+      /* Configuração do export Pen.dev + a paleta "botanic" do dashboard.
+         As cores viram variáveis CSS para que as MESMAS classes do design
+         (bg-botanic-surface, text-botanic-sage/70, ...) sirvam aos dois temas.
+         Os valores do tema escuro são exatamente os do arquivo do dashboard. */
+      tailwind = {
+        config: {
+          corePlugins: { preflight: false },
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                serif: ['Lora', 'serif'],
+                brand: ['"Plus Jakarta Sans"', 'sans-serif']
+              },
+              colors: {
+                botanic: {
+                  bg:          'rgb(var(--bt-bg) / <alpha-value>)',
+                  surface:     'rgb(var(--bt-surface) / <alpha-value>)',
+                  text:        'rgb(var(--bt-text) / <alpha-value>)',
+                  primary:     'rgb(var(--bt-primary) / <alpha-value>)',
+                  primaryHigh: 'rgb(var(--bt-primary-high) / <alpha-value>)',
+                  sage:        'rgb(var(--bt-sage) / <alpha-value>)',
+                  alert:       'rgb(var(--bt-alert) / <alpha-value>)',
+                  brand:       'rgb(var(--bt-brand) / <alpha-value>)'
+                }
+              }
+            }
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter%3Awght%40100..900&family=Lora%3Awght%40400..700&family=Plus+Jakarta+Sans%3Awght%40200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <h1 class="sr-only">Subjetivando — simulador de banca para provas orais e discursivas</h1>
+    <div
+      data-pencil-name="Html → Body"
+      class="box-border w-full min-h-[100vh] bg-[#ffffffff] [background-image:linear-gradient(#121614ff,_#121614ff)] bg-no-repeat bg-[length:100%_100%] relative flex flex-col"
+    >
+      <header aria-label="Barra superior"
+        data-pencil-name="Header - TOPBAR"
+        class="topbar-keep box-border w-full h-[64px] relative flex flex-row gap-[797.49px] p-[0px_31.99px_0px_32px] justify-between items-center bg-[#3d2a35ff] [z-index:5]"
+      >
+        <div
+          data-pencil-name="Header - TOPBAR:shadow"
+          class="box-border w-[1440px] h-[64px] [box-shadow:0px_25px_43.75px_-12px_#00000040] absolute left-0 top-0 bg-[#ffffff01] [z-index:0]"
+        ></div>
+        <div
+          data-pencil-name="Container"
+          class="box-border w-fit shrink-0 h-fit flex flex-row gap-[24px] justify-start items-center relative [z-index:1]"
+        >
+          <button
+            type="button"
+            id="btnHome"
+            title="Voltar à tela inicial"
+            aria-label="Subjetivando — voltar à tela inicial"
+            data-pencil-name="Container"
+            class="box-border w-fit shrink-0 h-fit flex flex-row gap-[12px] justify-start items-center"
+          >
+            <div
+              data-pencil-name="Background"
+              class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[10.25px_6px_11.75px_6px] justify-start items-start bg-[#38a372ff] rounded-[8px]"
+            >
+              <div data-pencil-name="Img" class="box-border w-[22.5px] h-[18px] shrink-0 relative">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAkCAYAAAAdFbNSAAAAdElEQVR4AezS0QnAMAwD0dL9h84Gh0AiELj+yhbmNf/34OfRt36a0kqDgM8DcKaR0lNOKFMacKaR0lNOKFMacKaR0lNOKFMacKaR0lNOKLsvDcekkUenUu2c0q1guq90KtXOKd0KpvtKp1LtnNKtYLr/pPQBAAD//3EBFswAAAAGSURBVAMAx2UASRzkTS4AAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+              </div>
+            </div>
+            <div
+              data-pencil-name="Heading 1"
+              class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+            >
+              <div
+                data-pencil-name="Text"
+                class="text-[24px]/[32px] box-border text-[#ffffffff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-bold tracking-[-0.6px] text-left [white-space:nowrap]"
+              >
+                Subjetivando
+              </div>
+            </div>
+          </button>
+          <div
+            data-pencil-name="Vertical Divider"
+            class="box-border w-[1px] shrink-0 h-[24px] bg-[#ffffff1a]"
+          ></div>
+          <button
+            type="button"
+            id="btnInicio"
+            data-pencil-name="Link"
+            class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+          >
+            <div
+              data-pencil-name="Text"
+              class="text-[10px]/[15px] box-border text-[#ffffff80] font-[Inter,system-ui,sans-serif] font-normal tracking-[4px] text-left [white-space:nowrap]"
+            >
+              VOLTAR AO INÍCIO
+            </div>
+          </button>
+          <div
+            data-pencil-name="Vertical Divider"
+            id="tbDivider2"
+            class="box-border w-[1px] shrink-0 h-[24px] bg-[#ffffff1a]"
+          ></div>
+          <div
+            data-pencil-name="Link"
+            id="tbBadgeWrap"
+            class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+          >
+            <div
+              data-pencil-name="Text"
+              id="tbBadge"
+              class="text-[10px]/[15px] box-border text-[#ffffff80] font-[Inter,system-ui,sans-serif] font-normal tracking-[4px] text-left [white-space:nowrap]"
+            ></div>
+          </div>
+          <div
+            data-pencil-name="Link"
+            id="tbPainel"
+            class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+          >
+            <div
+              data-pencil-name="Text"
+              class="text-[10px]/[15px] box-border text-[#ffffff80] font-[Inter,system-ui,sans-serif] font-normal tracking-[4px] text-left [white-space:nowrap]"
+            >
+              PAINEL DO ALUNO
+            </div>
+          </div>
+        </div>
+        <div
+          data-pencil-name="Container"
+          class="box-border w-fit shrink-0 h-fit flex flex-row gap-[24px] justify-start items-center relative [z-index:2]"
+        >
+          <span id="syncStatus" class="sync-status" data-state="local" role="status" aria-live="polite">Somente neste dispositivo</span>
+          <span id="userBadge" style="display:none;" class="conta-badge"></span>
+          <button type="button" id="btnLogout" style="display:none;" class="conta-acao" title="Sair da conta">
+            <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Sair
+          </button>
+          <button
+            type="button"
+            id="btnConta"
+            title="Entrar ou criar conta"
+            aria-label="Entrar ou criar conta"
+            aria-haspopup="dialog"
+            class="conta-botao"
+          ><i class="fa-solid fa-circle-user" aria-hidden="true"></i></button>
+          <button
+            type="button"
+            id="btnMenu"
+            title="Menu"
+            aria-label="Menu"
+            data-pencil-name="Button"
+            class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[3px_0px_4px_0px] justify-center items-center bg-transparent border-0 cursor-pointer"
+          >
+            <div
+              data-pencil-name="Container"
+              class="box-border w-fit h-fit shrink-0 flex flex-row gap-0 p-[1.25px_0px_1.75px_0px] justify-start items-start"
+            >
+              <div data-pencil-name="Img" class="box-border w-[18px] shrink-0 h-[18px] relative">
+                <svg viewBox="0 0 18 18" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" class="w-full h-full block" style="color:#ffffff"><line x1="2" y1="4.5" x2="16" y2="4.5"/><line x1="2" y1="9" x2="16" y2="9"/><line x1="2" y1="13.5" x2="16" y2="13.5"/></svg>
+              </div>
+            </div>
+          </button>
+          <div
+            data-pencil-name="Container"
+            class="box-border w-fit shrink-0 h-fit flex flex-row gap-[15.99px] justify-start items-center"
+          >
+            <div
+              data-pencil-name="Container"
+              class="box-border w-[88.38px] shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+            >
+              <div
+                data-pencil-name="Container"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-end"
+              >
+                <div
+                  data-pencil-name="Text"
+                  id="usuarioNome"
+                  class="text-[10px]/[15px] box-border text-[#ffffffe5] font-[Inter,system-ui,sans-serif] font-semibold text-right [white-space:nowrap]"
+                >
+                  Estudante
+                </div>
+              </div>
+              <div
+                data-pencil-name="Container"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-end"
+              >
+                <div
+                  data-pencil-name="Text"
+                  id="usuarioPlano"
+                  class="text-[9px]/[14px] box-border text-[#ffffff80] font-[Inter,system-ui,sans-serif] font-normal tracking-[-0.45px] text-right [white-space:nowrap]"
+                >
+                  CONTA LOCAL
+                </div>
+              </div>
+            </div>
+            <div
+              data-pencil-name="Profile"
+              class="box-border w-[36px] shrink-0 h-[36px] bg-[url('')] bg-no-repeat bg-[length:100%_100%] [border:2px_solid_#ffffff1a] rounded-[9999px] overflow-hidden"
+            ></div>
+          </div>
+        </div>
+      </header>
+      <section
+        id="homeScreen"
+        aria-label="Tela inicial"
+        class="flex-grow max-w-7xl mx-auto w-full p-8 md:p-12 lg:p-16"
+      >
+        <!-- Greeting Section -->
+        <section id="greeting" class="mb-16">
+          <h2 class="font-brand text-5xl md:text-6xl text-botanic-text font-semibold mb-4">Olá, <span id="saudacaoNome">Estudante</span>.</h2>
+          <p class="text-xl text-botanic-sage/80 font-normal tracking-tight font-sans">Vamos treinar hoje? Escolha por onde começar.</p>
+        </section>
+
+        <!-- Action Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Iniciar Treino -->
+          <button type="button" id="cardTreino" class="text-left group bg-botanic-surface p-8 rounded-3xl border border-botanic-sage/10 card-hover flex flex-col justify-between h-[320px] shadow-lg">
+            <div>
+              <div class="w-14 h-14 bg-botanic-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-botanic-primary/20 transition-colors">
+                <i class="fa-solid fa-play text-2xl text-botanic-primary" aria-hidden="true"></i>
+              </div>
+              <h3 class="font-brand text-3xl text-botanic-text font-semibold mb-3">Iniciar Treino</h3>
+              <p class="text-sm text-botanic-sage/70 leading-relaxed font-sans">Configure seu simulador, escolha os temas e comece sua prática personalizada.</p>
+            </div>
+            <div class="flex items-center gap-2 text-botanic-primaryHigh font-semibold text-[10px] uppercase tracking-widest mt-6 font-sans">
+              Acessar Configuração <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+            </div>
+          </button>
+
+          <!-- Minhas Anotações -->
+          <button type="button" id="cardAnotacoes" class="text-left group bg-botanic-surface p-8 rounded-3xl border border-botanic-sage/10 card-hover flex flex-col justify-between h-[320px] shadow-lg">
+            <div>
+              <div class="w-14 h-14 bg-botanic-sage/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-botanic-sage/20 transition-colors">
+                <i class="fa-solid fa-note-sticky text-2xl text-botanic-sage" aria-hidden="true"></i>
+              </div>
+              <h3 class="font-brand text-3xl text-botanic-text font-semibold mb-3">Minhas Anotações</h3>
+              <p class="text-sm text-botanic-sage/70 leading-relaxed font-sans">Gerencie suas notas e revisões de questões treinadas anteriormente.</p>
+            </div>
+            <div class="flex items-center gap-2 text-botanic-sage font-semibold text-[10px] uppercase tracking-widest mt-6 font-sans">
+              <span id="resumoAnotacoes">Abrir Central</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+            </div>
+          </button>
+
+          <!-- Histórico -->
+          <button type="button" id="cardHistorico" class="text-left group bg-botanic-surface p-8 rounded-3xl border border-botanic-sage/10 card-hover flex flex-col justify-between h-[320px] shadow-lg">
+            <div>
+              <div class="w-14 h-14 bg-botanic-text/5 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-botanic-text/10 transition-colors">
+                <i class="fa-solid fa-clock-rotate-left text-2xl text-botanic-text/60" aria-hidden="true"></i>
+              </div>
+              <h3 class="font-brand text-3xl text-botanic-text font-semibold mb-3">Histórico de Questões</h3>
+              <p class="text-sm text-botanic-sage/70 leading-relaxed font-sans">Acompanhe seu progresso global e revisite simulados finalizados.</p>
+            </div>
+            <div class="flex items-center gap-2 text-botanic-text/50 font-semibold text-[10px] uppercase tracking-widest mt-6 font-sans">
+              <span id="resumoHistorico">Ver Status Global</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+            </div>
+          </button>
+        </div>
+
+        <!-- Quick Stats / Secondary Area -->
+        <section class="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-botanic-surface/50 p-8 rounded-3xl border border-botanic-sage/5">
+            <h4 class="text-[10px] uppercase tracking-[0.2em] text-botanic-sage font-bold mb-6">Última Atividade</h4>
+            <div id="ultimaAtividade" class="flex items-center justify-between p-4 bg-botanic-bg/50 rounded-2xl border border-botanic-sage/5">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-botanic-primary/10 flex items-center justify-center text-botanic-primary">
+                  <i class="fa-solid fa-scale-balanced text-sm" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <p id="ultAtivTitulo" class="text-sm font-medium text-botanic-text">Nenhuma questão sorteada ainda</p>
+                  <p id="ultAtivMeta" class="text-[10px] text-botanic-sage">Comece por “Iniciar Treino”</p>
+                </div>
+              </div>
+              <span id="ultAtivEstado" class="text-[10px] font-bold text-botanic-primary bg-botanic-primary/10 px-3 py-1 rounded-full uppercase">—</span>
+            </div>
+          </div>
+
+          <div class="bg-botanic-surface/50 p-8 rounded-3xl border border-botanic-sage/5">
+            <h4 class="text-[10px] uppercase tracking-[0.2em] text-botanic-sage font-bold mb-6">Metas de Hoje</h4>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-botanic-sage">Questões Discursivas</span>
+                <span id="metaContagem" class="text-xs font-bold text-botanic-text">0/5</span>
+              </div>
+              <div class="w-full h-1.5 bg-botanic-bg rounded-full overflow-hidden" role="progressbar" aria-labelledby="metaRotulo" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="metaBarraWrap">
+                <div id="metaBarra" class="bg-botanic-primary w-[0%] h-full rounded-full"></div>
+              </div>
+              <span id="metaRotulo" class="sr-only">Questões respondidas hoje, meta de 5</span>
+            </div>
+          </div>
+        </section>
+      </section>
+      <div
+        data-pencil-name="Container"
+        class="page idle box-border w-full h-fit relative flex flex-row gap-[32px] p-[32px] justify-start items-start [z-index:1]"
+      >
+        <aside aria-label="Parâmetros do treino"
+          data-pencil-name="Aside - PAINEL DE CONTROLE (Sticky Sidebar)"
+          class="app-aside box-border w-[300px] shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+        >
+          <div
+            data-pencil-name="Background+Border"
+            class="box-border w-full h-fit shrink-0 flex flex-col gap-[32px] p-[32px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+          >
+            <div
+              data-pencil-name="Overlay+Shadow"
+              class="box-border w-[300px] h-[481px] [box-shadow:0px_8px_8.75px_-6px_#0000001a,_0px_20px_21.875px_-5px_#0000001a] absolute left-0 top-0 bg-[#ffffff01] rounded-[24px] [z-index:0]"
+            ></div>
+            <div
+              data-pencil-name="Heading 2"
+              class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative [z-index:1]"
+            >
+              <h2
+                data-pencil-name="Configuração"
+                class="text-[24px]/[32px] box-border w-full text-[#e2e8e4ff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-semibold text-left"
+              >
+                Configuração
+              </h2>
+            </div>
+            <div
+              data-pencil-name="Container"
+              class="box-border w-full h-fit shrink-0 flex flex-col gap-[40px] justify-start items-start relative [z-index:2]"
+            >
+              <div
+                data-pencil-name="Modo"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] justify-start items-start"
+              >
+                <div
+                  data-pencil-name="Label"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+                >
+                  <div
+                    data-pencil-name="MODO DE TREINO"
+                    class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                  >
+                    MODO DE TREINO
+                  </div>
+                </div>
+                <div
+                  data-pencil-name="Container"
+                  id="modeToggle"
+                  role="group"
+                  aria-label="Modo de treino"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] justify-start items-start"
+                >
+                  <button
+                    type="button"
+                    aria-pressed="true"
+                    data-mode="oral"
+                    data-pencil-name="Button"
+                    class="seg-btn active box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Treino DPEs
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed="false"
+                    data-mode="oab"
+                    data-pencil-name="Button"
+                    class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Treino OAB
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed="false"
+                    data-mode="tcdf"
+                    data-pencil-name="Button"
+                    class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Treino TCDF
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  data-pencil-name="Descrição do modo"
+                  id="modeDesc"
+                  aria-live="polite"
+                  class="text-[12px]/[16px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                ></div>
+              </div>
+              <div
+                data-pencil-name="Submodo DPE"
+                id="dpeSub"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] justify-start items-start"
+              >
+                <div
+                  data-pencil-name="Label"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+                >
+                  <div
+                    data-pencil-name="PROVA"
+                    class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                  >
+                    PROVA
+                  </div>
+                </div>
+                <div
+                  data-pencil-name="Container"
+                  id="dpeProva"
+                  role="group"
+                  aria-label="Tipo de prova"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] justify-start items-start"
+                >
+                  <button
+                    type="button"
+                    aria-pressed="true"
+                    data-sub="oral"
+                    data-pencil-name="Button"
+                    class="seg-btn active box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Prova oral
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed="false"
+                    data-sub="discursiva"
+                    data-pencil-name="Button"
+                    class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Prova discursiva
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  data-pencil-name="Label"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+                >
+                  <div
+                    data-pencil-name="FONTE"
+                    class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                  >
+                    FONTE
+                  </div>
+                </div>
+                <div
+                  data-pencil-name="Container"
+                  id="dpeFonte"
+                  role="group"
+                  aria-label="Fonte dos temas"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] justify-start items-start"
+                >
+                  <button
+                    type="button"
+                    aria-pressed="true"
+                    data-fonte="edital"
+                    data-pencil-name="Button"
+                    class="seg-btn active box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Temas do edital
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed="false"
+                    data-fonte="questoes"
+                    data-pencil-name="Button"
+                    class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Questões passadas
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Submodo TCDF"
+                id="tcdfSub"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] justify-start items-start"
+              >
+                <div
+                  data-pencil-name="Label"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+                >
+                  <div
+                    data-pencil-name="FORMATO"
+                    class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                  >
+                    FORMATO
+                  </div>
+                </div>
+                <div
+                  data-pencil-name="Container"
+                  id="tcdfToggle"
+                  role="group"
+                  aria-label="Formato do treino TCDF"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] justify-start items-start"
+                >
+                  <button
+                    type="button"
+                    aria-pressed="true"
+                    data-tsub="revisao"
+                    data-pencil-name="Button"
+                    class="seg-btn active box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Revisão livre
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed="false"
+                    data-tsub="discursiva"
+                    data-pencil-name="Button"
+                    class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Discursiva
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed="false"
+                    data-tsub="prova_disc"
+                    data-pencil-name="Button"
+                    class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Provas anteriores
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed="false"
+                    data-tsub="prova_peca"
+                    data-pencil-name="Button"
+                    class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-center"
+                    >
+                      <div
+                        data-pencil-name="Text"
+                        class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      >
+                        Peça técnica
+                      </div>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[1.5px_0px_2.5px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-on box-border w-[12px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAANUlEQVR4AezSsQkAQAgEwef7L9oSNjIQxvhAGPa/5fMggREhSoEcqAhRCuRARYhSIAf3KxoAAAD//44aHwAAAAAGSURBVAMA7HAAMS/k/YQAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                      </div>
+                      <div
+                        data-pencil-name="Img"
+                        class="seg-ico-off box-border w-[9px] h-[12px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAALklEQVR4AezSoQ0AAAwCwab7D80Ib1Dk0QRx4a8UhxhSI41YgBv+SCMW4MbwjwIAAP//Hbtz+gAAAAZJREFUAwCx8AAx97YxewAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Assunto"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] justify-start items-start"
+              >
+                <div
+                  data-pencil-name="Label"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+                >
+                  <label
+                    for="categorySelect"
+                    data-pencil-name="ASSUNTO"
+                    class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                  >
+                    ASSUNTO
+                  </label>
+                </div>
+                <div
+                  data-pencil-name="Container"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative"
+                >
+                  <div
+                    data-pencil-name="Options"
+                    class="control-frame box-border w-full h-fit shrink-0 flex flex-row gap-0 p-[16px] justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[16px] relative [z-index:0]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border [flex:1_1_0] h-fit flex flex-col gap-0 justify-start items-start"
+                    >
+                      <select
+                        id="categorySelect"
+                        data-pencil-name="Aleatório"
+                        class="text-[12px]/[16px] box-border w-full text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                      ></select>
+                    </div>
+                  </div>
+                  <div
+                    data-pencil-name="Container"
+                    class="box-border w-fit h-[15px] absolute right-[16px] top-[17.5px] flex flex-col gap-0 p-[2.25px_0px_2.75px_0px] justify-start items-start [z-index:1] pointer-events-none"
+                  >
+                    <div
+                      data-pencil-name="Img"
+                      class="box-border w-[10px] h-[10px] shrink-0 relative"
+                    >
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABaklEQVR4AeyRTUrDUBSF77W1uJmuQXAURB2J+EsLFekO7A6SuoI0gkJbipMOqpjUmZtwO7me86TUhJhUrLOWd8J59+fj9r4tWfNvA/z7Qv9nh0EcHvrJ4D1IotPfzhjMB+fsvXuLDtjrJjTVaxXZFbFJP44umFhFQRJeismYvWmaXrHHAVXtgRdITW0UzKMT+NLjJ+GZiA5FBDzBLDLGVxyw53VnYtZCwCCFn/ST6Ai+8PTj8FhFR0gqZKhv9fa7L/BfQBoEhki04QmtoWpaBGUMK3pCXQ1CmbVdLy48bkIayiXMFtA6qqf+PPSYo+gZgy+EIb6ckBcqD8VSZ358v0cYPWrqELjZyRBzJzOhi+BDKB6qA8vTUE1fAXvGpQGJqnVYQ59XIZBFt173ETtdPNQOYtsQJ2u5HC5F50cgi90Uy50SlnkA1uRVCmSxg6o28T+bzjNYokoge3vezQdFX6WVgFWQ7/m1Az8BAAD//33QAqkAAAAGSURBVAMAOxKXKfJY52EAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Tempo"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] justify-start items-start"
+              >
+                <div
+                  data-pencil-name="Label"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+                >
+                  <label
+                    for="timeSlider"
+                    data-pencil-name="TEMPO"
+                    id="timeLabel"
+                    class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                  >
+                    TEMPO
+                  </label>
+                </div>
+                <div
+                  data-pencil-name="Container"
+                  id="timeToggle"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative"
+                ></div>
+              </div>
+              <div
+                data-pencil-name="Container"
+                id="idleDraw"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+              >
+                <button
+                  type="button"
+                  id="btnDrawIdle"
+                  data-pencil-name="Button - Sortear"
+                  class="box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px_0px] justify-center items-center bg-[#38a372ff] rounded-[16px] relative"
+                >
+                  <div
+                    data-pencil-name="Button - Sortear:shadow"
+                    class="box-border w-[234px] h-[47px] [box-shadow:0px_4px_5.25px_-4px_#0000001a,_0px_10px_13.125px_-3px_#0000001a] absolute left-0 top-0 bg-[#ffffff01] rounded-[16px] [z-index:0]"
+                  ></div>
+                  <div
+                    data-pencil-name="Container"
+                    class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[2.25px_0px_2.75px_0px] justify-start items-start relative [z-index:1]"
+                  >
+                    <div
+                      data-pencil-name="Img"
+                      class="box-border w-[10px] h-[10px] shrink-0 relative"
+                    >
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAALklEQVR4AezSIRIAAAgCQcf/P9pOPIlnM0DYYad8Fv5BNdQQCDgbgBYRDQMEvAcAAP//GaAxmgAAAAZJREFUAwCLOAAp5PB2EAAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                    </div>
+                  </div>
+                  <div
+                    data-pencil-name="Text"
+                    class="text-[10px]/[15px] box-border text-[#121614ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-center [white-space:nowrap] relative [z-index:2]"
+                  >
+                    NOVO TEMA
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <main id="conteudo" aria-label="Área de execução"
+          data-pencil-name="Main - REA DE EXECUÇÃO"
+          class="app-main box-border [flex:1_1_0] h-fit flex flex-col gap-[32px] justify-start items-start"
+        >
+          <div
+            data-pencil-name="Faixa Superior da Questão"
+            class="box-border w-full h-fit shrink-0 [box-shadow:0px_1px_1.75px_0px_#0000000d] flex flex-row gap-[446.26px] p-[24px] justify-between items-center bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px]"
+          >
+            <div
+              data-pencil-name="Container"
+              class="box-border w-fit shrink-0 h-fit flex flex-row gap-[16px] justify-start items-center"
+            >
+              <div
+                data-pencil-name="Overlay+Border"
+                class="box-border w-fit shrink-0 h-fit flex flex-row gap-0 p-[6px_12px] justify-start items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px]"
+              >
+                <div
+                  data-pencil-name="Container"
+                  class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+                >
+                  <div
+                    data-pencil-name="Text"
+                    class="text-[10px]/[15px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
+                  >
+                    QUESTÃO ID: #4402
+                  </div>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Vertical Divider"
+                class="box-border w-[1px] shrink-0 h-[16px] bg-[#88b79933]"
+              ></div>
+              <div
+                data-pencil-name="Container"
+                class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+              >
+                <div
+                  data-pencil-name="Text"
+                  id="stateLabel"
+                  aria-live="polite"
+                  class="text-[10px]/[15px] box-border text-[#4ade80ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                >
+                  PRONTO
+                </div>
+              </div>
+            </div>
+            <div
+              data-pencil-name="Container"
+              class="box-border w-fit shrink-0 h-fit flex flex-row gap-[16px] justify-start items-center"
+            >
+              <div
+                data-pencil-name="Status Seletor Interativo"
+                class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start relative"
+              >
+                <button
+                  type="button"
+                  id="btnRespondida"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-pencil-name="Button"
+                  class="status-pill box-border w-fit h-fit shrink-0 flex flex-row gap-[8px] p-[8px_16px] justify-start items-center bg-[#38a3721a] [border:1px_solid_#38a3724d] rounded-[9999px]"
+                >
+                  <div
+                    data-pencil-name="Container"
+                    class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[2.25px_0px_2.75px_0px] justify-start items-start"
+                  >
+                    <div
+                      data-pencil-name="Img"
+                      class="box-border w-[10px] h-[10px] shrink-0 relative"
+                    >
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAALklEQVR4AezSIRIAAAgCQcf/P9pOPIlnM0DYYad8Fv5BNdQQCDgbgBYRDQMEvAcAAP//GaAxmgAAAAZJREFUAwCLOAAp5PB2EAAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                    </div>
+                  </div>
+                  <div
+                    data-pencil-name="Text"
+                    id="respondidaTexto"
+                    class="status-pill-text text-[10px]/[15px] box-border text-[#4ade80ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-center [white-space:nowrap]"
+                  >
+                    NÃO RESPONDIDA
+                  </div>
+                  <div
+                    data-pencil-name="Margin"
+                    class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[2px_0px_2px_8px] justify-start items-start"
+                  >
+                    <div data-pencil-name="Img" class="box-border w-[8px] h-[8px] shrink-0 relative">
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABBElEQVR4AeyQTYrCUBCEWzOeYRgGRsksnDPIuBZExPu4caEXciG4j4InUFQeggvxDPGvvgT/yBMXbg1dvOrq6kry8vbi8w4wS+6g7joTYdp0vc9nd4pH3pkQ4U0CRDj/drl4VFv1vtR7q7HufuPRsCwEQvoFH1ZoqHF2tN/gEEcY1d8V2iHejfBo4LTT0pkG9MP2VkJFghNCjCyIJwVHU1MUWK6wI54GQBBuQoossAjg8mSWpV0DaM4hObOlekIiLY/hwoIX4BG/FJd3aSAYAiv8i/M7JZ0/Ap9dZSZ+V5kAphj3+SRkrn4ORxPPlDcA17DU3gzCThnA0Xx4GOAz+7SXA04AAAD//94qBawAAAAGSURBVAMA6FhvIWkKGocAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                    </div>
+                  </div>
+                </button>
+                <div class="print-menu" id="respondidaMenu" role="menu">
+                  <button type="button" role="menuitem" data-resp="1">Respondida<small>Você já treinou esta questão</small></button>
+                  <button type="button" role="menuitem" data-resp="0">Não respondida<small>Ainda quer voltar a ela</small></button>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Impressão"
+                id="printWrap"
+                style="display:none;"
+                class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start relative"
+              >
+                <button
+                  type="button"
+                  id="btnPrint"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-pencil-name="Button"
+                  class="box-border w-fit h-fit shrink-0 flex flex-row gap-[8px] p-[8px_16px] justify-start items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px]"
+                >
+                  <div
+                    data-pencil-name="Container"
+                    class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[2.25px_0px_2.75px_0px] justify-start items-start"
+                  >
+                    <div
+                      data-pencil-name="Img"
+                      class="box-border w-[10px] h-[10px] shrink-0 relative"
+                    >
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAALklEQVR4AezSIRIAAAgCQcf/P9pOPIlnM0DYYad8Fv5BNdQQCDgbgBYRDQMEvAcAAP//GaAxmgAAAAZJREFUAwCLOAAp5PB2EAAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                    </div>
+                  </div>
+                  <div
+                    data-pencil-name="Text"
+                    class="text-[10px]/[15px] box-border text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-center [white-space:nowrap]"
+                  >
+                    IMPRIMIR / PDF
+                  </div>
+                </button>
+                <div class="print-menu" id="printMenu" role="menu">
+                  <button type="button" role="menuitem" data-print="draft">Enunciado + rascunho<small>Folha em branco para anotar</small></button>
+                  <button type="button" role="menuitem" data-print="ruled">Enunciado + folha definitiva<small>Linhas pautadas e numeradas</small></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="Corpo da Questão"
+            class="box-border w-full h-fit shrink-0 flex flex-row gap-[32px] justify-start items-start"
+          >
+            <div
+              data-pencil-name="Background+Border+Shadow"
+              class="box-border [flex:1_1_0] h-fit [box-shadow:0px_25px_43.75px_-12px_#00000040] flex flex-col gap-0 p-[48px] justify-center items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[40px] overflow-hidden relative"
+            >
+              <div
+                data-pencil-name="Heading 3:margin"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[0px_0px_24px_0px] justify-start items-start relative [z-index:0]"
+              >
+                <div
+                  data-pencil-name="Heading 3"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+                >
+                  <div
+                    data-pencil-name="ENUNCIADO"
+                    class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[3px] text-left"
+                  >
+                    ENUNCIADO
+                  </div>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Container"
+                id="topicCard"
+                role="region"
+                aria-label="Enunciado sorteado"
+                aria-live="polite"
+                aria-atomic="true"
+                class="topic-display box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative [z-index:1]"
+              ></div>
+              <div
+                data-pencil-name="Anotação da questão"
+                id="notaPanel"
+                style="display:none;"
+                role="region"
+                aria-label="Sua anotação sobre esta questão"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] p-[24px_0px_0px_0px] justify-start items-start relative [z-index:1]"
+              >
+                <label
+                  for="notaInput"
+                  data-pencil-name="MINHA ANOTAÇÃO"
+                  class="text-[10px]/[15px] box-border w-full text-[#4ade80ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                >
+                  MINHA ANOTAÇÃO SOBRE ESTA QUESTÃO
+                </label>
+                <textarea
+                  id="notaInput"
+                  placeholder="O que você quer lembrar na próxima vez que cair esta questão? Tese, artigo, erro que cometeu, estrutura que funcionou…"
+                ></textarea>
+                <div
+                  data-pencil-name="Container"
+                  class="box-border w-full h-fit shrink-0 flex flex-row gap-[16px] justify-between items-center"
+                >
+                  <span id="notaStatus" aria-live="polite"></span>
+                  <button
+                    type="button"
+                    id="btnNotaExcluir"
+                    style="display:none;"
+                    class="btn ghost nota-excluir"
+                  >Excluir anotação</button>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Margin"
+                class="box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[48px_0px_0px_0px] justify-start items-start relative [z-index:2]"
+              >
+                <div
+                  data-pencil-name="HorizontalBorder"
+                  class="box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[40px_0px_0px_0px] justify-between items-center [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#88b7990d]"
+                >
+                  <div
+                    data-pencil-name="Ações da Questão"
+                    id="espelhoActions"
+                    style="display:none;"
+                    class="box-border w-fit shrink-0 h-fit flex flex-row gap-[16px] justify-start items-center"
+                  >
+                    <button
+                      type="button"
+                      id="btnPistas"
+                      data-pencil-name="Button - Pistas"
+                      class="btn ghost box-border w-fit shrink-0 h-fit flex flex-row gap-[12px] p-[12px_24px] justify-start items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[16px]"
+                    >💡 Pistas</button>
+                    <button
+                      type="button"
+                      id="btnToggleEspelho"
+                      data-pencil-name="Button - Exibir padrão"
+                      class="btn primary box-border w-fit shrink-0 h-fit flex flex-row gap-[12px] p-[12px_24px] justify-start items-center bg-[#38a372ff] rounded-[16px]"
+                    >Ver espelho</button>
+                  </div>
+                  <div
+                    data-pencil-name="Ações do Sorteio"
+                    class="box-border w-fit shrink-0 h-fit flex flex-row gap-[16px] justify-start items-center"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      id="drawActions"
+                      class="box-border w-fit shrink-0 h-fit flex flex-row gap-[16px] justify-start items-center"
+                    ></div>
+                    <button
+                      type="button"
+                      id="btnNotaToggle"
+                      aria-expanded="false"
+                      aria-controls="notaPanel"
+                      data-pencil-name="Button - Incluir Anotação"
+                      class="box-border w-fit shrink-0 h-fit flex flex-row gap-[12px] p-[12px_24px] justify-start items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[16px]"
+                    >
+                      <div
+                        data-pencil-name="Container"
+                        class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[2.25px_0px_2.75px_0px] justify-start items-start"
+                      >
+                        <div
+                          data-pencil-name="Img"
+                          class="box-border w-[8.75px] h-[10px] shrink-0 relative"
+                        >
+                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAA9UlEQVR4AeyQwQoBURSGzyDKRImFDeJJKBth4VWUBRt3Id7ExnYs2PAaUqSsWWjCNIxz1UzmFnNq7sY00/mbe879+7rnj4DkLwT6DzQgGTYPk0xjy9KUQEgrW+ZdU6IwlQYEBVIIK6I8i/RCT8qH4c+A7Q3LtfasKgo3UrnEOe87x3EW75xyrfyIwehpwUoUuitc4pz3N8MY4p1TbmAcBhEFaqLQveMS5+8+mvgOXBTYSSuztSiE6VzinPfzUv+Md065XuhMfRyCA9TBggslCdLKZlKtq/F0XRpwme/ps0L3Kg1IAdke0sq2mfIPgZSUfnukZ/gCAAD//1wojusAAAAGSURBVAMAo1hqPUxpbbEAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                        </div>
+                      </div>
+                      <div
+                        data-pencil-name="Text"
+                        class="nota-rotulo text-[10px]/[15px] box-border text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-center [white-space:nowrap]"
+                      >
+                        INCLUIR ANOTAÇÃO
+                      </div>
+                      <span class="nota-ponto" aria-hidden="true"></span>
+                    </button>
+                    <button
+                      type="button"
+                      id="btnNotasPagina"
+                      data-pencil-name="Button"
+                      class="box-border w-fit shrink-0 h-fit flex flex-row gap-[12px] p-[12px_24px] justify-start items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[16px]"
+                    >
+                      <div
+                        data-pencil-name="Container"
+                        class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[2.25px_0px_2.75px_0px] justify-start items-start"
+                      >
+                        <div
+                          data-pencil-name="Img"
+                          class="box-border w-[8.75px] h-[10px] shrink-0 relative"
+                        >
+                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAABI0lEQVR4AeyTvUoDQRSFz72F4MbGPICwATt9Bu3CBiMI2tvaaCEWVk4srPICVj5AWv8IgUw6SwsLm91XUJCN/3O9Iy4Ei8iQBZsM+7HLLPfjcJhhlLR4687MJFlrP8nMdSMzNojUnDXS42WfhfNZnBKkTUBdN1aCIGyD3M1aerTARNjEZCtyzBsswNxkHp12Ml9e2eor5Zkm+rvGf+tIjx26ELRGYYYNSqSWk8oQTWHufw97geKA+yARgQZ5RHskzjpB/4dD+ag+BImY5B0ilaJ6TWjls7p+tbj76kVPxY/Ad++ZkHiJn/O3v+M/AukNCU0bm5dijqMcOwQc6EZXGYxDS330Jf+W6Ay4s2TeLmqmfVkzdWV1LLG5PY+NHU3iJZ4vAAAA//8cfbuWAAAABklEQVQDAIB6lClVwuehAAAAAElFTkSuQmCC" alt="" class="w-full h-full block" />
+                        </div>
+                      </div>
+                      <div
+                        data-pencil-name="Text"
+                        class="text-[10px]/[15px] box-border text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-center [white-space:nowrap]"
+                      >
+                        IR PARA MINHAS ANOTAÇÕES
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Overlay"
+                class="box-border w-[6px] h-[481px] absolute left-[1px] top-[1px] bg-[#38a37266] [z-index:3]"
+              ></div>
+            </div>
+            <div
+              data-pencil-name="Cronômetro Circular"
+              id="timerBlock"
+              style="display:none;"
+              class="box-border w-[220px] shrink-0 h-fit flex flex-col gap-0 p-[134.5px_32px] justify-center items-center bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[40px] relative"
+            >
+              <div
+                data-pencil-name="Cronômetro Circular:shadow"
+                class="box-border w-[220px] h-[483px] [box-shadow:0px_8px_8.75px_-6px_#0000001a,_0px_20px_21.875px_-5px_#0000001a] absolute left-0 top-0 bg-[#ffffff01] rounded-[40px] [z-index:0]"
+              ></div>
+              <div
+                data-pencil-name="Container"
+                id="ring"
+                style="--pct:100;"
+                class="box-border w-[140px] h-[140px] shrink-0 flex flex-row gap-0 justify-center items-center rounded-[70px] relative [z-index:1]"
+              >
+                <div
+                  data-pencil-name="Background"
+                  class="box-border w-[124px] shrink-0 h-[124px] flex flex-col gap-0 justify-center items-center bg-[#1e2420ff] rounded-[62px] relative [z-index:0]"
+                >
+                  <div
+                    data-pencil-name="Container"
+                    class="box-border w-fit h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+                  >
+                    <div
+                      data-pencil-name="Text"
+                      id="clockDisplay"
+                      role="timer"
+                      aria-live="off"
+                      class="text-[36px]/[40px] box-border text-[#e2e8e4ff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-bold text-left [white-space:nowrap]"
+                    >
+                      00:00
+                    </div>
+                  </div>
+                  <div
+                    data-pencil-name="Margin"
+                    class="box-border w-fit h-fit shrink-0 flex flex-col gap-0 p-[4px_0px_0px_0px] justify-start items-start"
+                  >
+                    <div
+                      data-pencil-name="Text"
+                      class="text-[9px]/[14px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1.8px] text-left [white-space:nowrap]"
+                    >
+                      RESTANTES
+                    </div>
+                  </div>
+                </div>
+                <div
+                  data-pencil-name="Trilha do Cronômetro"
+                  class="box-border w-[140px] h-[140px] absolute left-0 top-0 bg-[#88b79926] [clip-path:path('M70_0_C108.66_0_140_31.34_140_70_C140_108.66_108.66_140_70_140_C31.34_140_0_108.66_0_70_C0_31.34_31.34_0_70_0_Z_M70_5.999_C34.653_5.999_5.999_34.653_5.999_70_C5.999_105.347_34.653_134.001_70_134.001_C105.347_134.001_134.001_105.347_134.001_70_C134.001_34.653_105.347_5.999_70_5.999_Z')] [z-index:1]"
+                ></div>
+                <div
+                  data-pencil-name="Progresso Decorrido"
+                  id="ringProgress"
+                  class="box-border w-[140px] h-[140px] absolute left-0 top-0 bg-[#38a372ff] [clip-path:path('M70_0_C108.66_0_140_31.34_140_70_C140_108.66_108.66_140_70_140_C31.34_140_0_108.66_0_70_C0_31.34_31.34_0_70_0_Z_M70_5.999_C34.653_5.999_5.999_34.653_5.999_70_C5.999_105.347_34.653_134.001_70_134.001_C105.347_134.001_134.001_105.347_134.001_70_C134.001_34.653_105.347_5.999_70_5.999_Z')] [z-index:2]"
+                ></div>
+              </div>
+              <div
+                data-pencil-name="Margin"
+                class="box-border w-fit h-fit shrink-0 flex flex-col gap-0 p-[32px_0px_0px_0px] justify-start items-start relative [z-index:2]"
+              >
+                <div
+                  data-pencil-name="Container"
+                  class="box-border w-fit h-fit shrink-0 flex flex-row gap-[16px] justify-start items-start"
+                >
+                  <button
+                    type="button"
+                    id="btnPauseResume"
+                    title="Pausar / Retomar"
+                    aria-label="Pausar / Retomar"
+                    data-pencil-name="Button"
+                    class="box-border w-[40px] shrink-0 h-[40px] flex flex-row gap-0 justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[4px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="box-border w-[10px] h-[16px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAgCAYAAAASYli2AAAA60lEQVR4AeyVbwqCQBDFZ/YMUQQdqLxD3yJvkNm/D1KkRAfYCLqFeaGo6BDTGrsmKrtgBkErDvMcf/OQpyCDho9/NCQijBK+DGN+C8+cXiV0FPN5VbwmnkXJYU8EASB0MgOhCWG9jXmQzaQw8elLGUq21BBhVBoCaPnUsFWxpEZdJXJdy6eGOfZzaQ1thjUSsJ9NjdAKKzbDQiA1Lr+QIcFd8yDX0j0Dz8TP6VRakgPx8zpK+W4IWp55/fEMCRZi4yFKnRcCmPiOu1ID1U08Q0TyHHczHbhtUSir5w/cnTLJdxPP8nAT+vcNnwAAAP//m8PYCwAAAAZJREFUAwC4YGhBioxWkgAAAABJRU5ErkJggg==" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    id="btnReset"
+                    title="Reiniciar"
+                    aria-label="Reiniciar"
+                    data-pencil-name="Button"
+                    class="box-border w-[40px] shrink-0 h-[40px] flex flex-row gap-0 justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[2.75px_0px_3.25px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="box-border w-[14px] h-[14px] shrink-0 relative"
+                      >
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAEF0lEQVR4AbxWfYhUVRQ/587ozpoNmFhu/VFLQdE/FQrJEvmRtTMjlBBuQR9UNvNG/CvD+UixJ0vOjMX+IYT73hhF9AGDKUs4b5aUlUUQwiSiJIgSAtMNSt3RXd113vHct2/evPmehcXH+b17zr3nnN/9evddAXf4mRchEeH+Y5+uTI1mV0l8dDx733z725ZQkqTzejBt6IcyBf2KKbwX0TTPSHhmzUtpQ/s/k9cPpoyD6xqRq6oqUgXt/X2j2mOyvSUhJ3qNSc4BUh6AtnKAn1ErywgpiiDGmPxsxtBfBPuRnfWt6ckiwSfChFPaGW1RQ8KPR7+8K2VoI5zoK461esZlJ/IUAY2kC8O6Ova5L1PQvwGCd+zA5cUJz/11hOr32pISTZ9CAKendoAJCOOIsIdHvBmJtkid/U5zOzEqQhj23Zi5wBWvMhyZFbNYR+jzwmfcqycdL55LTnoIvNCbCChr4wFlMBGIjsRD0cNSjweVPuGhR3lkX7tipHqPfNWiijBl6G+xg7tX/4JJ6zhpOPG88je3NZTYC9E/ksHo60AkZ6V6tDURDqGcSgTa72ovloT5XGJTdNxV11SVGwQEbmYHZDQVh7DbC++y1wqGLaTu6t/2q220LCRZppDN8lKUN0hTf4eQ50H2ruw4ecNX0stGu5LJXuGllp9NO1ewCIdyQ93suZZhCZMfVddvv2YZHbxMMCc7cCt2FacnLMKbfv8DHGDpXIJAPCHLTvFBMJoXBI8QmOubwSPEEzsGdkxbJB6gnqrkZP5TZXdgxELKn8ngtpPNsLM/fF6msQil4oaJouVOc/vOV7cIS4AXqwPpoWp74SyL8OakX37UU05agmcdfYEVi1AdGJghgOPl3DyfIXmAl+2FLC1CmZAP4+9kaWN5iaZitr6ghUO47F78ljNXdifh7rShPcN18xL5w92XH368WZBDqKxWZvmI2utylG1H0seGO17PVD67oevpnr8E4m9pY/h0LpfzuPJZqkxqKfKVDEX5OKOjUrexgk+Bk5mCnlZzucV2XV1xIH+gK21oQ4jmCV7/B+cccM35pVerv29uqCJkGzxiyRu8gX6Rug1eXor77r58jm8BqhyFvL9YKOgb+a4zOIVdv7Pve4yKIPw8/eOFyhLZLXWEO/vfvO4V3X3cfoThloe59x/OjUKMId9huCc/8KG9GwBqvls8vHjyeh+vpwk1Tx2hbJekiaDyMhBG2L7M6FT+I8C3E8HIFnluNgpqSFh2TIQiWfBCLxEMAsI411cOBzZskX8VHjGoOOPtTQYjX0CLpyWhjOOrxdVkSNkzd5+JLBXmrR4SYrVAWFVaJFbGAxF/Iqhs4GvI3vhLW4syphXaErqDEZFim7ZfSvaHf4oFlLO7NoYnZJ3bp51+GwAA//+ibF7GAAAABklEQVQDAFl0h0hfWizkAAAAAElFTkSuQmCC" alt="" class="w-full h-full block" />
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    id="btnSomCirculo"
+                    aria-pressed="true"
+                    title="Aviso sonoro ao acabar o tempo"
+                    aria-label="Aviso sonoro ao acabar o tempo"
+                    data-pencil-name="Button"
+                    class="box-border w-[40px] shrink-0 h-[40px] flex flex-row gap-0 justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px]"
+                  >
+                    <div
+                      data-pencil-name="Container"
+                      class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[4px_0px] justify-start items-start"
+                    >
+                      <div
+                        data-pencil-name="Img"
+                        class="box-border w-[18px] h-[16px] shrink-0 relative"
+                      >
+                        <svg class="som-on" viewBox="0 0 20 18" width="18" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6.5h3l4-3.5v12l-4-3.5H2z" fill="currentColor" stroke="none"/><path d="M12.5 6a4 4 0 0 1 0 6"/><path d="M15.2 3.6a7.5 7.5 0 0 1 0 10.8"/></svg>
+                        <svg class="som-off" viewBox="0 0 20 18" width="18" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6.5h3l4-3.5v12l-4-3.5H2z" fill="currentColor" stroke="none"/><path d="M13 6.5l5 5"/><path d="M18 6.5l-5 5"/></svg>
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    id="btnNewTopic"
+                    tabindex="-1"
+                    aria-hidden="true"
+                    class="sr-only"
+                  >Novo tema</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            data-pencil-name="Pistas de leitura"
+            id="pistasPanel"
+            role="region"
+            aria-label="Pistas de leitura"
+            style="display:none;"
+            class="sub-card box-border w-full h-fit shrink-0 flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+          >
+            <div
+              data-pencil-name="Campo: Pistas:shadow"
+              class="box-border w-full h-full [box-shadow:0px_8px_8.75px_-6px_#0000001a,_0px_20px_21.875px_-5px_#0000001a] absolute left-0 top-0 bg-[#ffffff01] rounded-[24px] [z-index:0]"
+            ></div>
+            <div
+              data-pencil-name="Heading 4"
+              class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative [z-index:1]"
+            >
+              <div
+                data-pencil-name="PISTAS DE LEITURA"
+                class="espelho-label sub-title text-[10px]/[15px] box-border w-full text-[#4ade80ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+              >
+                PISTAS DE LEITURA
+              </div>
+            </div>
+            <ul
+              data-pencil-name="List"
+              id="pistasList"
+              class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] justify-start items-start relative [z-index:2]"
+            ></ul>
+          </div>
+          <div
+            data-pencil-name="Bloco de Gabarito (Padrão de Resposta)"
+            id="espelhoPanel"
+            role="region"
+            aria-label="Padrão de resposta"
+            style="display:none;"
+            class="box-border w-full h-fit shrink-0 flex flex-col gap-[32px] justify-start items-start"
+          >
+            <div
+              data-pencil-name="Container"
+              class="box-border w-full h-fit shrink-0 flex flex-row gap-[12px] justify-start items-center"
+            >
+              <div
+                data-pencil-name="Container"
+                class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[4px_0px] justify-start items-start"
+              >
+                <div data-pencil-name="Img" class="box-border w-[14px] h-[16px] shrink-0 relative">
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAgCAYAAADud3N8AAAASklEQVR4AezSsQ0AIAzEQMT+QzOBO6MUMeUXRjrlnoHXp1/R441XEeiQFEaKxEsyyh6vwkiReElG2eNVGCkSL8koe7wKI0X28D4AAAD//3z5RwoAAAAGSURBVAMA8U8AQfKloVcAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+                </div>
+              </div>
+              <div
+                data-pencil-name="Heading 3"
+                class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+              >
+                <h2
+                  data-pencil-name="Padrão de resposta"
+                  class="text-[24px]/[32px] box-border text-[#e2e8e4ff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-semibold text-left [white-space:nowrap]"
+                >
+                  Padrão de resposta
+                </h2>
+              </div>
+            </div>
+            <div
+              data-pencil-name="Container"
+              class="box-border w-full h-fit shrink-0 flex flex-col gap-[32px] justify-start items-start"
+            >
+              <div
+                data-pencil-name="Resumo do espelho"
+                id="espelhoResumo"
+                role="status"
+                class="espelho-resumo box-border w-full h-fit shrink-0 text-[14px]/[23px] font-[Lora,system-ui,sans-serif] font-normal text-left"
+              ></div>
+              <div
+                data-pencil-name="Campo 1: Padrão Esperado"
+                class="sub-card modelo-card box-border w-full h-fit shrink-0 flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+              >
+                <div
+                  data-pencil-name="Campo 1: Padrão Esperado:shadow"
+                  class="box-border w-full h-full [box-shadow:0px_8px_8.75px_-6px_#0000001a,_0px_20px_21.875px_-5px_#0000001a] absolute left-0 top-0 bg-[#ffffff01] rounded-[24px] [z-index:0]"
+                ></div>
+                <div
+                  data-pencil-name="Heading 4"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative [z-index:1]"
+                >
+                  <div
+                    data-pencil-name="PADRÃO ESPERADO (RESPOSTA MODELO)"
+                    class="sub-title text-[10px]/[15px] box-border w-full text-[#4ade80ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                  >
+                    PADRÃO ESPERADO (RESPOSTA MODELO)
+                  </div>
+                </div>
+                <div
+                  data-pencil-name="Container"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative [z-index:2]"
+                >
+                  <div
+                    data-pencil-name="Texto do modelo"
+                    id="modeloText"
+                    class="modelo-text text-[14px]/[23px] box-border w-full text-[#e2e8e4cc] font-[Lora,system-ui,sans-serif] font-normal text-left"
+                  ></div>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Campo 2: Cópia da banca"
+                class="sub-card banca-card box-border w-full h-fit shrink-0 flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+              >
+                <div
+                  data-pencil-name="Campo 2: Cópia da banca:shadow"
+                  class="box-border w-full h-full [box-shadow:0px_8px_8.75px_-6px_#0000001a,_0px_20px_21.875px_-5px_#0000001a] absolute left-0 top-0 bg-[#ffffff01] rounded-[24px] [z-index:0]"
+                ></div>
+                <div
+                  data-pencil-name="Heading 4"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative [z-index:1]"
+                >
+                  <div
+                    data-pencil-name="CÓPIA DA BANCA"
+                    id="bancaTitle"
+                    class="sub-title text-[10px]/[15px] box-border w-full text-[#4ade80ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                  >
+                    CÓPIA DA BANCA — GABARITO COMENTADO
+                  </div>
+                </div>
+                <div
+                  data-pencil-name="Container"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative [z-index:2]"
+                >
+                  <div
+                    data-pencil-name="Texto do espelho"
+                    id="espelhoText"
+                    class="espelho-text text-[14px]/[23px] box-border w-full text-[#e2e8e4cc] font-[Lora,system-ui,sans-serif] font-normal text-left"
+                  ></div>
+                </div>
+              </div>
+              <div
+                data-pencil-name="Campo 3: Autoavaliação"
+                class="sub-card avalia-card box-border w-full h-fit shrink-0 flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+              >
+                <div
+                  data-pencil-name="Campo 3: Autoavaliação:shadow"
+                  class="box-border w-full h-full [box-shadow:0px_8px_8.75px_-6px_#0000001a,_0px_20px_21.875px_-5px_#0000001a] absolute left-0 top-0 bg-[#ffffff01] rounded-[24px] [z-index:0]"
+                ></div>
+                <div
+                  data-pencil-name="Heading 4"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative [z-index:1]"
+                >
+                  <div
+                    data-pencil-name="AUTOAVALIAÇÃO DA BANCA"
+                    class="sub-title text-[10px]/[15px] box-border w-full text-[#4ade80ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+                  >
+                    AUTOAVALIAÇÃO DA BANCA — LANCE SUA NOTA POR QUESITO
+                  </div>
+                </div>
+                <div
+                  data-pencil-name="Container"
+                  class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] justify-start items-start relative [z-index:2]"
+                >
+                  <p
+                    data-pencil-name="Text"
+                    class="avalia-hint text-[12px]/[16px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+                  >
+                    Preencha a nota que você atingiu em cada quesito; o total e o aproveitamento são calculados automaticamente.
+                  </p>
+                  <div
+                    data-pencil-name="Container"
+                    id="espelhoRubric"
+                    class="box-border w-full h-fit shrink-0"
+                  ></div>
+                  <div
+                    data-pencil-name="Text"
+                    id="rubricTotal"
+                    role="status"
+                    aria-live="polite"
+                    class="rubric-total text-[14px]/[23px] box-border w-full text-[#e2e8e4ff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-semibold text-right"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <details
+            data-pencil-name="Estrutura de resposta"
+            id="estruturaCard"
+            style="display:none;"
+            class="sub-card box-border w-full h-fit shrink-0 flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+          >
+            <summary
+              data-pencil-name="Heading 4"
+              class="sub-title text-[10px]/[15px] box-border w-full text-[#4ade80ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+            >
+              ESTRUTURA DE RESPOSTA — O QUE A FGV ESPERA
+            </summary>
+            <div
+              data-pencil-name="Container"
+              class="estrutura-text text-[14px]/[23px] box-border w-full text-[#e2e8e4cc] font-[Lora,system-ui,sans-serif] font-normal text-left"
+            >PEÇA PROFISSIONAL — A peça cabível é definida pelo ÚLTIMO ato processual narrado no enunciado. Ordem de exposição que maximiza pontuação: endereçamento correto → cabimento e tempestividade (nomeie a peça, o fundamento legal e o prazo) → preliminares (nulidades, extinção da punibilidade) → mérito principal (absolvição, com o inciso exato do art. 386 do CPP) → mérito subsidiário (desclassificação) → dosimetria (pena-base no mínimo, atenuantes, afastar majorantes — quase sempre pontua, mesmo subsidiária) → regime e benefícios (substituição, sursis) → pedidos enumerados → fechamento (local, data, advogado(a), nº da OAB).
+
+QUESTÃO DISCURSIVA — Os itens A e B costumam cobrar matérias distintas (uma de Direito material, outra de processo/execução) — não responda os dois pela mesma matéria. Estruture cada item em três passos: afirmação direta da tese → fundamento (artigo/súmula + POR QUE se aplica ao caso) → conclusão amarrada ao enunciado.
+
+REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve seguir a fórmula FATO (o que ocorreu no enunciado) + FUNDAMENTO (dispositivo e razão de incidência) + CONCLUSÃO (o pedido). Teses subsidiárias valem pontos por si mesmas.</div>
+          </details>
+          <details
+            data-pencil-name="Dia da banca"
+            id="diaCard"
+            style="display:none;"
+            class="sub-card box-border w-full h-fit shrink-0 flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+          >
+            <summary
+              data-pencil-name="Heading 4"
+              class="sub-title text-[10px]/[15px] box-border w-full text-[#4ade80ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+            >
+              COMO É O DIA DA BANCA — RELATOS REAIS (DPE-BA 2022)
+            </summary>
+            <div
+              data-pencil-name="Container"
+              id="diaText"
+              class="estrutura-text text-[14px]/[23px] box-border w-full text-[#e2e8e4cc] font-[Lora,system-ui,sans-serif] font-normal text-left"
+            ></div>
+          </details>
+        </main>
+      </div>
+      </div>
+      <footer aria-label="Rodapé"
+        data-pencil-name="Footer - FOOTER"
+        class="box-border w-full h-fit relative flex flex-col gap-0 p-[48px_32px] justify-start items-start bg-[#1e2420ff] [border-width:1px_0px_0px_0px] [border-style:solid] [border-color:#88b7990d] [z-index:3]"
+      >
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 opacity-[0.5] flex flex-row gap-[1194.91px] justify-between items-center"
+        >
+          <div
+            data-pencil-name="Container"
+            class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
+          >
+            <div
+              data-pencil-name="Text"
+              class="text-[10px]/[15px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
+            >
+              SUBJETIVANDO · 2026
+            </div>
+          </div>
+          <div
+            data-pencil-name="Container"
+            class="box-border w-fit shrink-0 h-[24px] flex flex-row gap-[24px] justify-start items-start"
+          >
+            <div
+              data-pencil-name="Container"
+              class="box-border w-fit shrink-0 h-full flex flex-col gap-0 p-[4px_0px] justify-start items-start"
+            >
+              <div data-pencil-name="Img" class="box-border w-[14px] h-[16px] shrink-0 relative">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAgCAYAAADud3N8AAAASklEQVR4AezSsQ0AIAzEQMT+QzOBO6MUMeUXRjrlnoHXp1/R441XEeiQFEaKxEsyyh6vwkiReElG2eNVGCkSL8koe7wKI0X28D4AAAD//3z5RwoAAAAGSURBVAMA8U8AQfKloVcAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+              </div>
+            </div>
+            <div
+              data-pencil-name="Container"
+              class="box-border w-fit shrink-0 h-full flex flex-col gap-0 p-[4px_0px] justify-start items-start"
+            >
+              <div data-pencil-name="Img" class="box-border w-[14px] h-[16px] shrink-0 relative">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAgCAYAAAABtRhCAAACb0lEQVR4AexWT2sTURCfeW1yUCrYehKqoJ4ELbT2KB5aNIn0C3jxoruhh3pLUuyhopBNFW9iN2nBTyAoNLsVDyI5eBHsoV56FXLRi9DStLs7nRdIGnbfJk03yanh/cib3/x7b7IzWQH8KVjmY8Mytxm7ecv89toq3Wa6L0vky6saAXwAgJuMcwhwzwWv8mrz3TjLPV8CETOKqCMxd/iZgo9MCUAYU0ZBvKzkI5KCPKqoYnjofVfxUTmBApY4SI3Run6PXsL1VqJXe5FLpLfEEN3i0r5HwDICLO87MK3f0Q97laQ1jpBC5n56J5fQ57NJ7WE2qb9YntP3JN8P1BP2KnDh0/qIYa9OrNjm5Ft7bVQVt96HstkD2CxNNRykc0DPA8KwzUfSJm8VpwtWcYPizn8g/OUR/Dwg959hmTuGVXwpDyLtJAQCXkdudj+A6KI0kHDcWtyvlzIQXMnb5hME+kFAKWnrww0AWoK4s/1mY+2q1PFTijxo5PZUmGHvEnu2/Wk4wbgj3I9ExE1B1NaYg7Vbs+2UPt3kyhdz9kTJDoeGuYI+99OIJGYEIHqdfGOuw1UJtaoCoZZNaCKX1OXB7rLlX0ZwEU3I0SaNgsqTMghPcymtxH8C9UNx0gpv5lXuzF8TKkUXXDX7QCv77c9T7TNzqkk1Fikhl2arcTNO0FwLqQU5m/80iePNhUgJuUShI5DbZfc4T3MXE4iATTFkE/aUcl/FQ1z4OYIDlS7SDVUBO3FnCTtVqGv9WUm7Llknh8GXlF+aMjxw0Y/FhPa1cdrnCb3q10t5MZWea9j4v1k/xQjEHfwN/SfrtzzwGx4BAAD//4Yp5FQAAAAGSURBVAMApwLfQWIhNmoAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- DRAWER: menu lateral -->
+    <div class="drawer-backdrop" id="drawerBackdrop">
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="drawerTitle"
+        data-pencil-name="Background+Border"
+        class="modal-shell box-border w-[360px] max-w-[92vw] h-full flex flex-col gap-[32px] p-[32px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] absolute right-0 top-0"
+      >
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[16px] justify-between items-center"
+        >
+          <h2
+            id="drawerTitle"
+            class="text-[24px]/[32px] box-border text-[#e2e8e4ff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-semibold text-left"
+          >
+            Subjetivando
+          </h2>
+          <button
+            type="button"
+            id="btnCloseDrawer"
+            title="Fechar"
+            aria-label="Fechar"
+            data-pencil-name="Button"
+            class="box-border w-[40px] shrink-0 h-[40px] flex flex-row gap-0 justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px] text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] text-[16px] cursor-pointer"
+          >&times;</button>
+        </div>
+        <div
+          data-pencil-name="Text"
+          class="text-[12px]/[16px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+        >
+          Simule a banca, controle o tempo e domine o padrão de resposta.
+        </div>
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] justify-start items-start"
+        >
+          <button
+            type="button"
+            id="btnTheme"
+            data-pencil-name="Button"
+            class="btn ghost box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px] justify-start items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+          >Tema claro</button>
+          <button
+            type="button"
+            id="btnAbout"
+            data-pencil-name="Button"
+            class="btn ghost box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px] justify-start items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+          >Sobre a plataforma</button>
+          <button
+            type="button"
+            id="btnManage"
+            data-pencil-name="Button"
+            class="btn ghost box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px] justify-start items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+          >Gerenciar temas</button>
+          <button
+            type="button"
+            id="btnNotasMenu"
+            data-pencil-name="Button"
+            class="btn ghost box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px] justify-start items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+          >Minhas anotações</button>
+          <button
+            type="button"
+            id="btnSom"
+            aria-pressed="true"
+            data-pencil-name="Button"
+            class="btn ghost box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px] justify-start items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+          >Aviso sonoro: ligado</button>
+        </div>
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] justify-start items-start"
+        >
+          <div
+            data-pencil-name="Text"
+            class="text-[12px]/[16px] box-border w-full text-[#e2e8e4cc] font-[Lora,system-ui,sans-serif] font-normal text-left"
+          >
+            “Somos o que repetidamente fazemos. A excelência, portanto, não é um ato, mas um hábito” — Aristóteles
+          </div>
+          <div
+            data-pencil-name="Text"
+            class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal tracking-[1px] text-left"
+          >
+            FEITO POR @ALCOPL_
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- MODAL: gerenciar temas -->
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="manageTitle"
+        data-pencil-name="Background+Border"
+        class="modal-shell box-border w-[720px] max-w-[94vw] h-fit flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+      >
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[16px] justify-between items-center"
+        >
+          <h2
+            id="manageTitle"
+            class="text-[24px]/[32px] box-border text-[#e2e8e4ff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-semibold text-left"
+          >
+            Gerenciar temas
+          </h2>
+          <button
+            type="button"
+            id="btnCloseManage"
+            title="Fechar"
+            aria-label="Fechar"
+            data-pencil-name="Button"
+            class="box-border w-[40px] shrink-0 h-[40px] flex flex-row gap-0 justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px] text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] text-[16px] cursor-pointer"
+          >&times;</button>
+        </div>
+        <div
+          data-pencil-name="Text"
+          class="text-[12px]/[16px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
+        >
+          Adicione seus próprios temas. Eles entram no sorteio junto com os temas prontos (ficam salvos só neste navegador).
+        </div>
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[12px] justify-start items-center"
+        >
+          <select id="manageMode" aria-label="Modo de treino do tema personalizado"></select>
+          <select id="manageCategory" aria-label="Disciplina do tema personalizado"></select>
+        </div>
+        <div class="add-row">
+          <input type="text" id="manageInput" aria-label="Novo tema personalizado" placeholder="Escreva um novo tema..." />
+          <button
+            type="button"
+            id="btnAddTopic"
+            class="btn primary"
+            style="flex:0 0 auto;"
+          >Adicionar</button>
+        </div>
+        <div
+          data-pencil-name="Text"
+          id="manageCount"
+          class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+        ></div>
+        <div id="customList"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: sobre -->
+    <div class="modal-backdrop" id="aboutBackdrop">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="aboutTitle"
+        data-pencil-name="Background+Border"
+        class="modal-shell box-border w-[720px] max-w-[94vw] h-fit flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+      >
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[16px] justify-between items-center"
+        >
+          <h2
+            id="aboutTitle"
+            class="text-[24px]/[32px] box-border text-[#e2e8e4ff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-semibold text-left"
+          >
+            Subjetivando
+          </h2>
+          <button
+            type="button"
+            id="btnCloseAbout"
+            title="Fechar"
+            aria-label="Fechar"
+            data-pencil-name="Button"
+            class="box-border w-[40px] shrink-0 h-[40px] flex flex-row gap-0 justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px] text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] text-[16px] cursor-pointer"
+          >&times;</button>
+        </div>
+        <div class="about-text box-border w-full h-fit shrink-0">
+          <p><strong>Simule a banca, controle o tempo e domine o padrão de resposta.</strong></p>
+          <p><strong>O problema.</strong> Quem se prepara para provas orais e discursivas estuda muito conteúdo — mas treina pouco a performance. A prova real tem sorteio de tema, pressão de tempo, arguição encadeada e um padrão de resposta que a banca espera. Estudar em PDF não reproduz nada disso.</p>
+          <p><strong>A solução.</strong> O Subjetivando transforma materiais reais de prova — editais, espelhos oficiais, perguntas efetivamente feitas por examinadores — em um simulador de banca: você sorteia, cronometra, responde e se autoavalia pelo critério oficial.</p>
+          <h3>Treino DPEs (prova oral)</h3>
+          <p><em>Temas do edital</em>: 199 tópicos oficiais em 16 áreas. <em>Questões passadas</em>: 750 perguntas reais de banca em 10 matérias — incluindo as 150 da oral DPE-BA 2022 — a maioria com resposta fundamentada, revelada só quando você quiser. Inclui o card “Como é o dia da banca”, com a dinâmica real relatada por candidatos.</p>
+          <h3>Treino OAB (2ª fase — Penal)</h3>
+          <p>55 enunciados oficiais de 11 exames (peças e questões FGV). Para cada item: pistas de leitura que ensinam a decifrar o enunciado sem entregar a resposta, modelo didático de como estruturar a redação, gabarito comentado oficial e autoavaliação interativa com os quesitos e pontuações reais da banca — com total e percentual calculados automaticamente.</p>
+          <h3>Treino TCDF (discursiva)</h3>
+          <p><em>Revisão livre</em>: 55 temas do edital em 5 matérias. <em>Prova discursiva</em>: 37 enunciados dissertativos no estilo da banca, cada um atravessando vários subtópicos do edital.</p>
+          <h3>Ferramentas</h3>
+          <p>Sorteio que evita repetições até esgotar o banco; cronômetro visual com pausa, retomada e reinício; temas próprios salvos no navegador; tema claro/escuro; impressão A4 em rascunho ou folha pautada.</p>
+          <p><strong>Por que funciona.</strong> Prática de recuperação (responder de memória), pressão de tempo calibrada e feedback imediato pelo critério oficial — o ciclo completo do treino deliberado, repetido até a excelência virar hábito.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PÁGINA: todas as anotações -->
+    <div class="modal-backdrop" id="notasBackdrop">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="notasTitle"
+        data-pencil-name="Background+Border"
+        class="modal-shell box-border w-[880px] max-w-[94vw] h-fit flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+      >
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[16px] justify-between items-center"
+        >
+          <h2
+            id="notasTitle"
+            class="text-[24px]/[32px] box-border text-[#e2e8e4ff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-semibold text-left"
+          >
+            Minhas anotações
+          </h2>
+          <button
+            type="button"
+            id="btnCloseNotas"
+            title="Fechar"
+            aria-label="Fechar"
+            data-pencil-name="Button"
+            class="box-border w-[40px] shrink-0 h-[40px] flex flex-row gap-0 justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px] text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] text-[16px] cursor-pointer"
+          >&times;</button>
+        </div>
+        <input type="search" id="notasBusca" aria-label="Buscar nas anotações" placeholder="Buscar por texto da anotação, da questão ou pela disciplina..." />
+        <div
+          data-pencil-name="Text"
+          id="notasContagem"
+          role="status"
+          aria-live="polite"
+          class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+        ></div>
+        <div id="notasLista"></div>
+      </div>
+    </div>
+
+    <!-- PÁGINA: histórico de questões -->
+    <div class="modal-backdrop" id="histBackdrop">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="histTitle"
+        data-pencil-name="Background+Border"
+        class="modal-shell box-border w-[880px] max-w-[94vw] h-fit flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+      >
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[16px] justify-between items-center"
+        >
+          <h2
+            id="histTitle"
+            class="text-[24px]/[32px] box-border text-[#e2e8e4ff] font-['Plus_Jakarta_Sans',system-ui,sans-serif] font-semibold text-left"
+          >
+            Histórico de questões
+          </h2>
+          <button
+            type="button"
+            id="btnCloseHist"
+            title="Fechar"
+            aria-label="Fechar"
+            data-pencil-name="Button"
+            class="box-border w-[40px] shrink-0 h-[40px] flex flex-row gap-0 justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px] text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] text-[16px] cursor-pointer"
+          >&times;</button>
+        </div>
+        <div id="histResumo" class="grid grid-cols-1 md:grid-cols-3 gap-[16px] w-full"></div>
+        <input type="search" id="histBusca" aria-label="Buscar no histórico" placeholder="Buscar por disciplina, exame ou enunciado..." />
+        <div
+          data-pencil-name="Text"
+          id="histContagem"
+          role="status"
+          aria-live="polite"
+          class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
+        ></div>
+        <div id="histLista"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: conta (entrar / criar conta / recuperar senha) -->
+    <div class="modal-backdrop" id="authBackdrop">
+      <div
+        id="authShell"
+        data-view="login"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="authTitle"
+        data-pencil-name="Background+Border"
+        class="modal-shell box-border w-[480px] max-w-[94vw] h-fit flex flex-col gap-[24px] p-[40px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
+      >
+        <!-- cabeçalho -->
+        <div
+          data-pencil-name="Container"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[16px] justify-between items-center"
+        >
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-botanic-primary/10 flex items-center justify-center shrink-0">
+              <i id="authIcone" class="fa-solid fa-right-to-bracket text-botanic-primary" aria-hidden="true"></i>
+            </div>
+            <h2
+              id="authTitle"
+              class="font-brand text-[24px]/[32px] box-border text-botanic-text font-semibold text-left"
+            >
+              Entrar
+            </h2>
+          </div>
+          <button
+            type="button"
+            id="btnCloseAuth"
+            title="Fechar"
+            aria-label="Fechar"
+            data-pencil-name="Button"
+            class="box-border w-[40px] shrink-0 h-[40px] flex flex-row gap-0 justify-center items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px] text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] text-[16px] cursor-pointer"
+          >&times;</button>
+        </div>
+
+        <!-- abas -->
+        <div id="authTabs" role="tablist" aria-label="Entrar ou criar conta" class="auth-tabs">
+          <button type="button" role="tab" id="authTabEntrar" aria-selected="true" aria-controls="authFormLogin" class="auth-tab">
+            <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Entrar
+          </button>
+          <button type="button" role="tab" id="authTabCadastro" aria-selected="false" aria-controls="authFormCadastro" class="auth-tab">
+            <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Criar conta
+          </button>
+        </div>
+
+        <!-- mensagem de status / erro (preenchida por JS) -->
+        <p id="authStatus" role="status" aria-live="polite"></p>
+
+        <!-- ENTRAR -->
+        <form id="authFormLogin" class="auth-view" role="tabpanel" aria-labelledby="authTabEntrar" novalidate>
+          <div class="auth-campo">
+            <label for="authEmailLogin" class="auth-label">E-mail</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-envelope auth-input-ico" aria-hidden="true"></i>
+              <input type="email" id="authEmailLogin" name="email" class="auth-input" autocomplete="email" placeholder="voce@exemplo.com" />
+            </div>
+          </div>
+          <div class="auth-campo">
+            <label for="authSenhaLogin" class="auth-label">Senha</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <input type="password" id="authSenhaLogin" name="senha" class="auth-input" autocomplete="current-password" placeholder="Sua senha" />
+            </div>
+          </div>
+          <button type="button" id="authLinkEsqueciSenha" class="auth-link">Esqueci minha senha</button>
+          <button type="submit" id="authBtnLogin" class="btn primary auth-submit">Entrar</button>
+        </form>
+
+        <!-- CRIAR CONTA -->
+        <form id="authFormCadastro" class="auth-view" role="tabpanel" aria-labelledby="authTabCadastro" novalidate>
+          <div class="auth-campo">
+            <label for="authNomeCadastro" class="auth-label">Nome de exibição</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-user auth-input-ico" aria-hidden="true"></i>
+              <input type="text" id="authNomeCadastro" name="nome" class="auth-input" autocomplete="name" placeholder="Como você quer ser chamado" />
+            </div>
+          </div>
+          <div class="auth-campo">
+            <label for="authEmailCadastro" class="auth-label">E-mail</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-envelope auth-input-ico" aria-hidden="true"></i>
+              <input type="email" id="authEmailCadastro" name="email" class="auth-input" autocomplete="email" placeholder="voce@exemplo.com" />
+            </div>
+          </div>
+          <div class="auth-campo">
+            <label for="authSenhaCadastro" class="auth-label">Senha</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <input type="password" id="authSenhaCadastro" name="senha" class="auth-input" autocomplete="new-password" placeholder="Crie uma senha" />
+            </div>
+          </div>
+          <div class="auth-campo">
+            <label for="authSenhaCadastroConfirmar" class="auth-label">Confirmar senha</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <input type="password" id="authSenhaCadastroConfirmar" name="senha2" class="auth-input" autocomplete="new-password" placeholder="Repita a senha" />
+            </div>
+          </div>
+          <button type="submit" id="authBtnCadastro" class="btn primary auth-submit">Criar conta</button>
+        </form>
+
+        <!-- RECUPERAR SENHA -->
+        <form id="authFormRecuperar" class="auth-view" aria-label="Recuperar senha" novalidate>
+          <p class="auth-ajuda">Informe o e-mail da sua conta. Você receberá um link para criar uma nova senha.</p>
+          <div class="auth-campo">
+            <label for="authEmailRecuperar" class="auth-label">E-mail</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-envelope auth-input-ico" aria-hidden="true"></i>
+              <input type="email" id="authEmailRecuperar" name="email" class="auth-input" autocomplete="email" placeholder="voce@exemplo.com" />
+            </div>
+          </div>
+          <button type="submit" id="authBtnRecuperar" class="btn primary auth-submit">Enviar link de recuperação</button>
+          <button type="button" id="authVoltarLogin" class="auth-link">
+            <i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i> Voltar para o login
+          </button>
+        </form>
+
+        <!-- DEFINIR NOVA SENHA -->
+        <form id="authFormAtualizarSenha" class="auth-view" aria-label="Definir nova senha" novalidate>
+          <p class="auth-ajuda">Crie uma senha com pelo menos oito caracteres. Depois da confirmação, você continuará conectado à sua conta.</p>
+          <div class="auth-campo">
+            <label for="authNovaSenha" class="auth-label">Nova senha</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <input type="password" id="authNovaSenha" name="nova-senha" class="auth-input" autocomplete="new-password" minlength="8" placeholder="Digite a nova senha" />
+            </div>
+          </div>
+          <div class="auth-campo">
+            <label for="authNovaSenhaConfirmar" class="auth-label">Confirmar nova senha</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <input type="password" id="authNovaSenhaConfirmar" name="confirmar-nova-senha" class="auth-input" autocomplete="new-password" minlength="8" placeholder="Repita a nova senha" />
+            </div>
+          </div>
+          <button type="submit" id="authBtnAtualizarSenha" class="btn primary auth-submit">Salvar nova senha</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Folha de impressão -->
+    <div id="printDoc" aria-hidden="true"></div>
+        <script src="/assets/app.js"></script>
+
+  </body>
+</html>

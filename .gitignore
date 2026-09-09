@@ -1,0 +1,20 @@
+# Segredos e ambiente
+.env
+.env.*
+!.env.example
+.netlify/
+
+# Artefatos de execucao
+__pycache__/
+*.py[cod]
+node_modules/
+dist/
+
+# Evidencias internas e dados pessoais - nunca versionar
+private/
+
+# Arquivos compactados e do sistema
+*.zip
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,8 @@
+/defensoria    /index.html   200
+/defensoria/*  /index.html   200
+/oab           /index.html   200
+/oab/*         /index.html   200
+/tcdf          /index.html   200
+/tcdf/*        /index.html   200
+/atualizar-senha  /index.html   200
+/*              /index.html   200

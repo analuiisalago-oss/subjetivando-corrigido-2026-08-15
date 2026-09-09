@@ -1,0 +1,49 @@
+# Revisar linguagem da FALA
+
+Termos que só existem no papel, ou pontuação impronunciável, encontrados dentro do bloco `##FALA##`.
+
+- [ ] `empresarial|0` — ponto e vírgula
+- [ ] `empresarial|1` — ponto e vírgula
+- [ ] `empresarial|4` — ponto e vírgula
+- [ ] `consumidor|0` — ponto e vírgula
+- [ ] `consumidor|2` — ponto e vírgula
+- [ ] `consumidor|4` — ponto e vírgula
+- [ ] `processo_penal|1` — ponto e vírgula
+- [ ] `processo_penal|2` — ponto e vírgula
+- [ ] `processo_penal|6` — ponto e vírgula
+- [ ] `processo_penal|7` — ponto e vírgula
+- [ ] `processo_penal|9` — ponto e vírgula
+- [ ] `processo_penal|11` — ponto e vírgula
+- [ ] `processo_penal|14` — ponto e vírgula
+- [ ] `processo_penal|18` — ponto e vírgula
+- [ ] `processo_penal|19` — ponto e vírgula
+- [ ] `processo_penal|20` — ponto e vírgula
+- [ ] `processo_penal|21` — ponto e vírgula
+- [ ] `processo_penal|22` — ponto e vírgula
+- [ ] `processo_penal|25` — ponto e vírgula
+- [ ] `processo_penal|27` — ponto e vírgula
+- [ ] `processo_penal|28` — ponto e vírgula
+- [ ] `processo_penal|30` — ponto e vírgula
+- [ ] `processo_penal|31` — ponto e vírgula
+- [ ] `processo_penal|32` — ponto e vírgula
+- [ ] `processo_penal|34` — ponto e vírgula
+- [ ] `processo_penal|35` — ponto e vírgula
+- [ ] `processo_penal|40` — ponto e vírgula
+- [ ] `processo_penal|41` — ponto e vírgula
+- [ ] `processo_penal|42` — ponto e vírgula
+- [ ] `processo_penal|44` — ponto e vírgula
+- [ ] `criminologia|2` — ponto e vírgula
+- [ ] `criminologia|5` — ponto e vírgula
+- [ ] `criminologia|7` — ponto e vírgula
+- [ ] `criminologia|10` — ponto e vírgula
+- [ ] `criminologia|11` — ponto e vírgula
+- [ ] `criminologia|12` — ponto e vírgula
+- [ ] `direitos_humanos|0` — ponto e vírgula
+- [ ] `direitos_humanos|1` — ponto e vírgula
+- [ ] `direitos_humanos|2` — ponto e vírgula
+- [ ] `direitos_humanos|7` — ponto e vírgula
+- [ ] `direitos_humanos|10` — ponto e vírgula
+- [ ] `direitos_humanos|13` — ponto e vírgula
+- [ ] `direitos_humanos|15` — ponto e vírgula
+- [ ] `direitos_humanos|17` — ponto e vírgula
+- [ ] `dpe_ba_2022|16` — em sede de
