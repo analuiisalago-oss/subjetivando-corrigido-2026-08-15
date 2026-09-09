@@ -74,8 +74,15 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 ### P1-05 — Concluir recuperação de senha
 
-**Estado:** EM EXECUÇÃO. Tela e lógica implementadas; falta configurar URLs e testar e-mail, expiração e alteração real.  
-**Inclui:** rota de nova senha, evento de recuperação, confirmação e testes de expiração.
+**Estado:** CONCLUÍDA em 09/09/2026.
+
+**Causa raiz encontrada:** a lista de *Redirect URLs* do Supabase estava vazia. Com ela vazia, o Supabase aceita apenas o *Site URL* e descarta silenciosamente o endereço `/atualizar-senha` pedido pelo frontend, levando o usuário à página inicial. O defeito estava na configuração do painel, não no código, e por isso as correções de 15/08 não o resolveram.
+
+**Correção:** cadastrados `https://subjetivando.netlify.app` e `https://subjetivando.netlify.app/atualizar-senha` em *Authentication → URL Configuration*.
+
+**Teste real executado em 09/09/2026 com conta e e-mail verdadeiros:** cadastro, e-mail de confirmação recebido na caixa de entrada em cerca de três minutos, confirmação, login, estado "CONTA SINCRONIZADA", logout, pedido de recuperação, link levando a `/atualizar-senha` com a mensagem "Link confirmado", gravação da nova senha e novo login com ela. Todas as etapas passaram.
+
+**Ainda não testado:** expiração do link por decurso de prazo e comportamento do limite de envio de e-mails do plano gratuito.
 
 ### P1-06 — Tratar falhas de rede na autenticação
 
@@ -88,7 +95,8 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 ### P1-08 — Pedir confirmação para incorporar dados locais
 
-**Estado:** CONCLUÍDA NO FRONTEND em 15/08/2026; a primeira incorporação exige confirmação.
+**Estado:** EM EXECUÇÃO. A confirmação existe e aparece, mas o teste real de 09/09/2026 mostrou defeito: a pergunta reapareceu depois da confirmação do e-mail, mesmo tendo sido recusada com "cancelar" no primeiro aparecimento.  
+**Conclusão exige:** a recusa deve ficar registrada e a pergunta não deve se repetir na mesma conta e no mesmo dispositivo sem ação do usuário. Verificar se a chave `subj_sync_consent_v1_<usuario>` é gravada no cancelamento e se é lida antes de reapresentar o pedido.
 
 ### P1-09 — Implementar exclusão de conta e dados
 
@@ -103,6 +111,15 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Estado:** EM EXECUÇÃO. Auditoria automatizada anterior aprovada; faltam teste responsivo e leitor de tela real.  
 **Inclui:** teclado, leitor de tela, modais, redução de movimento e textos pequenos.
+
+### P1-14 — Melhorar o formulário de conta
+
+**Estado:** NÃO INICIADA.  
+**Observado no teste real de 09/09/2026:**
+
+- não há como ver a senha digitada, o que impede conferir se ela coincide com o campo de confirmação;
+- o requisito mínimo de oito caracteres não é informado antes do erro;
+- a tradução de `Password should be at least 6 characters` promete oito caracteres, número que vem da validação do próprio site e não do Supabase. Manter os dois coerentes.
 
 ### P1-13 — Conferir exclusão sincronizada de temas e reinício de questões usadas
 
@@ -213,6 +230,12 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Estado:** NÃO INICIADA.
 
+### P3-10 — Criar páginas próprias de entrada e cadastro
+
+**Estado:** NÃO INICIADA.  
+**Observado no teste real de 09/09/2026:** a autenticação é um modal sobre o simulador. Quem está deslogado vê a mesma tela de quem está logado, não existe endereço próprio para entrar ou criar conta, e a URL termina em `/#` depois das operações de conta.  
+**Observação:** pertence à decisão de "páginas reais" do Plano Mestre Integrado. É reestruturação de interface, não correção de defeito, e não deve ser iniciada antes de a primeira versão estar em uso.
+
 ### P3-09 — Adicionar SEO e compartilhamento
 
 **Estado:** NÃO INICIADA.  
@@ -235,6 +258,10 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 Nenhum item P4 deve ser implementado enquanto houver pendência P0 ou P1 relevante.
 
 ## 7. CONCLUÍDAS
+
+### 2026-09-09 — Autenticação comprovada de ponta a ponta
+
+Cadastro, confirmação por e-mail, login, logout, recuperação de senha, definição de nova senha e sincronização testados com conta e e-mail reais no site publicado. Fecha-se P1-05. Reabre-se P1-08 por defeito observado; abrem-se P1-14 e P3-10.
 
 ### 2026-09-09 — Controle de versão, publicação contínua e comprovação da RLS
 

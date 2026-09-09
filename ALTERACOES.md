@@ -63,6 +63,63 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-09] AUTENTICAÇÃO COMPROVADA E TRADUÇÃO DE ERROS AMPLIADA
+
+**Tipo:** correção e configuração  
+**Responsável:** Ana Luísa, com assistência de IA  
+**Ambiente:** Supabase de produção e site publicado
+
+### Problema
+
+A recuperação de senha nunca havia funcionado. A lista de *Redirect URLs* do Supabase estava vazia; nessa condição o serviço aceita somente o *Site URL* e descarta o endereço `/atualizar-senha` pedido pelo frontend. O defeito estava no painel, não no código, e por isso as correções de 15/08/2026 não o resolveram.
+
+Além disso, o dicionário de tradução de erros cobria apenas cinco mensagens do Supabase. Qualquer outra caía no texto genérico "Não foi possível concluir a operação". No teste real, tentar repetir a senha antiga produziu essa mensagem inútil, escondendo o motivo verdadeiro.
+
+### Alteração
+
+- cadastrados `https://subjetivando.netlify.app` e `https://subjetivando.netlify.app/atualizar-senha` em *Authentication → URL Configuration*, sem curinga;
+- acrescentadas ao dicionário `ERROS` as mensagens de senha repetida e de limite de envio de e-mails;
+- criada a lista `ERROS_POR_INICIO`, comparada pelo início do texto, para mensagens cujo conteúdo varia: espera por segurança e link expirado ou já usado;
+- `traduzErro` passou a consultar o dicionário exato e depois a lista por início, mantendo o texto genérico como último recurso.
+
+### Arquivos ou serviços afetados
+
+- `minha-banca.NOVO_3.html`, camada de conta;
+- `public/assets/app.js`, regenerado por `scripts/build_public.py`;
+- configuração de autenticação do Supabase.
+
+`public/index.html` e `public/assets/styles.css` não mudaram.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+As novas mensagens não revelam informação interna nem permitem enumerar contas: dizem apenas o que o próprio usuário já sabe sobre a ação que acabou de tentar.
+
+### Testes executados
+
+- fluxo real com conta e e-mail verdadeiros: cadastro, confirmação, login, logout, recuperação, nova senha e novo login: PASSOU;
+- `node --check public/assets/app.js`: PASSOU;
+- `node scripts/audit_project.mjs`: PASSOU, contagens do acervo inalteradas;
+- `build_public.py`: regenerou apenas `app.js`; `index.html` e `styles.css` mantiveram o tamanho anterior.
+
+### Itens não testados
+
+- expiração do link de recuperação por decurso de prazo;
+- comportamento ao atingir o limite de envio de e-mails do plano gratuito;
+- exibição das novas mensagens traduzidas, que só aparecem quando o erro correspondente ocorre.
+
+### Reversão
+
+`git revert` do commit correspondente, seguido de `python3 scripts/build_public.py`. No Supabase, remover as URLs cadastradas restabelece o comportamento anterior, que era defeituoso.
+
+### Pendências relacionadas
+
+- P1-05 concluída; P1-08 reaberta; P1-14 e P3-10 abertas.
+
+
 ## [2026-09-09] CONTROLE DE VERSÃO, PUBLICAÇÃO CONTÍNUA E COMPROVAÇÃO DA RLS
 
 **Tipo:** configuração, segurança e documentação  
