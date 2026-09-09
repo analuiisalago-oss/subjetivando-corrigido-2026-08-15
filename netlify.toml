@@ -1,6 +1,10 @@
 [build]
   publish = "public"
+  # Build desligado em 09/09/2026. A pasta public/ passou a ser a FONTE do site,
+  # não mais a saída de scripts/build_public.py. Se este comando voltar a existir,
+  # o deploy regenera public/ a partir de minha-banca.NOVO_3.html e apaga o design
+  # atual sem gerar erro. Ver PENDENCIAS.md, P2-06.
+  command = ""
 
 [build.processing]
   skip_processing = false
-

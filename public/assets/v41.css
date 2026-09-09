@@ -1,0 +1,609 @@
+/* UX v41 — camada final da experiência comercial de Defensorias. */
+
+html [data-mode="oab"],
+html [data-mode="tcdf"],
+html [data-sub="discursiva"] { display: none !important; }
+html body [data-pencil-name="Modo"] > [data-pencil-name="Label"],
+html body #modeToggle { display: none !important; }
+
+html body :is(button, [role="button"], input, select, textarea) {
+  transition: color .16s ease, background-color .16s ease,
+    border-color .16s ease, box-shadow .16s ease, transform .12s ease,
+    opacity .16s ease;
+}
+html body :is(button, [role="button"]):active:not(:disabled) { transform: translateY(1px); }
+html body :is(button, input, select, textarea):disabled,
+html body [aria-disabled="true"] { cursor: not-allowed; opacity: .48; box-shadow: none !important; }
+
+html body .config-panel-trigger {
+  width: 100%; min-height: 64px; justify-content: flex-start;
+  padding: 10px 14px; gap: 12px; text-align: left;
+  box-shadow: 0 8px 24px rgb(0 0 0 / .06);
+}
+html body .config-summary-copy {
+  display: flex; min-width: 0; flex: 1 1 auto; flex-direction: column; gap: 3px;
+}
+html body .config-summary-copy strong {
+  overflow: hidden; color: var(--d-text); font: 700 13px/18px var(--f-ui);
+  text-overflow: ellipsis; white-space: nowrap;
+}
+html body #configSummaryDetail {
+  overflow: hidden; color: var(--d-muted); font: 400 12px/17px var(--f-ui);
+  text-overflow: ellipsis; white-space: nowrap;
+}
+html body .config-summary-action {
+  flex: 0 0 auto; color: var(--d-accent-lt); font-size: 13px; font-weight: 700;
+}
+
+html body #modeToggle .seg-btn,
+html body #dpeProva .seg-btn,
+html body #dpeFonte .seg-btn {
+  min-height: 48px; padding: 11px 14px; border-radius: 14px;
+  background: transparent; box-shadow: none;
+}
+html body :is(#modeToggle, #dpeProva, #dpeFonte) .seg-btn:not(.active):hover {
+  background: var(--ds-surface-soft); border-color: var(--d-line-3);
+}
+html body :is(#modeToggle, #dpeProva, #dpeFonte) .seg-btn.active {
+  background: var(--d-accent-t); border-color: var(--d-ctl-border-on);
+  box-shadow: inset 3px 0 0 var(--d-accent);
+}
+html body :is(#modeToggle, #dpeProva, #dpeFonte) .seg-btn.active .seg-btn-text::after {
+  content: "  ✓"; font-weight: 800;
+}
+html body .page.idle #modeToggle .seg-btn { flex: 0 1 320px; }
+html body .page.idle #dpeSub { max-width: 900px; }
+
+html body .app-main > [data-pencil-name="Faixa Superior da Questão"] {
+  min-height: 64px; gap: 20px; padding: 10px 14px; align-items: center;
+}
+html body .question-context { min-width: 0; flex: 1 1 auto; }
+html body .question-context,
+html body .app-main > [data-pencil-name="Faixa Superior da Questão"] > :last-child {
+  display: flex; flex-direction: row; align-items: center; gap: 12px;
+}
+html body #stateLabel {
+  max-width: min(66vw, 760px); overflow: hidden; color: var(--d-muted);
+  font-size: 11px; line-height: 16px; letter-spacing: .055em;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+html body #btnRespondida,
+html body #btnPrint {
+  display: inline-flex; height: 44px; min-height: 44px; padding: 9px 14px;
+  align-items: center; justify-content: center; gap: 8px; border-radius: 9999px;
+}
+html body #btnInicio {
+  min-width: 44px; min-height: 44px; justify-content: center;
+}
+html body #btnRespondida[aria-pressed="true"]::after {
+  content: "✓"; color: var(--d-accent-lt); font-weight: 800;
+}
+
+html body .app-main,
+html body #espelhoPanel,
+html body #pistasPanel,
+html body .banca-card,
+html body .modelo-card,
+html body .avalia-card { min-width: 0; }
+html body .page:not(.idle) .app-main > :is(
+  [data-pencil-name="Faixa Superior da Questão"],
+  [data-pencil-name="Corpo da Questão"], #pistasPanel, #espelhoPanel, #diaCard
+) { width: min(100%, 960px); margin-inline: auto; }
+html body .app-main [data-pencil-name="Background+Border+Shadow"] {
+  min-height: 0 !important; height: auto !important; padding: clamp(20px, 3vw, 32px);
+}
+html body #topicCard { min-height: 0; height: auto; overflow: visible !important; }
+html body #topicCard :is(.topic-text, .enunciado-text),
+html body #modeloText,
+html body #espelhoText,
+html body .estrutura-text {
+  max-width: 68ch; font-size: clamp(17px, 1.35vw, 20px); line-height: 1.68;
+  text-align: left; text-wrap: pretty; overflow-wrap: break-word;
+}
+html body #modeloText,
+html body #espelhoText,
+html body .estrutura-text { font-size: 16px; line-height: 1.75; }
+
+html body .page:not(.idle) [data-pencil-name="HorizontalBorder"] {
+  grid-template-columns: max-content minmax(190px, 1fr) max-content max-content;
+  grid-template-areas: "review time draw note";
+  max-width: 100%; padding-top: 18px; column-gap: 10px; row-gap: 10px;
+}
+html body #drawActions .btn,
+html body #espelhoActions .btn,
+html body #btnNotaToggle {
+  display: inline-flex; height: 44px; min-height: 44px; padding-block: 0;
+  align-items: center; border-radius: 14px; font-size: 13px; line-height: 18px;
+  letter-spacing: 0; text-transform: none;
+}
+html body #drawActions { display: flex; }
+html body #drawActions #btnRedraw { order: 2; }
+html body #drawActions #btnStart { order: 1; }
+html body #drawActions #btnRedraw.btn { background: transparent; }
+html body #btnToggleEspelho.btn { background: var(--d-inset); color: var(--d-text); }
+html body .answer-availability {
+  grid-area: review; max-width: 34ch; margin: 0; color: var(--d-muted);
+  font: 12px/1.45 var(--f-ui);
+}
+
+html body #timerBlock {
+  position: sticky; top: 76px; z-index: 4; min-height: 112px;
+  padding: 10px 16px; border-radius: 18px;
+  background: color-mix(in srgb, var(--d-surface) 94%, transparent);
+  box-shadow: 0 14px 34px rgb(0 0 0 / .16); backdrop-filter: blur(16px);
+}
+html body #timerBlock #ring {
+  width: 112px; height: 112px; flex-basis: 112px; margin: -10px;
+  transform: scale(.66);
+}
+html body #timerBlock > [data-pencil-name="Margin"] {
+  width: min(100%, 360px); flex-basis: 360px;
+}
+html body .timer-feedback {
+  position: absolute; left: 126px; bottom: 13px; margin: 0;
+  color: var(--d-muted); font: 12px/16px var(--f-ui);
+}
+
+html body #notaPanel { padding-top: 20px; border-top: 1px solid var(--d-line-2); }
+html body #notaInput { min-height: 112px; height: auto; resize: vertical; }
+html body #notaStatus:not(:empty) {
+  display: inline-flex; min-height: 32px; align-items: center; padding: 6px 10px;
+  border: 1px solid var(--d-line-2); border-radius: 9999px;
+  background: var(--ds-surface-soft); color: var(--d-text-2); font: 12px/18px var(--f-ui);
+}
+
+html #homeScreen #cardTreino { min-height: 224px; }
+html #homeScreen > section:last-child { margin-top: 24px; }
+html #homeScreen #ultimaAtividade { min-height: 72px; }
+html body .drawer-nav { gap: 6px; }
+html body .drawer-group-label {
+  width: 100%; margin: 14px 0 2px; color: var(--d-muted);
+  font: 700 11px/16px var(--f-ui); letter-spacing: .09em; text-transform: uppercase;
+}
+html body .drawer-nav .drawer-group-label:first-child { margin-top: 0; }
+html body .drawer-nav .btn { min-height: 44px; padding: 11px 14px; }
+html body #btnDrawIdle {
+  width: fit-content; min-width: 152px; min-height: 44px; padding: 0 20px;
+  align-items: center; justify-content: center; gap: 10px;
+  border: 1px solid transparent; border-radius: 14px;
+  background: var(--d-accent); color: var(--d-on-accent);
+  font: 700 13px/18px var(--f-ui); box-shadow: 0 8px 20px rgb(0 0 0 / .10);
+}
+html body #btnDrawIdle > [data-pencil-name$=":shadow"] { display: none; }
+html body #btnDrawIdle [data-pencil-name="Text"] {
+  color: inherit; font-size: 13px; line-height: 18px; letter-spacing: 0;
+}
+
+/* Barra e rodapé independentes das utilidades carregadas por CDN. */
+html body .topbar-keep {
+  display: flex !important; height: 72px !important; min-height: 72px !important;
+  align-items: center; justify-content: space-between; gap: 20px;
+  padding: 0 24px !important;
+}
+html body .topbar-keep > [data-pencil-name$=":shadow"] {
+  position: absolute; inset: 0; width: 100% !important; height: 100% !important;
+  pointer-events: none;
+}
+html body .topbar-keep > div:nth-child(2),
+html body .topbar-keep > div:last-child {
+  display: flex; align-items: center; gap: 12px;
+}
+html body .topbar-keep #btnHome {
+  display: flex; min-width: 150px; min-height: 44px; align-items: center;
+  justify-content: center; gap: 10px;
+}
+html body #btnHome > [data-pencil-name="Background"] {
+  display: flex; width: 34px; height: 34px; align-items: center;
+  justify-content: center; padding: 7px; border-radius: 10px;
+}
+html body #btnHome [data-pencil-name="Heading 1"],
+html body #btnHome [data-pencil-name="Text"] { display: block; }
+html body #btnHome [data-pencil-name="Text"] {
+  color: #fff; font-size: 18px; line-height: 24px; font-weight: 700;
+}
+html body .topbar-keep #btnInicio,
+html body .topbar-keep #tbBadgeWrap,
+html body .topbar-keep #tbPainel { min-height: 44px; justify-content: center; }
+html body .topbar-keep :is(#btnInicio, #tbBadge, #tbPainel [data-pencil-name="Text"]) {
+  color: rgb(255 255 255 / .72); font-size: 11px; letter-spacing: .08em;
+}
+html body footer { display: flex; min-height: 88px; padding: 28px 24px; }
+html body footer > [data-pencil-name="Container"] {
+  display: flex; width: 100%; align-items: center; justify-content: space-between;
+}
+html body footer [data-pencil-name="Img"] { width: 18px; height: 18px; }
+html body footer [data-pencil-name="Img"] img { width: 100%; height: 100%; display: block; }
+
+@media (max-width: 760px) {
+  html body .topbar-keep { height: 64px !important; min-height: 64px !important; padding: 0 12px !important; }
+  html body .topbar-keep > div:nth-child(2) { min-width: 44px; }
+  html body .topbar-keep #btnHome {
+    position: absolute; left: 50%; top: 50%; min-width: auto;
+    transform: translate(-50%, -50%);
+  }
+  html body #btnHome > [data-pencil-name="Background"] { display: none; }
+  html body #btnHome [data-pencil-name="Text"] { font-size: 17px; }
+  html body footer { min-height: 72px; padding: 22px 16px; }
+  html body #idleDraw,
+  html body #btnDrawIdle { width: 100%; }
+  html body .config-panel-trigger { min-height: 72px; flex-wrap: wrap; }
+  html body .config-summary-copy { flex-basis: calc(100% - 32px); }
+  html body .config-summary-action { order: 3; }
+  html body .config-panel-chevron { margin-left: auto; }
+  html body .app-main > [data-pencil-name="Faixa Superior da Questão"] {
+    align-items: flex-start; flex-direction: column;
+  }
+  html body .app-main > [data-pencil-name="Faixa Superior da Questão"] > :last-child {
+    width: 100%; justify-content: flex-start; flex-wrap: wrap;
+  }
+  html body #stateLabel { max-width: calc(100vw - 64px); white-space: normal; }
+  html body .page:not(.idle) [data-pencil-name="HorizontalBorder"] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "time" "draw" "review" "note";
+  }
+  html body #drawActions,
+  html body #espelhoActions { grid-template-columns: minmax(0, 1fr); }
+  html body #drawActions .btn,
+  html body #espelhoActions .btn { width: 100%; }
+  html body #timerBlock {
+    top: 68px; flex-direction: row; justify-content: space-between; gap: 8px;
+  }
+  html body #timerBlock > [data-pencil-name="Margin"] { width: auto; flex: 1 1 auto; }
+  html body #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+    grid-template-columns: repeat(3, minmax(44px, 1fr)); gap: 6px;
+  }
+  html body #btnPauseResume,
+  html body #btnReset,
+  html body #btnSomCirculo { padding-inline: 6px; }
+  html body #timerBlock #ring {
+    width: 94px; height: 94px; flex-basis: 94px; margin: -14px; transform: scale(.58);
+  }
+  html body .timer-feedback { left: 96px; bottom: 7px; font-size: 11px; }
+}
+
+@media (max-width: 420px) {
+  html body .page { padding: 12px; }
+  html body .app-main [data-pencil-name="Background+Border+Shadow"] { padding: 18px; }
+  html body #timerBlock { padding: 8px 10px; }
+  html body #timerBlock #ring { margin-left: -19px; margin-right: -23px; }
+  html body #btnPauseResume::after,
+  html body #btnReset::after,
+  html body #btnSomCirculo::after { display: none; }
+  html body .timer-feedback { left: 72px; max-width: 100px; }
+}
+
+/* ========================================================================
+   Refinamento v41.1 — texto como protagonista e timer lateral
+   ======================================================================== */
+
+/* Usa melhor a largura disponível e mantém o conteúdo ancorado no mesmo
+   eixo, em vez de criar uma sucessão de caixas estreitas centralizadas. */
+html body .page:not(.idle) .app-main > :is(
+  [data-pencil-name="Faixa Superior da Questão"],
+  [data-pencil-name="Corpo da Questão"],
+  #pistasPanel,
+  #espelhoPanel,
+  #diaCard
+) {
+  width: min(100%, 1280px);
+  max-width: 1280px;
+  margin-inline: auto;
+}
+html body #topicCard :is(.topic-text, .enunciado-text) {
+  width: 100%; max-width: none; margin-inline: 0;
+}
+html body :is(#modeloText, #espelhoText, .estrutura-text) {
+  width: 100%; max-width: none; margin-inline: 0;
+}
+html body :is(.modelo-card, .banca-card, .avalia-card) {
+  width: 100%; align-items: stretch;
+}
+
+/* Sorteio é uma ação de contexto e fica junto ao estado da questão. */
+html body .question-top-actions { display: flex; align-items: center; }
+html body .question-top-actions:empty { display: none; }
+html body .question-top-actions #btnRedraw {
+  min-height: 44px; padding: 9px 16px; border: 1px solid var(--d-ctl-border);
+  border-radius: 9999px; background: transparent; color: var(--d-text);
+  font: 700 13px/18px var(--f-ui); white-space: nowrap;
+}
+html body .question-top-actions #btnRedraw:hover {
+  border-color: var(--d-ctl-border-on); background: var(--d-accent-t);
+}
+
+/* Antes do início: duração, início, resposta e anotação, nessa ordem. */
+html body .page:not(.idle):not(.timer-active) [data-pencil-name="HorizontalBorder"] {
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) max-content max-content max-content;
+  grid-template-areas: "time draw review note";
+  justify-content: start;
+  align-items: end;
+  gap: 10px;
+}
+html body .page:not(.idle):not(.timer-active) #questionTime { grid-area: time; }
+html body .page:not(.idle):not(.timer-active) #drawActions { grid-area: draw; }
+html body .page:not(.idle):not(.timer-active) #espelhoActions { grid-area: review; }
+html body .page:not(.idle):not(.timer-active) #btnNotaToggle { grid-area: note; }
+html body .page:not(.idle):not(.timer-active) #drawActions #btnStart { order: initial; }
+
+/* Durante a contagem, o timer ocupa uma coluna discreta à esquerda. */
+html body .page.timer-active [data-pencil-name="Corpo da Questão"] {
+  display: grid;
+  grid-template-columns: 176px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+html body .page.timer-active #timerBlock {
+  grid-column: 1;
+  position: sticky;
+  top: 88px;
+  width: 176px;
+  min-height: 0;
+  padding: 16px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 12px;
+  border-radius: 18px;
+}
+html body .page.timer-active [data-pencil-name="Background+Border+Shadow"] {
+  grid-column: 2;
+  width: 100%;
+}
+html body .page.timer-active #timerBlock > [data-pencil-name$=":shadow"] {
+  position: absolute; inset: 0; width: 100% !important; height: 100% !important;
+  pointer-events: none;
+}
+html body .page.timer-active #timerBlock #ring {
+  width: 104px; height: 104px; flex: 0 0 104px;
+  align-self: center; margin: -8px; transform: scale(.64);
+}
+html body .page.timer-active #timerBlock > [data-pencil-name="Margin"] {
+  width: 100%; max-width: none; flex: 0 0 auto; padding: 0;
+}
+html body .page.timer-active #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+  display: grid; grid-template-columns: 1fr; gap: 8px;
+}
+html body .page.timer-active :is(#btnPauseResume, #btnReset, #btnSomCirculo) {
+  width: 100%; min-width: 0; height: 44px; padding: 0 10px;
+  justify-content: center; gap: 7px; border-radius: 12px;
+  font-size: 12px; line-height: 16px;
+}
+html body .page.timer-active #btnSomCirculo::after {
+  content: attr(data-label);
+}
+html body .page.timer-active .timer-feedback {
+  position: static; order: 3; max-width: none; margin: 0;
+  color: var(--d-muted); font: 11px/16px var(--f-ui); text-align: center;
+}
+
+/* Com o timer ativo, restam resposta e anotação abaixo do enunciado. */
+html body .page.timer-active [data-pencil-name="HorizontalBorder"] {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+html body .page.timer-active #espelhoActions { order: 1; }
+html body .page.timer-active #btnNotaToggle { order: 2; }
+html body .page.timer-active #questionTime,
+html body .page.timer-active #drawActions { display: none; }
+html body .page.timer-active ~ #pistasPanel,
+html body .page.timer-active ~ #espelhoPanel { margin-left: auto; }
+
+/* O cartão principal acompanha a altura combinada das duas ações secundárias,
+   eliminando o poço vazio antes da área de atividade. */
+@media (min-width: 1024px) {
+  html #homeScreen #cardTreino {
+    align-self: stretch;
+    min-height: 0;
+    height: 100%;
+  }
+
+  html #homeScreen > .grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.28fr) minmax(320px, .72fr) !important;
+    grid-template-rows: repeat(2, minmax(0, auto));
+    gap: 16px 20px !important;
+    align-items: stretch;
+  }
+
+  html #homeScreen #cardTreino {
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+
+  html #homeScreen #cardAnotacoes {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  html #homeScreen #cardHistorico {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+
+/* ========================================================================
+   Refinamento v41.2 — mais área útil e timer alinhado ao enunciado
+   ======================================================================== */
+
+@media (min-width: 1024px) {
+  html body .page:not(.idle) .app-main > :is(
+    [data-pencil-name="Faixa Superior da Questão"],
+    [data-pencil-name="Corpo da Questão"],
+    #pistasPanel,
+    #espelhoPanel,
+    #diaCard
+  ) {
+    width: calc(100% - 48px);
+    max-width: 1600px;
+  }
+}
+
+/* Ação secundária importante: preenchimento botânico, sem competir com o CTA
+   de início do cronômetro que permanece como ação principal do fluxo. */
+html body .question-top-actions #btnRedraw {
+  border-color: transparent;
+  background: var(--d-accent);
+  color: var(--d-on-accent);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--d-accent) 24%, transparent);
+}
+html body .question-top-actions #btnRedraw:hover {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--d-accent) 88%, var(--d-text));
+  transform: translateY(-1px);
+}
+html body .question-top-actions #btnRedraw:active { transform: translateY(0); }
+
+/* Geometria autossuficiente do anel: não depende das dimensões utilitárias
+   presentes no HTML exportado. */
+html body #ring {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px !important;
+  background: var(--d-track);
+}
+html body #ring::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 9999px !important;
+  background: var(--d-surface);
+  z-index: 3;
+}
+html body #ring > [data-pencil-name="Background"] {
+  position: relative;
+  inset: auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  background: transparent;
+  z-index: 4;
+}
+html body #ring > [data-pencil-name="Trilha do Cronômetro"],
+html body #ringProgress {
+  position: absolute;
+  inset: 0;
+  width: 140px;
+  height: 140px;
+  border-radius: 9999px !important;
+}
+html body #ring > [data-pencil-name="Trilha do Cronômetro"] {
+  background: var(--d-track);
+  z-index: 1;
+}
+html body #ringProgress {
+  clip-path: none;
+  z-index: 2;
+}
+
+@media (min-width: 761px) {
+  html body .page.timer-active [data-pencil-name="Corpo da Questão"] {
+    grid-template-columns: 192px minmax(0, 1fr);
+  }
+
+  html body .page.timer-active [data-pencil-name="Corpo da Questão"] {
+    align-items: stretch;
+  }
+
+  html body .page.timer-active #timerBlock {
+    width: 192px;
+    height: 100%;
+    padding: 12px;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  /* O export trazia um círculo de 140 px dentro de uma caixa reduzida, o que
+     deslocava visualmente o aro. Mantemos a geometria original e reduzimos o
+     conjunto inteiro a partir do centro. */
+  html body .page.timer-active #timerBlock #ring {
+    width: 140px;
+    height: 140px;
+    flex-basis: 140px;
+    margin: -25px;
+    transform: scale(.64);
+    transform-origin: center;
+  }
+
+  html body .page.timer-active #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  html body .page.timer-active :is(#btnPauseResume, #btnReset, #btnSomCirculo) {
+    height: 38px;
+    padding-inline: 6px;
+    gap: 5px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  html body .page.timer-active #btnReset > * { display: none; }
+  html body .page.timer-active #btnSomCirculo { grid-column: 1 / -1; }
+}
+
+@media (max-width: 900px) {
+  html body .page:not(.idle):not(.timer-active) [data-pencil-name="HorizontalBorder"] {
+    grid-template-columns: minmax(220px, 1fr) max-content;
+    grid-template-areas: "time draw" "review note";
+  }
+  html body .page.timer-active [data-pencil-name="Corpo da Questão"] {
+    grid-template-columns: 152px minmax(0, 1fr);
+    gap: 16px;
+  }
+  html body .page.timer-active #timerBlock { width: 152px; padding: 12px; }
+  html body .page.timer-active :is(#btnPauseResume, #btnReset, #btnSomCirculo) {
+    padding-inline: 6px; font-size: 11px;
+  }
+}
+
+@media (max-width: 760px) {
+  html body .page:not(.idle):not(.timer-active) [data-pencil-name="HorizontalBorder"] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "time" "draw" "review" "note";
+    align-items: stretch;
+  }
+  html body .page:not(.idle):not(.timer-active) :is(#drawActions, #espelhoActions) {
+    width: 100%; display: block;
+  }
+  html body .page:not(.idle):not(.timer-active) :is(#drawActions, #espelhoActions) .btn {
+    width: 100%;
+  }
+  html body .page.timer-active [data-pencil-name="Corpo da Questão"] {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  html body .page.timer-active #timerBlock {
+    position: sticky; top: 68px; width: 100%; padding: 10px 12px;
+    flex-direction: row; align-items: center; gap: 8px;
+  }
+  html body .page.timer-active #timerBlock #ring {
+    width: 84px; height: 84px; flex-basis: 84px; margin: -14px;
+    transform: scale(.54);
+  }
+  html body .page.timer-active #timerBlock > [data-pencil-name="Margin"] { flex: 1 1 auto; }
+  html body .page.timer-active #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+    grid-template-columns: repeat(3, minmax(44px, 1fr)); gap: 6px;
+  }
+  html body .page.timer-active #timerBlock .timer-feedback { display: none; }
+  html body .question-top-actions #btnRedraw { padding-inline: 12px; }
+}
+
+@media (max-width: 420px) {
+  html body .page.timer-active :is(#btnPauseResume, #btnReset) {
+    font-size: 0;
+  }
+  html body .page.timer-active #btnPauseResume > *,
+  html body .page.timer-active #btnReset > * { font-size: initial; }
+  html body .page.timer-active #btnSomCirculo::after {
+    display: inline; font-size: 10px;
+  }
+}

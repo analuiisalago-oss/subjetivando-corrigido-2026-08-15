@@ -6,9 +6,12 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE = path.join(ROOT, 'minha-banca.NOVO_3.html');
 const PUBLIC = path.join(ROOT, 'public');
-const html = fs.readFileSync(SOURCE, 'utf8');
+// Desde 09/09/2026 a pasta public/ é a FONTE do site. Antes desta data o script
+// auditava minha-banca.NOVO_3.html, que agora está congelada no design anterior:
+// auditá-la passaria a descrever um arquivo que não é mais publicado.
+const html = fs.readFileSync(path.join(PUBLIC, 'assets', 'app.js'), 'utf8');
+const markup = fs.readFileSync(path.join(PUBLIC, 'index.html'), 'utf8');
 const failures = [];
 
 function extractLiteral(name) {
@@ -74,7 +77,7 @@ for (const [name, amount] of Object.entries(expected)) {
   if (actual !== amount) failures.push(`${name}: esperado ${amount}, encontrado ${actual}`);
 }
 
-const staticMarkup = html
+const staticMarkup = markup
   .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
   .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '');
 const ids = [...staticMarkup.matchAll(/\sid=["']([^"']+)["']/g)].map((match) => match[1]);
@@ -87,6 +90,7 @@ const expectedPublic = [
   '_redirects',
   'assets/app.js',
   'assets/styles.css',
+  'assets/v41.css',
   'index.html',
   'robots.txt',
 ];

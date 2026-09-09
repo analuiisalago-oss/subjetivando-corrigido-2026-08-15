@@ -49,7 +49,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter%3Awght%40100..900&family=Lora%3Awght%40400..700&family=Plus+Jakarta+Sans%3Awght%40200..800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="stylesheet" href="/assets/styles.css?v=design-preview-41" />
+    <link rel="stylesheet" href="/assets/v41.css?v=approval-v41" />
   </head>
   <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -112,7 +113,7 @@
               data-pencil-name="Text"
               class="text-[10px]/[15px] box-border text-[#ffffff80] font-[Inter,system-ui,sans-serif] font-normal tracking-[4px] text-left [white-space:nowrap]"
             >
-              VOLTAR AO INÍCIO
+              Voltar ao início
             </div>
           </button>
           <div
@@ -180,7 +181,7 @@
           </button>
           <div
             data-pencil-name="Container"
-            class="box-border w-fit shrink-0 h-fit flex flex-row gap-[15.99px] justify-start items-center"
+            class="legacy-profile box-border w-fit shrink-0 h-fit flex flex-row gap-[15.99px] justify-start items-center"
           >
             <div
               data-pencil-name="Container"
@@ -237,11 +238,11 @@
               <div class="w-14 h-14 bg-botanic-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-botanic-primary/20 transition-colors">
                 <i class="fa-solid fa-play text-2xl text-botanic-primary" aria-hidden="true"></i>
               </div>
-              <h3 class="font-brand text-3xl text-botanic-text font-semibold mb-3">Iniciar Treino</h3>
+              <h3 id="treinoCardTitle" class="font-brand text-3xl text-botanic-text font-semibold mb-3">Configurar treino</h3>
               <p class="text-sm text-botanic-sage/70 leading-relaxed font-sans">Configure seu simulador, escolha os temas e comece sua prática personalizada.</p>
             </div>
             <div class="flex items-center gap-2 text-botanic-primaryHigh font-semibold text-[10px] uppercase tracking-widest mt-6 font-sans">
-              Acessar Configuração <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+              <span id="treinoCardCta">Configurar treino</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
             </div>
           </button>
 
@@ -255,7 +256,7 @@
               <p class="text-sm text-botanic-sage/70 leading-relaxed font-sans">Gerencie suas notas e revisões de questões treinadas anteriormente.</p>
             </div>
             <div class="flex items-center gap-2 text-botanic-sage font-semibold text-[10px] uppercase tracking-widest mt-6 font-sans">
-              <span id="resumoAnotacoes">Abrir Central</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+              <span id="resumoAnotacoes">Abrir central</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
             </div>
           </button>
 
@@ -269,7 +270,7 @@
               <p class="text-sm text-botanic-sage/70 leading-relaxed font-sans">Acompanhe seu progresso global e revisite simulados finalizados.</p>
             </div>
             <div class="flex items-center gap-2 text-botanic-text/50 font-semibold text-[10px] uppercase tracking-widest mt-6 font-sans">
-              <span id="resumoHistorico">Ver Status Global</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+              <span id="resumoHistorico">Ver status global</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
             </div>
           </button>
         </div>
@@ -315,6 +316,19 @@
           data-pencil-name="Aside - PAINEL DE CONTROLE (Sticky Sidebar)"
           class="app-aside box-border w-[300px] shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
         >
+          <input
+            type="checkbox"
+            id="configPanelToggle"
+            class="config-panel-toggle"
+          />
+          <label for="configPanelToggle" class="config-panel-trigger">
+            <span class="config-summary-copy">
+              <strong id="configSummaryTitle">Defensorias · Prova oral</strong>
+              <span id="configSummaryDetail">Temas do edital · Todas as disciplinas · 5 min</span>
+            </span>
+            <span class="config-summary-action">Alterar configuração</span>
+            <span class="config-panel-chevron" aria-hidden="true">⌄</span>
+          </label>
           <div
             data-pencil-name="Background+Border"
             class="box-border w-full h-fit shrink-0 flex flex-col gap-[32px] p-[32px] justify-start items-start bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px] relative"
@@ -375,7 +389,7 @@
                         data-pencil-name="Text"
                         class="seg-btn-text text-[12px]/[16px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal text-left"
                       >
-                        Treino DPEs
+                        Defensorias
                       </div>
                     </div>
                     <div
@@ -400,6 +414,9 @@
                     type="button"
                     aria-pressed="false"
                     data-mode="oab"
+                    hidden
+                    aria-hidden="true"
+                    tabindex="-1"
                     data-pencil-name="Button"
                     class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
                   >
@@ -436,6 +453,9 @@
                     type="button"
                     aria-pressed="false"
                     data-mode="tcdf"
+                    hidden
+                    aria-hidden="true"
+                    tabindex="-1"
                     data-pencil-name="Button"
                     class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
                   >
@@ -539,6 +559,9 @@
                     type="button"
                     aria-pressed="false"
                     data-sub="discursiva"
+                    hidden
+                    aria-hidden="true"
+                    tabindex="-1"
                     data-pencil-name="Button"
                     class="seg-btn box-border w-full h-fit shrink-0 flex flex-row gap-[16px] p-[16px] justify-between items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
                   >
@@ -882,29 +905,6 @@
                 </div>
               </div>
               <div
-                data-pencil-name="Tempo"
-                class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] justify-start items-start"
-              >
-                <div
-                  data-pencil-name="Label"
-                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
-                >
-                  <label
-                    for="timeSlider"
-                    data-pencil-name="TEMPO"
-                    id="timeLabel"
-                    class="text-[10px]/[15px] box-border w-full text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-left"
-                  >
-                    TEMPO
-                  </label>
-                </div>
-                <div
-                  data-pencil-name="Container"
-                  id="timeToggle"
-                  class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative"
-                ></div>
-              </div>
-              <div
                 data-pencil-name="Container"
                 id="idleDraw"
                 class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
@@ -934,7 +934,7 @@
                     data-pencil-name="Text"
                     class="text-[10px]/[15px] box-border text-[#121614ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-center [white-space:nowrap] relative [z-index:2]"
                   >
-                    NOVO TEMA
+                    Novo tema
                   </div>
                 </button>
               </div>
@@ -949,30 +949,10 @@
             data-pencil-name="Faixa Superior da Questão"
             class="box-border w-full h-fit shrink-0 [box-shadow:0px_1px_1.75px_0px_#0000000d] flex flex-row gap-[446.26px] p-[24px] justify-between items-center bg-[#1e2420ff] [border:1px_solid_#88b7990d] rounded-[24px]"
           >
-            <div
-              data-pencil-name="Container"
-              class="box-border w-fit shrink-0 h-fit flex flex-row gap-[16px] justify-start items-center"
-            >
               <div
-                data-pencil-name="Overlay+Border"
-                class="box-border w-fit shrink-0 h-fit flex flex-row gap-0 p-[6px_12px] justify-start items-center bg-[#12161480] [border:1px_solid_#88b7991a] rounded-[9999px]"
+                data-pencil-name="Container"
+                class="question-context box-border w-fit shrink-0 h-fit flex flex-row gap-[16px] justify-start items-center"
               >
-                <div
-                  data-pencil-name="Container"
-                  class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
-                >
-                  <div
-                    data-pencil-name="Text"
-                    class="text-[10px]/[15px] box-border text-[#88b799ff] font-[Inter,system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-                  >
-                    QUESTÃO ID: #4402
-                  </div>
-                </div>
-              </div>
-              <div
-                data-pencil-name="Vertical Divider"
-                class="box-border w-[1px] shrink-0 h-[16px] bg-[#88b79933]"
-              ></div>
               <div
                 data-pencil-name="Container"
                 class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 justify-start items-start"
@@ -998,8 +978,7 @@
                 <button
                   type="button"
                   id="btnRespondida"
-                  aria-haspopup="true"
-                  aria-expanded="false"
+                  aria-pressed="false"
                   data-pencil-name="Button"
                   class="status-pill box-border w-fit h-fit shrink-0 flex flex-row gap-[8px] p-[8px_16px] justify-start items-center bg-[#38a3721a] [border:1px_solid_#38a3724d] rounded-[9999px]"
                 >
@@ -1021,20 +1000,9 @@
                   >
                     NÃO RESPONDIDA
                   </div>
-                  <div
-                    data-pencil-name="Margin"
-                    class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[2px_0px_2px_8px] justify-start items-start"
-                  >
-                    <div data-pencil-name="Img" class="box-border w-[8px] h-[8px] shrink-0 relative">
-                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABBElEQVR4AeyQTYrCUBCEWzOeYRgGRsksnDPIuBZExPu4caEXciG4j4InUFQeggvxDPGvvgT/yBMXbg1dvOrq6kry8vbi8w4wS+6g7joTYdp0vc9nd4pH3pkQ4U0CRDj/drl4VFv1vtR7q7HufuPRsCwEQvoFH1ZoqHF2tN/gEEcY1d8V2iHejfBo4LTT0pkG9MP2VkJFghNCjCyIJwVHU1MUWK6wI54GQBBuQoossAjg8mSWpV0DaM4hObOlekIiLY/hwoIX4BG/FJd3aSAYAiv8i/M7JZ0/Ap9dZSZ+V5kAphj3+SRkrn4ORxPPlDcA17DU3gzCThnA0Xx4GOAz+7SXA04AAAD//94qBawAAAAGSURBVAMA6FhvIWkKGocAAAAASUVORK5CYII=" alt="" class="w-full h-full block" />
-                    </div>
-                  </div>
                 </button>
-                <div class="print-menu" id="respondidaMenu" role="menu">
-                  <button type="button" role="menuitem" data-resp="1">Respondida<small>Você já treinou esta questão</small></button>
-                  <button type="button" role="menuitem" data-resp="0">Não respondida<small>Ainda quer voltar a ela</small></button>
-                </div>
               </div>
+              <div id="questionTopActions" class="question-top-actions" aria-label="Ações da questão"></div>
               <div
                 data-pencil-name="Impressão"
                 id="printWrap"
@@ -1064,7 +1032,7 @@
                     data-pencil-name="Text"
                     class="text-[10px]/[15px] box-border text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-center [white-space:nowrap]"
                   >
-                    IMPRIMIR / PDF
+                    Imprimir / PDF
                   </div>
                 </button>
                 <div class="print-menu" id="printMenu" role="menu">
@@ -1166,6 +1134,25 @@
                       class="btn primary box-border w-fit shrink-0 h-fit flex flex-row gap-[12px] p-[12px_24px] justify-start items-center bg-[#38a372ff] rounded-[16px]"
                     >Ver espelho</button>
                   </div>
+                  <p id="answerAvailability" class="answer-availability" role="status" aria-live="polite" hidden></p>
+                  <div
+                    data-pencil-name="Tempo"
+                    id="questionTime"
+                    class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start"
+                  >
+                    <div data-pencil-name="Label" class="sr-only">
+                      <label
+                        for="timeSlider"
+                        data-pencil-name="TEMPO"
+                        id="timeLabel"
+                      >TEMPO</label>
+                    </div>
+                    <div
+                      data-pencil-name="Container"
+                      id="timeToggle"
+                      class="box-border w-full h-fit shrink-0 flex flex-col gap-0 justify-start items-start relative"
+                    ></div>
+                  </div>
                   <div
                     data-pencil-name="Ações do Sorteio"
                     class="box-border w-fit shrink-0 h-fit flex flex-row gap-[16px] justify-start items-center"
@@ -1198,7 +1185,7 @@
                         data-pencil-name="Text"
                         class="nota-rotulo text-[10px]/[15px] box-border text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-center [white-space:nowrap]"
                       >
-                        INCLUIR ANOTAÇÃO
+                        Incluir anotação
                       </div>
                       <span class="nota-ponto" aria-hidden="true"></span>
                     </button>
@@ -1223,7 +1210,7 @@
                         data-pencil-name="Text"
                         class="text-[10px]/[15px] box-border text-[#e2e8e4ff] font-[Inter,system-ui,sans-serif] font-semibold tracking-[1px] text-center [white-space:nowrap]"
                       >
-                        IR PARA MINHAS ANOTAÇÕES
+                        Ir para minhas anotações
                       </div>
                     </button>
                   </div>
@@ -1369,6 +1356,7 @@
                   >Novo tema</button>
                 </div>
               </div>
+              <p id="timerFeedback" class="timer-feedback" role="status" aria-live="polite">Cronômetro pronto.</p>
             </div>
           </div>
           <div
@@ -1669,20 +1657,16 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
         </div>
         <div
           data-pencil-name="Container"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] justify-start items-start"
+          class="drawer-nav box-border w-full h-fit shrink-0 flex flex-col gap-[12px] justify-start items-start"
         >
+          <p class="drawer-group-label">Preferências</p>
           <button
             type="button"
             id="btnTheme"
             data-pencil-name="Button"
             class="btn ghost box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px] justify-start items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
           >Tema claro</button>
-          <button
-            type="button"
-            id="btnAbout"
-            data-pencil-name="Button"
-            class="btn ghost box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px] justify-start items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
-          >Sobre a plataforma</button>
+          <p class="drawer-group-label">Recursos de estudo</p>
           <button
             type="button"
             id="btnManage"
@@ -1702,6 +1686,13 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
             data-pencil-name="Button"
             class="btn ghost box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px] justify-start items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
           >Aviso sonoro: ligado</button>
+          <p class="drawer-group-label">Informações</p>
+          <button
+            type="button"
+            id="btnAbout"
+            data-pencil-name="Button"
+            class="btn ghost box-border w-full h-fit shrink-0 flex flex-row gap-[12px] p-[16px] justify-start items-center bg-[#1216144d] [border:1px_solid_#88b7991a] rounded-[16px]"
+          >Sobre a plataforma</button>
         </div>
         <div
           data-pencil-name="Container"
@@ -1814,12 +1805,8 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
           <p><strong>Simule a banca, controle o tempo e domine o padrão de resposta.</strong></p>
           <p><strong>O problema.</strong> Quem se prepara para provas orais e discursivas estuda muito conteúdo — mas treina pouco a performance. A prova real tem sorteio de tema, pressão de tempo, arguição encadeada e um padrão de resposta que a banca espera. Estudar em PDF não reproduz nada disso.</p>
           <p><strong>A solução.</strong> O Subjetivando transforma materiais reais de prova — editais, espelhos oficiais, perguntas efetivamente feitas por examinadores — em um simulador de banca: você sorteia, cronometra, responde e se autoavalia pelo critério oficial.</p>
-          <h3>Treino DPEs (prova oral)</h3>
+          <h3>Defensorias — prova oral</h3>
           <p><em>Temas do edital</em>: 199 tópicos oficiais em 16 áreas. <em>Questões passadas</em>: 750 perguntas reais de banca em 10 matérias — incluindo as 150 da oral DPE-BA 2022 — a maioria com resposta fundamentada, revelada só quando você quiser. Inclui o card “Como é o dia da banca”, com a dinâmica real relatada por candidatos.</p>
-          <h3>Treino OAB (2ª fase — Penal)</h3>
-          <p>55 enunciados oficiais de 11 exames (peças e questões FGV). Para cada item: pistas de leitura que ensinam a decifrar o enunciado sem entregar a resposta, modelo didático de como estruturar a redação, gabarito comentado oficial e autoavaliação interativa com os quesitos e pontuações reais da banca — com total e percentual calculados automaticamente.</p>
-          <h3>Treino TCDF (discursiva)</h3>
-          <p><em>Revisão livre</em>: 55 temas do edital em 5 matérias. <em>Prova discursiva</em>: 37 enunciados dissertativos no estilo da banca, cada um atravessando vários subtópicos do edital.</p>
           <h3>Ferramentas</h3>
           <p>Sorteio que evita repetições até esgotar o banco; cronômetro visual com pausa, retomada e reinício; temas próprios salvos no navegador; tema claro/escuro; impressão A4 em rascunho ou folha pautada.</p>
           <p><strong>Por que funciona.</strong> Prática de recuperação (responder de memória), pressão de tempo calibrada e feedback imediato pelo critério oficial — o ciclo completo do treino deliberado, repetido até a excelência virar hábito.</p>
@@ -1960,6 +1947,7 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
 
         <!-- ENTRAR -->
         <form id="authFormLogin" class="auth-view" role="tabpanel" aria-labelledby="authTabEntrar" novalidate>
+          <p class="auth-ajuda">Sem entrar, seus treinos continuam salvos apenas neste dispositivo.</p>
           <div class="auth-campo">
             <label for="authEmailLogin" class="auth-label">E-mail</label>
             <div class="auth-input-wrap">
@@ -2051,7 +2039,7 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
 
     <!-- Folha de impressão -->
     <div id="printDoc" aria-hidden="true"></div>
-        <script src="/assets/app.js"></script>
+        <script src="/assets/app.js?v=approval-v41"></script>
 
   </body>
 </html>

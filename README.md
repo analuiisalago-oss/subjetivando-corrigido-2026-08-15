@@ -23,8 +23,9 @@ Situação em 15 de agosto de 2026:
 - domínio próprio: ainda não adquirido;
 - cobrança: ainda não implementada;
 - estágio: protótipo avançado, ainda não liberado como produto pago;
-- fonte canônica do frontend: `minha-banca.NOVO_3.html`;
-- versão publicável: `public/index.html`, `public/assets/styles.css` e `public/assets/app.js`;
+- fonte do frontend: a pasta `public/` (`index.html`, `assets/styles.css`, `assets/v41.css`, `assets/app.js`), editada diretamente desde 09/09/2026;
+- `minha-banca.NOVO_3.html`: **histórico**, congelado no design anterior. Não editar esperando efeito no site, e não regenerar `public/` a partir dele;
+- versão publicável: os quatro arquivos de `public/`, publicados como estão, sem etapa de build;
 - diretório publicado pelo Netlify: exclusivamente `public/`;
 - rotas existentes: `/`, `/defensoria`, `/oab` e `/tcdf`;
 - persistência local: `localStorage`;
@@ -83,14 +84,15 @@ Treinamento de questões discursivas e peças técnicas relacionadas ao Tribunal
 
 ## 6. COMO GERAR E PUBLICAR A VERSÃO DE TESTE
 
-Sempre que alterar `minha-banca.NOVO_3.html`, execute na pasta do projeto:
+Desde 09/09/2026 não há etapa de geração: edite os arquivos de `public/` diretamente e verifique com
 
 ```bash
-python scripts/build_public.py
+node --check public/assets/app.js
 node scripts/audit_project.mjs
+node scripts/teste_consentimento.mjs
 ```
 
-O script recria os arquivos da pasta `public/`. Depois, execute o roteiro aplicável de `TESTES.md`.
+Depois, execute o roteiro aplicável de `TESTES.md`. **Não execute `scripts/build_public.py`** — ele apagaria o design atual. Ver P2-06 em `PENDENCIAS.md`.
 
 ### Se o projeto estiver conectado ao Netlify por repositório
 
@@ -123,7 +125,7 @@ O projeto deve evoluir por alterações pequenas, reversíveis e testáveis. Uma
 5. atualizar `ALTERACOES.md`;
 6. atualizar `PENDENCIAS.md`, se necessário;
 7. puder ser revertida pelo histórico do Git ou pelo backup anterior;
-8. tiver a pasta `public/` regenerada quando a fonte canônica for alterada.
+8. ser feita diretamente em `public/`, que é a fonte do site desde 09/09/2026.
 
 ## 8. RESPONSÁVEL PELO PRODUTO
 

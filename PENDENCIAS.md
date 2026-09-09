@@ -250,6 +250,33 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Estado:** NÃO INICIADA.
 
+### P2-06 — A pasta `public/` virou a fonte do site
+
+**Estado:** DECIDIDO E APLICADO em 09/09/2026.
+
+**O que mudou:** o redesenho feito no Codex alterou apenas `public/` — `index.html`, `assets/styles.css`, `assets/app.js` — e acrescentou `assets/v41.css`. Não existia versão correspondente em `minha-banca.NOVO_3.html`.
+
+**Por que a mudança era obrigatória:** o Netlify executava `python3 scripts/build_public.py` a cada publicação. Esse script regenera `public/` a partir da fonte antiga. Publicar sem desligá-lo teria apagado o design novo no próprio deploy, **sem gerar erro** — o site voltaria ao design anterior em silêncio.
+
+**Aplicado:** `netlify.toml` passou a trazer `command = ""` com a explicação no próprio arquivo; `README.md` e `TESTES.md` deixaram de mandar rodar o build e passaram a avisar do risco.
+
+**Consequências:**
+
+- `minha-banca.NOVO_3.html` está congelada no design anterior e é **histórico**. Editá-la não produz efeito no site;
+- `scripts/build_public.py` não deve ser executado. Mantido no repositório apenas como registro do modelo anterior;
+- CSS e JavaScript passam a ser editados diretamente em `public/`;
+- `audit_project.mjs` e `teste_consentimento.mjs` continuam válidos: leem `public/assets/app.js`, que agora é a fonte.
+
+**Verificado nesta data:** as quatro correções de código de 09/09 (tradução de erros e consentimento) e os blocos 15 e 16 do CSS sobreviveram ao redesenho; a estrutura de acessibilidade (`header`, `main`, `footer`, `aside`, skip-link, `sr-only`) está preservada; o acervo permanece em 750 · 55 · 55 · 6 · 37; `node --check` aprova o `app.js`.
+
+**Pendente de decisão futura:** se algum dia o projeto quiser voltar a ter fonte única, o caminho é reconstruir a fonte a partir de `public/`, e não o contrário.
+
+### P2-07 — Conteúdo de OAB, TCDF e discursiva apenas oculto por CSS
+
+**Estado:** NÃO INICIADA.  
+**Situação:** o `v41.css` esconde `[data-mode="oab"]`, `[data-mode="tcdf"]`, `[data-sub="discursiva"]` e o seletor `#modeToggle`. A decisão de nichar em Defensoria e prova oral foi confirmada pela autora em 09/09/2026.  
+**Ponto de atenção:** ocultar não é remover. Os 55 itens de OAB, os 55 temas e 37 discursivas do TCDF continuam dentro de `public/assets/app.js`, público e baixável, e as rotas `/oab` e `/tcdf` continuam existindo na camada de rotas. Se a intenção for retirar do produto, e não apenas da vista, é preciso remover os dados do arquivo publicado.
+
 ### P2-05 — Concluir o sistema de design
 
 **Estado:** EM EXECUÇÃO. Primeiro passo aplicado em 09/09/2026 (bloco 16 do CSS).

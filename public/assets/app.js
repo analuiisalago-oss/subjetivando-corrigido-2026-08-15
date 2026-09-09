@@ -32,6 +32,166 @@
 
 ;
 
+/* ========================================================================
+   UX v41 — experiência comercial exclusiva de Defensorias.
+   Esta camada mantém os dados legados fora da navegação comercial e conecta
+   resumo de configuração, estados vazios e operação por teclado.
+   ======================================================================== */
+(function () {
+  'use strict';
+
+  const $ = (id) => document.getElementById(id);
+  const page = document.querySelector('.page');
+  const configToggle = $('configPanelToggle');
+  const summaryTitle = $('configSummaryTitle');
+  const summaryDetail = $('configSummaryDetail');
+  const summaryAction = document.querySelector('.config-summary-action');
+  const answerAvailability = $('answerAvailability');
+
+  function activeLabel(groupId, fallback) {
+    const group = $(groupId);
+    const active = group && group.querySelector('.seg-btn.active:not([hidden]) .seg-btn-text');
+    return active ? active.textContent.trim() : fallback;
+  }
+
+  function updateSummary() {
+    if (!summaryTitle || !summaryDetail) return;
+    const prova = activeLabel('dpeProva', 'Prova oral');
+    const fonte = activeLabel('dpeFonte', 'Temas do edital');
+    const select = $('categorySelect');
+    const assunto = select && select.selectedOptions[0] ? select.selectedOptions[0].textContent.trim() : 'Todas as disciplinas';
+    const slider = $('timeSlider');
+    const minutos = slider ? slider.value + ' min' : '5 min';
+    summaryTitle.textContent = 'Defensorias · ' + prova;
+    summaryDetail.textContent = [fonte, assunto, minutos].join(' · ');
+    if (summaryAction) summaryAction.textContent = configToggle && configToggle.checked ? 'Fechar configuração' : 'Alterar configuração';
+  }
+
+  function updateDrawLabels() {
+    const sourceQuestions = !!document.querySelector('#dpeFonte [data-fonte="questoes"].active');
+    const label = sourceQuestions ? 'Sortear pergunta' : 'Sortear tema';
+    ['btnDraw', 'btnDrawIdle'].forEach((id) => {
+      const button = $(id);
+      if (!button) return;
+      const text = button.querySelector('[data-pencil-name="Text"]');
+      if (text) text.textContent = label;
+      else button.textContent = label;
+    });
+  }
+
+  function updateAnswerState() {
+    if (!answerAvailability) return;
+    const question = document.querySelector('#topicCard .enunciado-text, #topicCard .topic-text');
+    const answerActions = $('espelhoActions');
+    const hasAnswerAction = !!answerActions && getComputedStyle(answerActions).display !== 'none';
+    const show = !!question && !hasAnswerAction && page && !page.classList.contains('idle');
+    answerAvailability.hidden = !show;
+    answerAvailability.textContent = show
+      ? 'Resposta não cadastrada para este item. Você ainda pode cronometrar e registrar sua anotação.'
+      : '';
+  }
+
+  function moveRedrawToTop() {
+    const topActions = $('questionTopActions');
+    const redraw = $('btnRedraw');
+    if (!topActions || !redraw || redraw.parentElement === topActions) return;
+    topActions.appendChild(redraw);
+    redraw.textContent = 'Sortear outra';
+    redraw.classList.remove('ghost');
+    redraw.classList.add('top-action');
+  }
+
+  function updateDashboardCta() {
+    let hasSession = false;
+    try {
+      const saved = JSON.parse(localStorage.getItem('subj_sessao_v1') || 'null');
+      hasSession = !!(saved && saved.questao && !saved.idle);
+    } catch (e) {}
+    const title = $('treinoCardTitle');
+    const cta = $('treinoCardCta');
+    if (title) title.textContent = hasSession ? 'Continuar treino' : 'Configurar treino';
+    if (cta) cta.textContent = hasSession ? 'Continuar treino' : 'Configurar treino';
+  }
+
+  function enforceDefensorias() {
+    const oral = document.querySelector('#modeToggle [data-mode="oral"]');
+    if (oral && !oral.classList.contains('active')) oral.click();
+    const oralTest = document.querySelector('#dpeProva [data-sub="oral"]');
+    if (oralTest && !oralTest.classList.contains('active')) oralTest.click();
+    if (/^\/(oab|tcdf)\/?$/i.test(location.pathname)) {
+      try { history.replaceState(null, '', '/defensoria' + location.search + location.hash); } catch (e) {}
+    }
+  }
+
+  function updateAll() {
+    enforceDefensorias();
+    moveRedrawToTop();
+    updateSummary();
+    updateDrawLabels();
+    updateAnswerState();
+    updateDashboardCta();
+  }
+
+  document.addEventListener('click', () => {
+    setTimeout(updateAll, 0);
+    setTimeout(updateAll, 260);
+  });
+  document.addEventListener('input', (event) => {
+    if (event.target && event.target.id === 'timeSlider') updateSummary();
+  });
+  document.addEventListener('change', updateSummary);
+  document.addEventListener('subj:restaurado', () => setTimeout(updateAll, 20));
+  if (configToggle) configToggle.addEventListener('change', updateSummary);
+
+  const topic = $('topicCard');
+  const actions = $('espelhoActions');
+  if (topic) new MutationObserver(() => setTimeout(updateAnswerState, 0)).observe(topic, { childList: true, subtree: true });
+  if (actions) new MutationObserver(() => setTimeout(updateAnswerState, 0)).observe(actions, { attributes: true, attributeFilter: ['style', 'class'] });
+  const drawActions = $('drawActions');
+  if (drawActions) new MutationObserver(() => setTimeout(moveRedrawToTop, 0)).observe(drawActions, { childList: true });
+
+  const topActions = $('questionTopActions');
+  if (topActions) {
+    topActions.addEventListener('click', (event) => {
+      if (!event.target.closest('#btnRedraw')) return;
+      const timer = $('timerBlock');
+      if (!timer || getComputedStyle(timer).display === 'none') return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const newTopic = $('btnNewTopic');
+      if (newTopic) newTopic.click();
+    }, true);
+  }
+
+  const printButton = $('btnPrint');
+  const printMenu = $('printMenu');
+  if (printButton && printMenu) {
+    printButton.addEventListener('click', () => {
+      setTimeout(() => {
+        if (!printMenu.classList.contains('open')) return;
+        const first = printMenu.querySelector('[role="menuitem"]');
+        if (first) first.focus();
+      }, 0);
+    });
+    printMenu.addEventListener('keydown', (event) => {
+      const items = [...printMenu.querySelectorAll('[role="menuitem"]')];
+      if (!items.length) return;
+      const index = Math.max(0, items.indexOf(document.activeElement));
+      let next = null;
+      if (event.key === 'ArrowDown') next = items[(index + 1) % items.length];
+      if (event.key === 'ArrowUp') next = items[(index - 1 + items.length) % items.length];
+      if (event.key === 'Home') next = items[0];
+      if (event.key === 'End') next = items[items.length - 1];
+      if (next) { event.preventDefault(); next.focus(); }
+    });
+  }
+
+  setTimeout(updateAll, 0);
+  setTimeout(updateAll, 650);
+})();
+
+;
+
 (function(){
 
   // ---------- BANCO DE TEMAS ----------
@@ -303,15 +463,13 @@
 
   const OAB_CATEGORY_LABELS = { peca: "Peça Prático-Profissional", questao: "Questões Discursivas" };
 
-  const MODE_LABELS = { oral: "Treino DPEs", oab: "Treino OAB", tcdf: "Treino TCDF" };
+  const MODE_LABELS = { oral: "Defensorias" };
 
   const MODE_DESC = {
-    oral: "Escolha a prova (oral ou discursiva) e a fonte, sorteie um tema do edital das DPEs e treine a resposta cronometrada.",
-    oab: "Sorteie um enunciado real de prova da OAB (peça ou questão discursiva), cronometre sua resposta e depois se autoavalie com o espelho oficial da banca.",
-    tcdf: "Revise os temas do edital de Conhecimentos Especializados do TCDF ou treine com enunciados discursivos que atravessam vários subtópicos da matéria."
+    oral: "Escolha a fonte e a disciplina, sorteie um tema ou uma pergunta de Defensorias e treine sua resposta com tempo controlado."
   };
 
-  const TIME_LABEL = { oral: "Tempo pra falar", oab: "Tempo pra responder", tcdf: "Tempo de treino" };
+  const TIME_LABEL = { oral: "Duração da resposta", oab: "Duração da resposta", tcdf: "Duração do treino" };
 
   const TIME_RANGE = {
     oral: { min:1, max:15, step:1, def:5 },
@@ -493,11 +651,13 @@
   // ---------- SORTEIO ----------
   function resetDrawArea(){
     stopTimer();
+    pageEl.classList.remove('timer-active');
     timerBlock.style.display = 'none';
     topicCard.style.overflowY = 'hidden';
     topicCard.innerHTML = '';
     stateLabel.textContent = 'PRONTO';
-    drawActions.innerHTML = '<button class="btn primary" id="btnDraw" type="button">Sortear tema</button>';
+    const drawLabel = state.dpeFonte === 'questoes' ? 'Sortear pergunta' : 'Sortear tema';
+    drawActions.innerHTML = '<button class="btn primary" id="btnDraw" type="button">' + drawLabel + '</button>';
     document.getElementById('btnDraw').addEventListener('click', doDraw);
     espelhoActions.style.display = 'none';
     espelhoPanel.style.display = 'none';
@@ -545,6 +705,8 @@
 
   function doDraw(){
     if(pageEl.classList.contains('idle')){ switchScreen(false, doDraw); return; }
+    const configToggle = document.getElementById('configPanelToggle');
+    if(configToggle) configToggle.checked = false;
     if(state.mode === 'oab'){ doDrawOab(); return; }
     if(state.mode === 'tcdf' && state.tcdfSub === 'discursiva'){ doDrawTcdfD(); return; }
     if(state.mode === 'tcdf' && (state.tcdfSub === 'prova_disc' || state.tcdfSub === 'prova_peca')){ doDrawTcdfProva(); return; }
@@ -561,7 +723,7 @@
     stateLabel.textContent = labelsForMode(state.mode)[cat].toUpperCase();
     topicCard.innerHTML = `<span class="topic-text">${topic ? escapeHtml(topic) : 'Nenhum tema cadastrado nessa categoria ainda.'}</span>`;
     fitTopicText();
-    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outro</button><button class="btn primary" id="btnStart" type="button">Iniciar tempo</button>';
+    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outro</button><button class="btn primary" id="btnStart" type="button">Iniciar cronômetro</button>';
     document.getElementById('btnRedraw').addEventListener('click', doDraw);
     document.getElementById('btnStart').addEventListener('click', startTimer);
     showPrint(true);
@@ -600,7 +762,7 @@
     stateLabel.textContent = item.exame.toUpperCase() + numLabel;
     topicCard.innerHTML = `<span class="enunciado-text">${escapeHtml(item.enunciado)}</span>`;
     fitTopicText();
-    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outro</button><button class="btn primary" id="btnStart" type="button">Iniciar tempo</button>';
+    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outro</button><button class="btn primary" id="btnStart" type="button">Iniciar cronômetro</button>';
     document.getElementById('btnRedraw').addEventListener('click', doDraw);
     document.getElementById('btnStart').addEventListener('click', startTimer);
     espelhoActions.style.display = 'flex';
@@ -670,7 +832,7 @@
     currentDpeQ = item.padrao ? { resposta: item.padrao } : null;
     stateLabel.textContent = item.titulo.toUpperCase() + (item.limite ? ' — ' + item.limite.toUpperCase() : '');
     topicCard.innerHTML = `<span class="enunciado-text">${escapeHtml(item.enunciado)}</span>`;
-    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outra</button><button class="btn primary" id="btnStart" type="button">Iniciar tempo</button>';
+    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outra</button><button class="btn primary" id="btnStart" type="button">Iniciar cronômetro</button>';
     document.getElementById('btnRedraw').addEventListener('click', doDraw);
     document.getElementById('btnStart').addEventListener('click', startTimer);
     btnPistas.style.display = 'none';
@@ -701,7 +863,7 @@
     showPrint(true);
     topicCard.innerHTML = `<span class="enunciado-text">${escapeHtml(item.enunciado)}</span>`;
     fitTopicText();
-    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outro</button><button class="btn primary" id="btnStart" type="button">Iniciar tempo</button>';
+    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outro</button><button class="btn primary" id="btnStart" type="button">Iniciar cronômetro</button>';
     document.getElementById('btnRedraw').addEventListener('click', doDraw);
     document.getElementById('btnStart').addEventListener('click', startTimer);
   }
@@ -728,7 +890,7 @@
     stateLabel.textContent = DPE_ORAL_QLABELS[cat].toUpperCase() + ' — PERGUNTA DE BANCA';
     topicCard.innerHTML = `<span class="enunciado-text">${escapeHtml(item.pergunta)}</span>`;
     fitTopicText();
-    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outra</button><button class="btn primary" id="btnStart" type="button">Iniciar tempo</button>';
+    drawActions.innerHTML = '<button class="btn ghost" id="btnRedraw" type="button">Sortear outra</button><button class="btn primary" id="btnStart" type="button">Iniciar cronômetro</button>';
     document.getElementById('btnRedraw').addEventListener('click', doDraw);
     document.getElementById('btnStart').addEventListener('click', startTimer);
     btnPistas.style.display = 'none';
@@ -776,11 +938,18 @@
   function startTimer(){
     state.remaining = state.seconds;
     timerBlock.style.display = 'flex';
+    const questionBody = timerBlock.parentElement;
+    if(questionBody && questionBody.firstElementChild !== timerBlock){
+      questionBody.insertBefore(timerBlock, questionBody.firstElementChild);
+    }
     drawActions.innerHTML = '';
     state.running = true;
+    pageEl.classList.add('timer-active');
     updateClock();
     document.getElementById('btnPauseResume').textContent = '⏸ Pausar';
     ring.classList.remove('done');
+    const feedback = document.getElementById('timerFeedback');
+    if(feedback) feedback.textContent = 'Cronômetro iniciado.';
     tick();
   }
 
@@ -806,8 +975,11 @@
   }
 
   function onTimeUp(){
+    state.running = false;
     ring.classList.add('done');
     clockDisplay.textContent = '00:00';
+    const feedback = document.getElementById('timerFeedback');
+    if(feedback) feedback.textContent = 'Tempo encerrado.';
     playBeep();
   }
 
@@ -835,6 +1007,8 @@
   document.getElementById('btnPauseResume').addEventListener('click', function(){
     state.running = !state.running;
     this.textContent = state.running ? '⏸ Pausar' : '▶ Retomar';
+    const feedback = document.getElementById('timerFeedback');
+    if(feedback) feedback.textContent = state.running ? 'Cronômetro retomado.' : 'Cronômetro pausado.';
   });
   document.getElementById('btnReset').addEventListener('click', function(){
     state.remaining = state.seconds;
@@ -842,9 +1016,12 @@
     document.getElementById('btnPauseResume').textContent = '⏸ Pausar';
     ring.classList.remove('done');
     updateClock();
+    const feedback = document.getElementById('timerFeedback');
+    if(feedback) feedback.textContent = 'Cronômetro reiniciado.';
   });
   document.getElementById('btnNewTopic').addEventListener('click', function(){
     stopTimer();
+    pageEl.classList.remove('timer-active');
     timerBlock.style.display = 'none';
     doDraw();
   });
@@ -1577,8 +1754,9 @@
     pilula.style.visibility = '';
     const resp = !!ler(K_RESP)[hash(t)];
     pilula.classList.toggle('respondida', resp);
-    if (pilulaTexto) pilulaTexto.textContent = resp ? 'RESPONDIDA' : 'NÃO RESPONDIDA';
-    pilula.setAttribute('aria-label', 'Estado desta questão: ' + (resp ? 'respondida' : 'não respondida') + '. Clique para alterar.');
+    pilula.setAttribute('aria-pressed', resp ? 'true' : 'false');
+    if (pilulaTexto) pilulaTexto.textContent = resp ? 'Respondida' : 'Não respondida';
+    pilula.setAttribute('aria-label', (resp ? 'Marcar como não respondida' : 'Marcar como respondida'));
   }
   function defineResposta(valor) {
     const t = textoQuestao();
@@ -1598,34 +1776,11 @@
     pintaPilula();
     if (window.SUBJ_ATUALIZA_HOME) window.SUBJ_ATUALIZA_HOME();
   }
-  if (pilula && pilulaMenu) {
-    pilula.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const aberto = pilulaMenu.classList.toggle('open');
-      pilula.setAttribute('aria-expanded', aberto ? 'true' : 'false');
-    });
-    pilulaMenu.addEventListener('click', (e) => {
-      const b = e.target.closest('button[data-resp]');
-      if (!b) return;
-      e.stopPropagation();
-      defineResposta(b.dataset.resp === '1');
-      pilulaMenu.classList.remove('open');
-      pilula.setAttribute('aria-expanded', 'false');
-      pilula.focus();
+  if (pilula) {
+    pilula.addEventListener('click', () => {
+      defineResposta(pilula.getAttribute('aria-pressed') !== 'true');
       salvar();
     });
-    document.addEventListener('click', () => {
-      pilulaMenu.classList.remove('open');
-      pilula.setAttribute('aria-expanded', 'false');
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && pilulaMenu.classList.contains('open')) {
-        pilulaMenu.classList.remove('open');
-        pilula.setAttribute('aria-expanded', 'false');
-        pilula.focus();
-        e.stopPropagation();
-      }
-    }, true);
   }
 
   /* ====================================================================== */
@@ -1638,7 +1793,8 @@
   function sincronizaSom() {
     if (circulo) {
       circulo.setAttribute('aria-pressed', somOn() ? 'true' : 'false');
-      circulo.setAttribute('title', somOn() ? 'Aviso sonoro ligado — clique para desligar' : 'Aviso sonoro desligado — clique para ligar');
+      circulo.dataset.label = somOn() ? 'Desativar som' : 'Ativar som';
+      circulo.setAttribute('title', somOn() ? 'Desativar som' : 'Ativar som');
       circulo.setAttribute('aria-label', circulo.getAttribute('title'));
     }
     if (btnSomMenu) {

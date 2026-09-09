@@ -3,7 +3,353 @@
       /* ------------------------------------------------------------------ */
       *, ::before, ::after {
         box-sizing: border-box;
-      }
+  }
+
+/* ========================================================================
+   UX v41 — Defensorias: clareza comercial, leitura e estados operacionais
+   ======================================================================== */
+
+/* O fluxo comercial expõe somente Defensorias. Os dados legados continuam
+   disponíveis no arquivo, mas não competem na navegação nem recebem foco. */
+html [data-mode="oab"],
+html [data-mode="tcdf"],
+html [data-sub="discursiva"] {
+  display: none !important;
+}
+
+html body :is(button, [role="button"], input, select, textarea) {
+  transition: color .16s ease, background-color .16s ease,
+    border-color .16s ease, box-shadow .16s ease, transform .12s ease,
+    opacity .16s ease;
+}
+html body :is(button, [role="button"]):active:not(:disabled) {
+  transform: translateY(1px);
+}
+html body :is(button, input, select, textarea):disabled,
+html body [aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: .48;
+  box-shadow: none !important;
+}
+
+/* Resumo de configuração: toda a escolha cabe em uma faixa curta e o verbo
+   de edição permanece destacado, inclusive no foco por teclado. */
+html body .config-panel-trigger {
+  width: 100%;
+  min-height: 64px;
+  justify-content: flex-start;
+  padding: 10px 14px;
+  gap: 12px;
+  text-align: left;
+  box-shadow: 0 8px 24px rgb(0 0 0 / .06);
+}
+html body .config-summary-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 3px;
+}
+html body .config-summary-copy strong {
+  overflow: hidden;
+  color: var(--d-text);
+  font-family: var(--f-ui);
+  font-size: 13px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html body #configSummaryDetail {
+  overflow: hidden;
+  color: var(--d-muted);
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html body .config-summary-action {
+  flex: 0 0 auto;
+  color: var(--d-accent-lt);
+  font-weight: 700;
+}
+
+/* A configuração aberta usa superfícies discretas e seleção confirmada por
+   marca, peso e borda — não apenas por cor. */
+html body #modeToggle .seg-btn,
+html body #dpeProva .seg-btn,
+html body #dpeFonte .seg-btn {
+  min-height: 48px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: transparent;
+  box-shadow: none;
+}
+html body :is(#modeToggle, #dpeProva, #dpeFonte) .seg-btn:not(.active):hover {
+  background: var(--ds-surface-soft);
+  border-color: var(--d-line-3);
+}
+html body :is(#modeToggle, #dpeProva, #dpeFonte) .seg-btn.active {
+  background: var(--d-accent-t);
+  border-color: var(--d-ctl-border-on);
+  box-shadow: inset 3px 0 0 var(--d-accent);
+}
+html body :is(#modeToggle, #dpeProva, #dpeFonte) .seg-btn.active .seg-btn-text::after {
+  content: "  ✓";
+  font-weight: 800;
+}
+html body .page.idle #modeToggle .seg-btn { flex: 0 1 320px; }
+html body .page.idle #dpeSub { max-width: 900px; }
+
+/* Metadados proporcionais: contexto à esquerda e utilidades à direita. */
+html body .app-main > [data-pencil-name="Faixa Superior da Questão"] {
+  min-height: 64px;
+  gap: 20px;
+  padding: 10px 14px;
+  align-items: center;
+}
+html body .question-context {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+html body #stateLabel {
+  max-width: min(66vw, 760px);
+  overflow: hidden;
+  color: var(--d-muted);
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: .055em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html body #btnRespondida,
+html body #btnPrint {
+  min-height: 44px;
+  padding: 9px 14px;
+  justify-content: center;
+  border-radius: 9999px;
+}
+html body #btnRespondida[aria-pressed="true"]::after {
+  content: "✓";
+  color: var(--d-accent-lt);
+  font-weight: 800;
+}
+
+/* Coluna editorial única: enunciado, resposta e anexos seguem o mesmo eixo. */
+html body .app-main,
+html body #espelhoPanel,
+html body #pistasPanel,
+html body .banca-card,
+html body .modelo-card,
+html body .avalia-card {
+  min-width: 0;
+}
+html body .page:not(.idle) .app-main > :is(
+  [data-pencil-name="Faixa Superior da Questão"],
+  [data-pencil-name="Corpo da Questão"],
+  #pistasPanel,
+  #espelhoPanel,
+  #diaCard
+) {
+  width: min(100%, 960px);
+  margin-inline: auto;
+}
+html body .app-main [data-pencil-name="Background+Border+Shadow"] {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: clamp(20px, 3vw, 32px);
+}
+html body #topicCard {
+  min-height: 0;
+  height: auto;
+  overflow: visible !important;
+}
+html body #topicCard :is(.topic-text, .enunciado-text),
+html body #modeloText,
+html body #espelhoText,
+html body .estrutura-text {
+  max-width: 68ch;
+  font-size: clamp(17px, 1.35vw, 20px);
+  line-height: 1.68;
+  text-wrap: pretty;
+}
+html body #modeloText,
+html body #espelhoText,
+html body .estrutura-text {
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+/* Ações seguem a sequência da tarefa e deixam apenas o início do tempo como
+   ação primária antes da contagem. */
+html body .page:not(.idle) [data-pencil-name="HorizontalBorder"] {
+  grid-template-columns: max-content minmax(190px, 1fr) max-content max-content;
+  grid-template-areas: "review time draw note";
+  max-width: 100%;
+  padding-top: 18px;
+  column-gap: 10px;
+  row-gap: 10px;
+}
+html body #drawActions .btn,
+html body #espelhoActions .btn,
+html body #btnNotaToggle {
+  min-height: 44px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+html body #drawActions { display: flex; }
+html body #drawActions #btnRedraw { order: 2; }
+html body #drawActions #btnStart { order: 1; }
+html body #drawActions #btnRedraw.btn { background: transparent; }
+html body #btnToggleEspelho.btn { background: var(--d-inset); color: var(--d-text); }
+html body .answer-availability {
+  grid-area: review;
+  max-width: 34ch;
+  margin: 0;
+  color: var(--d-muted);
+  font: 12px/1.45 var(--f-ui);
+}
+
+/* Faixa sticky do cronômetro: aparece antes do enunciado e não depende da
+   altura do texto. O mostrador circular fica deliberadamente contido. */
+html body #timerBlock {
+  position: sticky;
+  top: 76px;
+  z-index: 4;
+  min-height: 112px;
+  padding: 10px 16px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--d-surface) 94%, transparent);
+  box-shadow: 0 14px 34px rgb(0 0 0 / .16);
+  backdrop-filter: blur(16px);
+}
+html body #timerBlock #ring {
+  width: 112px;
+  height: 112px;
+  flex-basis: 112px;
+  margin: -10px;
+  transform: scale(.66);
+}
+html body #timerBlock > [data-pencil-name="Margin"] {
+  width: min(100%, 360px);
+  flex-basis: 360px;
+}
+html body .timer-feedback {
+  position: absolute;
+  left: 126px;
+  bottom: 13px;
+  margin: 0;
+  color: var(--d-muted);
+  font: 12px/16px var(--f-ui);
+}
+
+/* Anotação aparece sob demanda e comunica o estado por texto e forma. */
+html body #notaPanel {
+  padding-top: 20px;
+  border-top: 1px solid var(--d-line-2);
+}
+html body #notaInput {
+  min-height: 112px;
+  height: auto;
+  resize: vertical;
+}
+html body #notaStatus:not(:empty) {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--d-line-2);
+  border-radius: 9999px;
+  background: var(--ds-surface-soft);
+  color: var(--d-text-2);
+  font: 12px/18px var(--f-ui);
+}
+
+/* Dashboard e navegação auxiliar com menos superfícies vazias. */
+html #homeScreen #cardTreino { min-height: 224px; }
+html #homeScreen > section:last-child { margin-top: 24px; }
+html #homeScreen #ultimaAtividade { min-height: 72px; }
+html body .drawer-nav { gap: 6px; }
+html body .drawer-group-label {
+  width: 100%;
+  margin: 14px 0 2px;
+  color: var(--d-muted);
+  font: 700 11px/16px var(--f-ui);
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+html body .drawer-nav .drawer-group-label:first-child { margin-top: 0; }
+html body .drawer-nav .btn { min-height: 44px; padding: 11px 14px; }
+
+@media (max-width: 760px) {
+  html body .config-panel-trigger {
+    min-height: 72px;
+    flex-wrap: wrap;
+  }
+  html body .config-summary-copy { flex-basis: calc(100% - 32px); }
+  html body .config-summary-action { order: 3; }
+  html body .config-panel-chevron { margin-left: auto; }
+  html body .app-main > [data-pencil-name="Faixa Superior da Questão"] {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  html body .app-main > [data-pencil-name="Faixa Superior da Questão"] > :last-child {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  html body #stateLabel { max-width: calc(100vw - 64px); white-space: normal; }
+  html body .page:not(.idle) [data-pencil-name="HorizontalBorder"] {
+    grid-template-areas: "time" "draw" "review" "note";
+  }
+  html body #drawActions,
+  html body #espelhoActions { grid-template-columns: minmax(0, 1fr); }
+  html body #drawActions .btn,
+  html body #espelhoActions .btn { width: 100%; }
+  html body #timerBlock {
+    top: 68px;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  html body #timerBlock > [data-pencil-name="Margin"] {
+    width: auto;
+    flex: 1 1 auto;
+  }
+  html body #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+    grid-template-columns: repeat(3, minmax(44px, 1fr));
+    gap: 6px;
+  }
+  html body #btnPauseResume,
+  html body #btnReset,
+  html body #btnSomCirculo { padding-inline: 6px; }
+  html body #timerBlock #ring {
+    width: 94px;
+    height: 94px;
+    flex-basis: 94px;
+    margin: -14px;
+    transform: scale(.58);
+  }
+  html body .timer-feedback {
+    left: 96px;
+    bottom: 7px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 420px) {
+  html body .page { padding: 12px; }
+  html body .app-main [data-pencil-name="Background+Border+Shadow"] { padding: 18px; }
+  html body #timerBlock { padding: 8px 10px; }
+  html body #timerBlock #ring { margin-left: -19px; margin-right: -23px; }
+  html body #btnPauseResume::after,
+  html body #btnReset::after,
+  html body #btnSomCirculo::after { display: none; }
+  html body .timer-feedback { left: 72px; max-width: 100px; }
+}
 
       body {
         margin: 0;
@@ -95,28 +441,36 @@
         --d-track:     #88b79926;
         --d-inset:     #12161480;
         --d-inset-2:   #1216144d;
-        --d-accent:    #38a372;
-        --d-accent-t:  #38a3721a;
-        --d-accent-b:  #38a37266;
-        --d-accent-b2: #38a3724d;
-        --d-accent-lt: #4ade80;
+        /* No tema escuro, marca e leitura usam verdes botânicos dessaturados.
+           O verde vivo fica reservado a estados pontuais, evitando que toda a
+           interface tenha aparência de alerta ou brilho neon. */
+        --d-accent:    #579c77;
+        --d-accent-t:  #579c771a;
+        --d-accent-b:  #579c7766;
+        --d-accent-b2: #579c774d;
+        --d-accent-lt: #9cc9ad;
         --d-text:      #e2e8e4;
         --d-text-2:    #e2e8e4cc;
-        --d-muted:     #88b799;
+        --d-muted:     #91aa9a;
         --d-on-accent: #121614;
         --d-danger:    #f08a8a;
         /* bordas de COMPONENTE (>= 3:1, WCAG 1.4.11) — distintas das linhas
            decorativas de cartão, que continuam com o valor do export */
-        --d-ctl-border:     #88b7998c;
-        --d-ctl-border-on:  #38a372b3;
-        --d-focus:          #7ee2a8;
+        --d-ctl-border:     #91aa9a8c;
+        --d-ctl-border-on:  #6ca889;
+        --d-focus:          #a8d5bb;
+        --ds-scroll-track:       #121614;
+        --ds-scroll-thumb:       #4d6f5c;
+        --ds-scroll-thumb-hover: #579c77;
+        --ds-selection-bg:       #b9d7c3;
+        --ds-selection-text:     #17201c;
         /* paleta do dashboard — mesmos hex do "Minha Banca  Home.html" */
         --bt-bg:           18 22 20;     /* #121614 */
         --bt-surface:      30 36 32;     /* #1e2420 */
         --bt-text:        226 232 228;   /* #e2e8e4 */
-        --bt-primary:      56 163 114;   /* #38a372 */
-        --bt-primary-high: 74 222 128;   /* #4ade80 */
-        --bt-sage:        136 183 153;   /* #88b799 */
+        --bt-primary:      87 156 119;   /* #579c77 */
+        --bt-primary-high:156 201 173;   /* #9cc9ad */
+        --bt-sage:        145 170 154;   /* #91aa9a */
         --bt-alert:       224 102 102;   /* #e06666 */
         --bt-brand:        61  42  53;   /* #3D2A35 */
         --f-ui:   Inter, system-ui, sans-serif;
@@ -477,7 +831,7 @@
         --d-accent-lt: #1c6b45;
         --d-text:      #17201c;
         --d-text-2:    #17201ccc;
-        --d-muted:     #4e7a62;
+        --d-muted:     #3f694f;
         --d-on-accent: #ffffff;
         --d-danger:    #b4433f;
         --bt-bg:           242 246 243;
@@ -491,6 +845,11 @@
         --d-ctl-border:     #1b242080;
         --d-ctl-border-on:  #237a4fcc;
         --d-focus:          #0f5c39;
+        --ds-scroll-track:       #e7eeea;
+        --ds-scroll-thumb:       #4e7a62;
+        --ds-scroll-thumb-hover: #237a4f;
+        --ds-selection-bg:       #cfe7d7;
+        --ds-selection-text:     #17201c;
         --sh-card: 0px 8px 8.75px -6px #0b2a1a12, 0px 20px 21.875px -5px #0b2a1a12;
         --sh-lg:   0px 25px 43.75px -12px #0b2a1a2e;
       }
@@ -518,6 +877,17 @@
       html[data-theme="light"] .bg-\[\#ffffff01\] { background-color: #ffffff01; }
       html[data-theme="light"] img { filter: invert(1) hue-rotate(180deg) brightness(1.05); }
       html[data-theme="light"] .topbar-keep img { filter: none; }
+
+      /* O HTML exportado ainda contém utilitários com os verdes antigos.
+         No protótipo escuro, remapeamos apenas cor — sem tocar no DOM ou JS. */
+      html:not([data-theme="light"]) .bg-\[\#38a372ff\] { background-color: var(--d-accent); }
+      html:not([data-theme="light"]) .bg-\[\#38a3721a\] { background-color: var(--d-accent-t); }
+      html:not([data-theme="light"]) .bg-\[\#38a37266\] { background-color: var(--d-accent-b); }
+      html:not([data-theme="light"]) .text-\[\#4ade80ff\] { color: var(--d-accent-lt); }
+      html:not([data-theme="light"]) .text-\[\#88b799ff\] { color: var(--d-muted); }
+      html:not([data-theme="light"]) .text-\[\#121614ff\] { color: var(--d-on-accent); }
+      html:not([data-theme="light"]) .\[border\:1px_solid_\#38a37266\] { border-color: var(--d-accent-b); }
+      html:not([data-theme="light"]) .\[border\:1px_solid_\#38a3724d\] { border-color: var(--d-accent-b2); }
 
       /* ------------------------------------------------------------------ */
       /* 13b. Correções WCAG que precisam vir DEPOIS do bloco de tema claro   */
@@ -982,4 +1352,1228 @@
       }
       @media (max-width: 1100px) {
         :root { --e-cartao: var(--e-cartao-estreito); }
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* PROTÓTIPO — SISTEMA VISUAL BOTÂNICO / STARTUP                       */
+      /* Cópia temporária: esta camada não pertence à fonte canônica.         */
+      /* ------------------------------------------------------------------ */
+      :root {
+        --ds-space-1: 4px;
+        --ds-space-2: 8px;
+        --ds-space-3: 12px;
+        --ds-space-4: 16px;
+        --ds-space-5: 24px;
+        --ds-radius: 16px;
+        --ds-radius-pill: 9999px;
+        --ds-text-mini: 11px;
+        --ds-text-label: 12px;
+        --ds-text-control: 13px;
+        --ds-text-body: 14px;
+        --ds-tracking-label: .04em;
+        --ds-surface-raised: #222a25;
+        --ds-surface-soft: rgb(145 170 154 / .08);
+        --ds-glass-surface: rgb(30 36 32 / .82);
+        --ds-nav-surface: rgb(24 35 29 / .92);
+        --ds-nav-fallback: #18231d;
+        --ds-nav-border: rgb(168 213 187 / .14);
+        --ds-glass-border: rgb(168 213 187 / .18);
+        --ds-glass-fallback: #1e2420;
+        --ds-backdrop: rgb(7 12 9 / .62);
+        --ds-shadow-card: 0 18px 50px rgb(0 0 0 / .18);
+        --ds-shadow-float: 0 28px 80px rgb(0 0 0 / .34);
+        --ds-page-art:
+          radial-gradient(circle at 12% 6%, rgb(87 156 119 / .08), transparent 24rem),
+          radial-gradient(circle at 88% 28%, rgb(168 213 187 / .035), transparent 28rem),
+          linear-gradient(145deg, #101512 0%, #0c110e 52%, #121914 100%);
+      }
+
+      html[data-theme="light"] {
+        --ds-surface-raised: #ffffff;
+        --ds-surface-soft: rgb(35 122 79 / .07);
+        --ds-glass-surface: rgb(255 255 255 / .84);
+        --ds-glass-border: rgb(35 122 79 / .25);
+        --ds-glass-fallback: #ffffff;
+        --ds-backdrop: rgb(17 28 22 / .46);
+        --ds-shadow-card: 0 18px 50px rgb(18 54 34 / .10);
+        --ds-shadow-float: 0 28px 80px rgb(18 54 34 / .18);
+        --ds-page-art:
+          radial-gradient(circle at 12% 6%, rgb(35 122 79 / .12), transparent 24rem),
+          radial-gradient(circle at 88% 28%, rgb(78 122 98 / .08), transparent 28rem),
+          linear-gradient(145deg, #f6faf7 0%, #edf5f0 52%, #f7faf8 100%);
+      }
+
+      html body > [data-pencil-name="Html → Body"] {
+        background-color: var(--d-bg);
+        background-image: var(--ds-page-art);
+        background-attachment: fixed;
+      }
+
+      /* Vidro com fallback sólido: conteúdo jurídico continua opaco. */
+      html body .topbar-keep {
+        background-color: var(--ds-nav-fallback);
+        border-bottom: 1px solid var(--ds-nav-border);
+        box-shadow: 0 12px 36px rgb(3 18 10 / .22);
+      }
+      html body .topbar-keep > div:last-child { gap: var(--ds-space-3); }
+      html body .topbar-keep .legacy-profile { display: none; }
+      html body #syncStatus[data-state="local"] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      html body #btnConta {
+        width: auto;
+        height: 44px;
+        min-width: 44px;
+        flex-direction: row;
+        gap: var(--ds-space-2);
+        padding: 0 var(--ds-space-4);
+        border-radius: var(--ds-radius-pill);
+        font-size: 15px;
+      }
+      html body #btnConta::after {
+        content: 'Entrar';
+        font-family: var(--f-ui);
+        font-size: var(--ds-text-control);
+        line-height: 18px;
+        font-weight: 600;
+        letter-spacing: .01em;
+      }
+      @media (min-width: 761px) {
+        html body .topbar-keep { position: relative; }
+        html body .topbar-keep > div:nth-child(2) { position: static; }
+        html body .topbar-keep #btnHome {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          z-index: 3;
+          transform: translate(-50%, -50%);
+        }
+        html body .topbar-keep [data-pencil-name="Vertical Divider"] { display: none; }
+      }
+      html body .modal-shell,
+      html body .print-menu {
+        background-color: var(--ds-glass-fallback);
+        border: 1px solid var(--ds-glass-border);
+        box-shadow: var(--ds-shadow-float);
+      }
+
+      @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        html body .topbar-keep {
+          background-color: var(--ds-nav-surface);
+          -webkit-backdrop-filter: blur(16px) saturate(1.12);
+          backdrop-filter: blur(16px) saturate(1.12);
+        }
+        html body .modal-shell,
+        html body .print-menu {
+          background-color: var(--ds-glass-surface);
+          -webkit-backdrop-filter: blur(18px) saturate(1.10);
+          backdrop-filter: blur(18px) saturate(1.10);
+        }
+      }
+
+      /* Estados nativos do documento. As referências recebidas usavam uma
+         paleta azul/rosa; aqui o mesmo comportamento usa os tokens botânicos
+         dos dois temas para não criar uma linguagem visual paralela. */
+      html {
+        scrollbar-color: var(--ds-scroll-thumb) var(--ds-scroll-track);
+        scrollbar-width: auto;
+      }
+      html ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+      html ::-webkit-scrollbar-track {
+        background: var(--ds-scroll-track);
+      }
+      html ::-webkit-scrollbar-thumb {
+        border: 3px solid var(--ds-scroll-track);
+        border-radius: var(--ds-radius-pill);
+        background: var(--ds-scroll-thumb);
+      }
+      html ::-webkit-scrollbar-thumb:hover {
+        background: var(--ds-scroll-thumb-hover);
+      }
+      html ::selection {
+        background: var(--ds-selection-bg);
+        color: var(--ds-selection-text);
+        text-shadow: none;
+      }
+      html p {
+        text-wrap: pretty;
+      }
+
+      @media (prefers-reduced-transparency: reduce) {
+        html body .topbar-keep,
+        html body .modal-shell,
+        html body .print-menu,
+        html body #cardTreino {
+          -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
+        }
+        html body .topbar-keep { background-color: var(--ds-nav-fallback) !important; }
+        html body .modal-shell,
+        html body .print-menu,
+        html body #cardTreino { background-color: var(--ds-glass-fallback) !important; }
+      }
+
+      /* Tipografia e controles: a caixa-alta fica reservada a metadados. */
+      html .btn {
+        min-height: 44px;
+        padding: var(--ds-space-3) 20px;
+        border-radius: var(--ds-radius);
+        font-size: var(--ds-text-control);
+        line-height: 18px;
+        letter-spacing: var(--ds-tracking-label);
+        text-transform: none;
+        font-weight: 650;
+      }
+      html .btn.primary {
+        box-shadow: 0 10px 24px rgb(var(--bt-primary) / .18);
+      }
+      html .btn:hover { filter: brightness(1.07); transform: translateY(-1px); }
+      html .btn:active { filter: brightness(.96); transform: translateY(0); }
+      html .btn:disabled,
+      html .btn[aria-disabled="true"] { opacity: .52; cursor: not-allowed; transform: none; }
+
+      html .seg-btn {
+        min-height: 44px;
+        padding: var(--ds-space-3) var(--ds-space-4);
+        border-radius: var(--ds-radius);
+        background-color: var(--ds-surface-soft);
+      }
+      html .seg-btn:hover { background-color: var(--d-accent-t); }
+      html .seg-btn-text,
+      html .auth-tab {
+        font-size: var(--ds-text-control);
+        line-height: 18px;
+        letter-spacing: 0;
+      }
+      html .seg-btn .seg-btn-text { color: var(--d-text-2); }
+      html .seg-btn.active .seg-btn-text {
+        color: var(--d-accent-lt);
+        font-weight: 600;
+      }
+      html .auth-tab { min-height: 44px; border-radius: var(--ds-radius); text-transform: none; }
+
+      /* Seletores agrupados: uma única superfície contém as opções; o estado
+         ativo é uma camada elevada, não um botão verde chapado. O !important
+         abaixo vence somente a regra WCAG legada do bloco 13b, que força uma
+         borda individual em todo .seg-btn. Aqui o limite do componente é o
+         contêiner compartilhado e a seleção também usa relevo + check. */
+      html body :is(#modeToggle, #dpeProva, #dpeFonte, #tcdfToggle) {
+        gap: var(--ds-space-1);
+        padding: var(--ds-space-1);
+        border: 1px solid var(--d-line-2);
+        border-radius: var(--ds-radius);
+        background-color: var(--d-inset);
+        box-shadow: inset 0 1px 2px rgb(0 0 0 / .12);
+      }
+      html body :is(#modeToggle, #dpeProva, #dpeFonte, #tcdfToggle) > .seg-btn {
+        position: relative;
+        min-height: 48px;
+        padding: var(--ds-space-3) var(--ds-space-4);
+        border-color: transparent !important;
+        border-radius: 12px;
+        background-color: transparent;
+        box-shadow: none;
+      }
+      html body :is(#modeToggle, #dpeProva, #dpeFonte, #tcdfToggle) > .seg-btn > div:last-child {
+        display: none;
+      }
+      html body :is(#modeToggle, #dpeProva, #dpeFonte, #tcdfToggle) > .seg-btn::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        flex: 0 0 10px;
+        border-radius: var(--ds-radius-pill);
+        background-color: transparent;
+        opacity: 0;
+        transform: scale(.82);
+        transition: opacity .16s ease, transform .16s ease, background-color .16s ease, box-shadow .16s ease;
+      }
+      html body :is(#modeToggle, #dpeProva, #dpeFonte, #tcdfToggle) > .seg-btn:hover {
+        background-color: var(--ds-surface-soft);
+      }
+      html body :is(#modeToggle, #dpeProva, #dpeFonte, #tcdfToggle) > .seg-btn.active {
+        background-color: var(--ds-surface-raised);
+        box-shadow:
+          0 1px 0 rgb(255 255 255 / .06) inset,
+          0 8px 20px rgb(7 24 14 / .12),
+          0 1px 3px rgb(7 24 14 / .10);
+      }
+      html body :is(#modeToggle, #dpeProva, #dpeFonte, #tcdfToggle) > .seg-btn.active::after {
+        opacity: 1;
+        transform: scale(1);
+        background-color: var(--d-accent-lt);
+        box-shadow: 0 0 0 5px var(--d-accent-t);
+      }
+
+      html .sub-title,
+      html .espelho-label,
+      html .slider-label,
+      html .auth-label,
+      html #notaStatus,
+      html .nota-ctx,
+      html .hist-item .hist-meta,
+      html .hist-kpi span {
+        font-size: var(--ds-text-label);
+        line-height: 1.45;
+        letter-spacing: var(--ds-tracking-label);
+      }
+
+      html .control-frame,
+      html #manageMode,
+      html #manageCategory,
+      html #manageInput,
+      html .auth-input,
+      html .rubric-input,
+      html #notaInput,
+      html .nota-campo,
+      html #notasBusca,
+      html #histBusca {
+        min-height: 44px;
+        border-radius: var(--ds-radius);
+        font-size: var(--ds-text-control);
+        border-color: var(--d-ctl-border);
+        background-color: var(--d-inset);
+      }
+      html #categorySelect {
+        color: var(--d-text);
+        background-color: var(--d-inset);
+      }
+      html #categorySelect option {
+        color: var(--d-text);
+        background-color: var(--d-surface);
+      }
+
+      html #btnPrint,
+      html #btnRespondida,
+      html #btnPauseResume,
+      html #btnReset,
+      html #btnSomCirculo,
+      html #btnConta,
+      html #btnMenu,
+      html #btnCloseDrawer,
+      html #btnCloseManage,
+      html #btnCloseAbout,
+      html #btnCloseNotas,
+      html #btnCloseHist,
+      html #btnCloseAuth {
+        min-width: 44px;
+        min-height: 44px;
+      }
+      html body #btnPrint {
+        justify-content: center;
+        gap: 0;
+        padding: var(--ds-space-3) var(--ds-space-4);
+      }
+      html body #btnPrint > [data-pencil-name="Container"]:first-child {
+        display: none;
+      }
+      html body #btnPrint > [data-pencil-name="Text"] {
+        font-size: var(--ds-text-control);
+        line-height: 18px;
+        letter-spacing: 0;
+        text-align: center;
+      }
+      html[data-theme="light"] body .app-main > [data-pencil-name="Faixa Superior da Questão"] [data-pencil-name="Overlay+Border"] [data-pencil-name="Text"],
+      html[data-theme="light"] body #respondidaTexto {
+        color: var(--d-accent-lt);
+        font-weight: 600;
+      }
+
+      /* Superfícies sólidas para estudo e leitura longa. */
+      html .sub-card,
+      html .modelo-card,
+      html .banca-card,
+      html .avalia-card,
+      html .nota-card,
+      html .hist-item,
+      html .hist-kpi {
+        border-radius: var(--ds-radius);
+        border: 1px solid var(--d-line-2);
+        background-color: var(--d-surface);
+        box-shadow: 0 10px 30px rgb(0 0 0 / .10);
+      }
+      html .modal-shell { border-radius: var(--ds-radius); padding: var(--ds-space-5); gap: var(--ds-space-5); }
+      html #drawerBackdrop .modal-shell { border-radius: var(--ds-radius) 0 0 var(--ds-radius); }
+      html .print-menu { border-radius: var(--ds-radius); padding: var(--ds-space-2); }
+      html .print-menu button { min-height: 44px; border-radius: var(--ds-radius); }
+      html .modal-backdrop { background: var(--ds-backdrop); }
+
+      /* O título genérico repetia os títulos específicos dos cartões.
+         Os hooks permanecem no DOM porque OAB usa resumo, modelo e rubrica. */
+      html #espelhoPanel > div:first-child { display: none; }
+      html #espelhoResumo:empty { display: none; }
+      html .modelo-card:has(#modeloText:empty) { display: none; }
+      html .avalia-card:has(#espelhoRubric:empty) { display: none; }
+
+      /* Homepage: uma ação principal, duas secundárias. */
+      html #homeScreen {
+        max-width: 1240px;
+        padding: 48px 32px 32px;
+      }
+      html #homeScreen #greeting {
+        margin-bottom: var(--ds-space-5);
+      }
+      html #homeScreen #greeting::before {
+        content: '';
+        display: block;
+        width: 48px;
+        height: 4px;
+        margin-bottom: var(--ds-space-4);
+        border-radius: var(--ds-radius-pill);
+        background: linear-gradient(90deg, var(--d-accent), var(--d-accent-lt));
+      }
+      html #homeScreen #greeting h2 {
+        max-width: 800px;
+        margin-bottom: var(--ds-space-3);
+        font-size: clamp(42px, 5.2vw, 64px);
+        line-height: 1.02;
+        letter-spacing: -.045em;
+      }
+      html #homeScreen #greeting p {
+        max-width: 620px;
+        font-size: 18px;
+        line-height: 1.55;
+        letter-spacing: -.01em;
+        color: var(--d-muted);
+      }
+      html #homeScreen > div.grid {
+        gap: var(--ds-space-5);
+      }
+      html #homeScreen #cardTreino,
+      html #homeScreen #cardAnotacoes,
+      html #homeScreen #cardHistorico {
+        height: auto;
+        min-height: 196px;
+        padding: var(--ds-space-5);
+        border-radius: var(--ds-radius);
+        border: 1px solid var(--d-line-2);
+        background-color: var(--d-surface);
+        box-shadow: var(--ds-shadow-card);
+        overflow: hidden;
+        isolation: isolate;
+      }
+      html #homeScreen #cardTreino {
+        min-height: 280px;
+        position: relative;
+        justify-content: flex-start;
+        align-self: start;
+        background:
+          linear-gradient(145deg, rgb(56 163 114 / .18), transparent 58%),
+          var(--ds-glass-fallback);
+        border-color: var(--d-ctl-border-on);
+      }
+      html #homeScreen #cardTreino::before,
+      html #homeScreen #cardTreino::after {
+        content: '';
+        position: absolute;
+        pointer-events: none;
+        z-index: -1;
+        border: 1px solid rgb(126 226 168 / .20);
+        border-radius: 62% 38% 58% 42% / 44% 56% 44% 56%;
+      }
+      html #homeScreen #cardTreino::before {
+        width: 310px;
+        height: 310px;
+        right: -100px;
+        top: -108px;
+        transform: rotate(18deg);
+      }
+      html #homeScreen #cardTreino::after {
+        width: 170px;
+        height: 170px;
+        right: 60px;
+        bottom: -96px;
+        transform: rotate(-22deg);
+        opacity: .65;
+      }
+      @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        html #homeScreen #cardTreino {
+          background:
+            linear-gradient(145deg, rgb(56 163 114 / .20), transparent 58%),
+            var(--ds-glass-surface);
+          -webkit-backdrop-filter: blur(18px) saturate(1.10);
+          backdrop-filter: blur(18px) saturate(1.10);
+        }
+      }
+      html #homeScreen #cardTreino:hover,
+      html #homeScreen #cardAnotacoes:hover,
+      html #homeScreen #cardHistorico:hover {
+        transform: translateY(-2px);
+        border-color: var(--d-ctl-border-on);
+        background-color: var(--ds-surface-raised);
+      }
+      html #homeScreen #cardTreino > div:first-child > div:first-child,
+      html #homeScreen #cardAnotacoes > div:first-child > div:first-child,
+      html #homeScreen #cardHistorico > div:first-child > div:first-child {
+        width: 48px;
+        height: 48px;
+        margin-bottom: var(--ds-space-5);
+        border-radius: var(--ds-radius-pill);
+        border: 1px solid var(--ds-glass-border);
+      }
+      html #homeScreen #cardTreino h3 {
+        margin-bottom: var(--ds-space-3);
+        font-size: 36px;
+        line-height: 1.12;
+        letter-spacing: -.035em;
+      }
+      html #homeScreen #cardAnotacoes h3,
+      html #homeScreen #cardHistorico h3 {
+        margin-bottom: var(--ds-space-2);
+        font-size: 24px;
+        line-height: 1.18;
+        letter-spacing: -.025em;
+      }
+      html #homeScreen #cardTreino p,
+      html #homeScreen #cardAnotacoes p,
+      html #homeScreen #cardHistorico p {
+        max-width: 520px;
+        font-size: var(--ds-text-body);
+        line-height: 1.65;
+      }
+      html #homeScreen #cardTreino > div:last-child,
+      html #homeScreen #cardAnotacoes > div:last-child,
+      html #homeScreen #cardHistorico > div:last-child {
+        margin-top: var(--ds-space-4);
+        font-size: var(--ds-text-control);
+        line-height: 18px;
+        letter-spacing: var(--ds-tracking-label);
+        text-transform: none;
+      }
+      html #homeScreen > section:last-child {
+        margin-top: var(--ds-space-5);
+        gap: var(--ds-space-5);
+      }
+      html #homeScreen > section:last-child > div {
+        padding: var(--ds-space-5);
+        border-radius: var(--ds-radius);
+        border: 1px solid var(--d-line-2);
+        background-color: var(--d-surface);
+        box-shadow: 0 10px 30px rgb(0 0 0 / .08);
+      }
+      html #homeScreen > section:last-child h4 {
+        margin-bottom: var(--ds-space-4);
+        font-size: var(--ds-text-label);
+        letter-spacing: var(--ds-tracking-label);
+      }
+
+      @media (min-width: 1024px) {
+        html #homeScreen > div.grid {
+          grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr);
+          grid-template-rows: repeat(2, minmax(0, auto));
+          column-gap: var(--ds-space-5);
+          row-gap: var(--ds-space-4);
+        }
+        html #homeScreen #cardTreino { grid-column: 1; grid-row: 1 / span 2; }
+        html #homeScreen #cardAnotacoes { grid-column: 2; grid-row: 1; }
+        html #homeScreen #cardHistorico { grid-column: 2; grid-row: 2; }
+
+        /* As ações secundárias ficam compactas e horizontais. Isso mantém a
+           coluna de treino dominante sem inflar sua área clicável para
+           acompanhar dois cartões verticais de baixa densidade. */
+        html #homeScreen #cardAnotacoes,
+        html #homeScreen #cardHistorico {
+          min-height: 152px;
+          padding: 20px;
+          justify-content: flex-start;
+        }
+        html #homeScreen #cardAnotacoes > div:first-child,
+        html #homeScreen #cardHistorico > div:first-child {
+          display: grid;
+          grid-template-columns: 44px minmax(0, 1fr);
+          column-gap: var(--ds-space-4);
+          align-items: start;
+        }
+        html #homeScreen #cardAnotacoes > div:first-child > div:first-child,
+        html #homeScreen #cardHistorico > div:first-child > div:first-child {
+          grid-column: 1;
+          grid-row: 1 / span 2;
+          width: 44px;
+          height: 44px;
+          margin-bottom: 0;
+        }
+        html #homeScreen #cardAnotacoes h3,
+        html #homeScreen #cardHistorico h3,
+        html #homeScreen #cardAnotacoes p,
+        html #homeScreen #cardHistorico p {
+          grid-column: 2;
+        }
+        html #homeScreen #cardAnotacoes > div:last-child,
+        html #homeScreen #cardHistorico > div:last-child {
+          margin-top: var(--ds-space-3);
+          margin-left: 60px;
+        }
+      }
+
+      /* Simulador: mesma ordem funcional, hierarquia e densidade novas. */
+      html .page { gap: var(--ds-space-5); padding: var(--ds-space-5); }
+      html .page:not(.idle) .app-aside { width: 320px; }
+      html .page .app-aside > div {
+        gap: var(--ds-space-5);
+        padding: var(--ds-space-5);
+        border: 1px solid var(--d-line-2);
+        border-radius: var(--ds-radius);
+        background-color: var(--d-surface);
+        box-shadow: var(--ds-shadow-card);
+      }
+      html .page .app-aside > div > div:nth-child(3) { gap: var(--ds-space-5); }
+      html .page .app-aside h2,
+      html .app-main h2 {
+        font-size: 24px;
+        line-height: 1.25;
+        letter-spacing: -.025em;
+      }
+      html .app-main { gap: var(--ds-space-5); }
+      html .app-main > [data-pencil-name="Faixa Superior da Questão"] {
+        padding: var(--ds-space-4) 20px;
+        border: 1px solid var(--d-line-2);
+        border-radius: var(--ds-radius);
+        background-color: var(--d-surface);
+        box-shadow: 0 8px 24px rgb(0 0 0 / .08);
+      }
+      html .app-main > [data-pencil-name="Corpo da Questão"] { gap: var(--ds-space-5); }
+      html .app-main [data-pencil-name="Background+Border+Shadow"] {
+        padding: var(--ds-space-5);
+        border: 1px solid var(--d-line-2);
+        border-radius: var(--ds-radius);
+        background-color: var(--d-surface);
+        box-shadow: var(--ds-shadow-card);
+      }
+      /* Medida de leitura: o enunciado não deve usar toda a largura do cartão.
+         Alinhamento à esquerda evita os rios de espaço do texto justificado;
+         `pretty` melhora a quebra final sem alterar o conteúdo. */
+      html #topicCard {
+        align-items: flex-start;
+      }
+      html #topicCard .topic-text {
+        width: 100%;
+        max-width: 34ch;
+        margin-inline: 0 auto;
+        line-height: 1.4;
+        letter-spacing: -.015em;
+        text-align: left;
+        text-wrap: balance;
+        overflow-wrap: break-word;
+      }
+      html #topicCard .enunciado-text {
+        width: 100%;
+        max-width: 54ch;
+        margin-inline: 0 auto;
+        line-height: 1.6;
+        letter-spacing: -.005em;
+        text-align: left;
+        text-wrap: pretty;
+        overflow-wrap: break-word;
+      }
+      /* Leitura editorial: respostas longas não devem ocupar toda a largura
+         disponível. A medida em caracteres reduz o percurso dos olhos sem
+         interferir no conteúdo ou na ordem semântica. */
+      html .modelo-card,
+      html .banca-card {
+        align-items: flex-start;
+        gap: var(--space-4, 16px);
+      }
+      html #modeloText,
+      html #espelhoText {
+        width: 100%;
+        max-width: 62ch;
+        margin-inline: 0 auto;
+        font-size: 16px;
+        line-height: 1.75;
+        letter-spacing: 0;
+        color: var(--d-text-2);
+        text-align: left;
+        text-wrap: pretty;
+        overflow-wrap: break-word;
+        hyphens: none;
+        white-space: pre-wrap;
+      }
+      html #modeloText :is(p, ul, ol),
+      html #espelhoText :is(p, ul, ol) { margin-block: 0; }
+      html #modeloText :is(p, ul, ol) + :is(p, ul, ol),
+      html #espelhoText :is(p, ul, ol) + :is(p, ul, ol) {
+        margin-top: var(--space-4, 16px);
+      }
+      html #modeloText :is(ul, ol),
+      html #espelhoText :is(ul, ol) {
+        padding-inline-start: var(--space-6, 24px);
+      }
+      html #modeloText li + li,
+      html #espelhoText li + li { margin-top: var(--space-2, 8px); }
+      html .estrutura-text { line-height: 1.65; }
+
+      /* Ações da questão: treino e consulta ficam na primeira linha;
+         anotações viram utilidades discretas numa segunda linha. A ordem do
+         DOM e de teclado permanece intacta. */
+      html body .page:not(.idle) [data-pencil-name="HorizontalBorder"] {
+        display: grid;
+        grid-template-columns: max-content minmax(180px, 1fr) max-content max-content;
+        grid-template-areas: "review time draw note";
+        justify-content: stretch;
+        align-items: center;
+        column-gap: var(--ds-space-2);
+        row-gap: var(--ds-space-2);
+        padding-top: var(--ds-space-4);
+      }
+      html body #notaPanel + [data-pencil-name="Margin"] {
+        padding-top: var(--ds-space-4);
+      }
+      html body .page:not(.idle) [data-pencil-name="Ações do Sorteio"] {
+        display: contents;
+      }
+      html body #espelhoActions {
+        grid-area: review;
+        width: fit-content;
+        justify-self: start;
+        gap: var(--ds-space-2);
+      }
+      html body #drawActions {
+        grid-area: draw;
+        justify-self: start;
+        gap: var(--ds-space-2);
+      }
+      html body #btnNotaToggle { grid-area: note; }
+
+      /* A duração pertence ao início da resposta, não ao sorteio. Mantemos o
+         mesmo slider e o mesmo id funcional, agora como ajuste compacto ao
+         lado de "Iniciar tempo". */
+      html body #questionTime {
+        grid-area: time;
+        width: 100%;
+        min-width: 0;
+      }
+      html body #questionTime .slider-wrap {
+        min-height: 44px;
+        padding: 0;
+        border-color: transparent;
+        border-radius: 0;
+        background-color: transparent;
+        box-shadow: none;
+      }
+      html body #questionTime .slider-top {
+        align-items: center;
+        margin-bottom: var(--ds-space-1);
+      }
+      html body #questionTime .slider-label {
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: var(--ds-tracking-label);
+        text-transform: none;
+      }
+      html body #questionTime .slider-value {
+        padding: 2px var(--ds-space-2);
+        border-radius: var(--ds-radius-pill);
+        background-color: var(--ds-surface-raised);
+        color: var(--d-text);
+        font-variant-numeric: tabular-nums;
+      }
+      html body #questionTime #timeSlider { width: 100%; }
+      html body .page:not(.idle) [data-pencil-name="HorizontalBorder"]:has(#drawActions:empty) #questionTime {
+        display: none;
+      }
+      /* Durante o cronômetro, as ações de sorteio deixam o DOM. Nesse estado,
+         manter as áreas vazias da grade criava uma segunda linha artificial.
+         Os dois controles restantes passam a ocupar uma única linha natural. */
+      html body .page:not(.idle) [data-pencil-name="HorizontalBorder"]:has(#drawActions:empty) {
+        grid-template-columns: max-content max-content;
+        grid-template-areas: "review note";
+      }
+      html body .page:not(.idle) [data-pencil-name="HorizontalBorder"]:has(#drawActions:empty) #espelhoActions,
+      html body .page:not(.idle) [data-pencil-name="HorizontalBorder"]:has(#drawActions:empty) #espelhoActions .btn,
+      html body .page:not(.idle) [data-pencil-name="HorizontalBorder"]:has(#drawActions:empty) #btnNotaToggle {
+        width: max-content;
+        min-width: 0;
+      }
+      /* A central de anotações já existe no menu global. O hook permanece no
+         DOM para não quebrar a abertura acionada pelo cartão da homepage. */
+      html body #btnNotasPagina { display: none; }
+      html body #btnNotaToggle,
+      html body #btnNotasPagina {
+        justify-self: start;
+        min-height: 44px;
+        padding: var(--ds-space-2) var(--ds-space-3);
+        gap: var(--ds-space-2);
+        border-color: transparent;
+        background-color: transparent;
+        color: var(--d-muted);
+        box-shadow: none;
+      }
+      html body #btnNotaToggle .nota-rotulo,
+      html body #btnNotasPagina [data-pencil-name="Text"] {
+        color: var(--d-muted);
+        font-size: var(--ds-text-control);
+        line-height: 18px;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+      html body #btnNotaToggle:hover,
+      html body #btnNotasPagina:hover {
+        border-color: var(--d-line-2);
+        background-color: var(--d-inset);
+        color: var(--d-text);
+      }
+      html body #btnToggleEspelho {
+        border: 1px solid var(--d-ctl-border);
+        background-color: var(--d-inset);
+        color: var(--d-text);
+        box-shadow: none;
+      }
+      html body #btnToggleEspelho:hover {
+        border-color: var(--d-ctl-border-on);
+        background-color: var(--d-accent-t);
+      }
+
+      /* Controles do cronômetro: três ações com a mesma largura e distância.
+         Os rótulos visíveis complementam os nomes acessíveis já existentes. */
+      html body #timerBlock > [data-pencil-name="Margin"] {
+        width: 140px;
+        padding-top: var(--ds-space-5);
+      }
+      html body #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+        width: 100%;
+        flex-direction: column;
+        gap: var(--ds-space-2);
+      }
+      html body #btnPauseResume,
+      html body #btnReset,
+      html body #btnSomCirculo {
+        width: 100%;
+        min-width: 0;
+        height: 44px;
+        padding: 0 var(--ds-space-3);
+        justify-content: center;
+        gap: var(--ds-space-2);
+        border-radius: var(--ds-radius);
+        font-size: var(--ds-text-control);
+        line-height: 18px;
+        letter-spacing: 0;
+      }
+      html body #btnReset::after { content: "Reiniciar"; }
+      html body #btnSomCirculo::after { content: "Som"; }
+
+      /* O cronômetro não define mais a altura da linha do enunciado. Em telas
+         amplas ele ocupa uma faixa horizontal própria e o cartão da questão
+         termina onde seu conteúdo termina. */
+      html body .page:not(.idle) [data-pencil-name="Corpo da Questão"] {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--ds-space-5);
+      }
+      html body .page:not(.idle) [data-pencil-name="Background+Border+Shadow"] {
+        width: 100%;
+        flex: 0 0 auto;
+      }
+      html body #timerBlock {
+        width: 100%;
+        min-height: 188px;
+        flex: 0 0 auto;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--ds-space-5);
+        padding: var(--ds-space-5);
+        border-radius: var(--ds-radius);
+      }
+      html body #timerBlock > [data-pencil-name$=":shadow"] {
+        width: 100%;
+        height: 100%;
+        border-radius: var(--ds-radius);
+      }
+      html body #timerBlock > [data-pencil-name="Margin"] {
+        width: 360px;
+        max-width: 100%;
+        flex: 0 0 360px;
+        padding-top: 0;
+      }
+      html body #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--ds-space-3);
+      }
+
+      @media (max-width: 1100px) {
+        html .page:not(.idle) .app-aside { width: 100%; }
+        html body .page:not(.idle) [data-pencil-name="Corpo da Questão"] {
+          flex-direction: column;
+          align-items: stretch;
+          gap: var(--ds-space-5);
+        }
+        html body .page:not(.idle) [data-pencil-name="Background+Border+Shadow"] {
+          width: 100%;
+          flex: 0 0 auto;
+        }
+        html body #timerBlock {
+          width: 100%;
+          min-height: 188px;
+          flex: 0 0 auto;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          gap: var(--ds-space-5);
+          padding: var(--ds-space-5);
+          border-radius: var(--ds-radius);
+        }
+        html body #timerBlock > [data-pencil-name$=":shadow"] {
+          width: 100%;
+          height: 100%;
+          border-radius: var(--ds-radius);
+        }
+        html body #timerBlock > [data-pencil-name="Margin"] {
+          width: 360px;
+          max-width: 100%;
+          flex: 0 0 360px;
+          padding-top: 0;
+        }
+        html body #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: var(--ds-space-3);
+        }
+      }
+
+      @media (max-width: 1023px) {
+        html #homeScreen {
+          padding: 36px var(--ds-space-5) var(--ds-space-5);
+        }
+        html #homeScreen > div.grid {
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: none;
+        }
+        html #homeScreen #cardTreino,
+        html #homeScreen #cardAnotacoes,
+        html #homeScreen #cardHistorico {
+          grid-column: auto;
+          grid-row: auto;
+          min-height: 196px;
+        }
+        html #homeScreen #cardTreino { min-height: 260px; }
+      }
+
+      @media (max-width: 480px) {
+        /* O Tailwind CDN injeta o padding original depois desta folha.
+           O !important mantém 16px reais e evita a quebra da topbar. */
+        html body .topbar-keep {
+          padding: var(--ds-space-3) var(--ds-space-4) !important;
+          flex-wrap: nowrap;
+        }
+        html #homeScreen { padding: var(--ds-space-5) var(--ds-space-4); }
+        html #homeScreen #greeting h2 { font-size: 40px; }
+        html #homeScreen #greeting p { font-size: 16px; }
+        html #homeScreen #cardTreino,
+        html #homeScreen #cardAnotacoes,
+        html #homeScreen #cardHistorico,
+        html #homeScreen > section:last-child > div {
+          padding: var(--ds-space-4);
+        }
+        html #homeScreen #cardTreino { min-height: 240px; }
+        html #homeScreen #cardAnotacoes,
+        html #homeScreen #cardHistorico { min-height: 184px; }
+        html #homeScreen #cardTreino h3 { font-size: 30px; }
+        html #homeScreen #cardAnotacoes h3,
+        html #homeScreen #cardHistorico h3 { font-size: 22px; }
+        html #homeScreen #cardTreino::before { right: -170px; opacity: .55; }
+        html .page { padding: var(--ds-space-4); gap: var(--ds-space-4); }
+      }
+
+      @media (max-width: 1100px) and (min-width: 761px) {
+        html body .page:not(.idle) [data-pencil-name="HorizontalBorder"] {
+          grid-template-columns: max-content minmax(180px, 220px);
+          grid-template-areas:
+            "review time"
+            "draw note";
+          justify-content: start;
+        }
+        html body #espelhoActions .btn {
+          flex: 0 0 auto;
+        }
+        html body #btnNotaToggle {
+          width: max-content;
+          min-width: max-content;
+          height: 44px;
+          white-space: nowrap;
+        }
+      }
+
+      @media (max-width: 760px) {
+        html body .page:not(.idle) [data-pencil-name="HorizontalBorder"] {
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-areas:
+            "review"
+            "time"
+            "draw"
+            "note";
+        }
+        html body #questionTime { width: 100%; }
+        html body #espelhoActions,
+        html body #drawActions {
+          width: 100%;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        html body #espelhoActions .btn,
+        html body #drawActions .btn,
+        html body #btnNotaToggle,
+        html body #btnNotasPagina {
+          width: 100%;
+          justify-self: stretch;
+          justify-content: center;
+        }
+        html body #timerBlock {
+          min-height: 0;
+          flex-direction: column;
+          justify-content: center;
+          gap: var(--ds-space-5);
+        }
+        html body #timerBlock > [data-pencil-name="Margin"],
+        html body #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+          width: 100%;
+        }
+        html body #timerBlock > [data-pencil-name="Margin"] {
+          flex: 0 0 auto;
+        }
+        html body #timerBlock > [data-pencil-name="Margin"] > [data-pencil-name="Container"] {
+          justify-content: center;
+        }
+      }
+
+      /* Proporção da área de treino: a superfície acompanha uma medida de
+         leitura confortável, em vez de ocupar toda a largura disponível.
+         O mostrador continua legível, mas deixa de competir com o enunciado. */
+      html body .page:not(.idle) [data-pencil-name="Corpo da Questão"] {
+        width: 100%;
+        max-width: 960px;
+        margin-inline: auto;
+      }
+      html body #timerBlock {
+        min-height: 148px;
+        padding: var(--ds-space-4) var(--ds-space-5);
+      }
+      html body #timerBlock #ring {
+        width: 140px;
+        height: 140px;
+        flex: 0 0 140px;
+        margin: -15px;
+        transform: scale(.78);
+        transform-origin: center;
+      }
+      html body #timerBlock #ring.done {
+        animation-name: ringPulseCompact;
+      }
+      @keyframes ringPulseCompact {
+        0%, 100% { transform: scale(.78); }
+        50% { transform: scale(.82); }
+      }
+
+      @media (max-width: 760px) {
+        html body .page:not(.idle) [data-pencil-name="Corpo da Questão"] {
+          max-width: none;
+        }
+        html body #timerBlock {
+          padding: var(--ds-space-4);
+        }
+      }
+
+      @media (max-width: 480px) {
+        html body #btnReset > div,
+        html body #btnSomCirculo > div { display: none; }
+      }
+
+      /* Configuração inicial sem "cartão dentro da página": a escolha ocupa
+         uma área aberta e usa a grade conforme a complexidade real do modo. */
+      html body .page.idle {
+        justify-content: flex-start;
+        padding-inline: clamp(var(--ds-space-5), 5vw, 72px);
+      }
+      html body .page.idle .app-aside {
+        width: 100%;
+        max-width: none;
+      }
+      html body .page.idle .app-aside > [data-pencil-name="Background+Border"] {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: var(--ds-space-5) 0;
+        border: 0;
+        border-radius: 0;
+        background-color: transparent;
+        box-shadow: none;
+      }
+      html body .page.idle .app-aside > [data-pencil-name="Background+Border"] > [data-pencil-name="Overlay+Shadow"] {
+        display: none;
+      }
+      html body .page.idle .app-aside > [data-pencil-name="Background+Border"] > [data-pencil-name="Container"] {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: var(--ds-space-5);
+        row-gap: var(--ds-space-5);
+        align-items: start;
+      }
+      html body .page.idle [data-pencil-name="Modo"],
+      html body .page.idle #dpeSub,
+      html body .page.idle #tcdfSub {
+        grid-column: 1 / -1;
+      }
+      html body .page.idle #modeToggle {
+        flex-direction: row;
+        gap: var(--ds-space-2);
+      }
+      html body .page.idle #modeToggle .seg-btn {
+        flex: 1 1 0;
+      }
+      html body .page.idle #dpeSub {
+        flex-flow: row wrap;
+        column-gap: var(--ds-space-5);
+        row-gap: var(--ds-space-2);
+      }
+      html body .page.idle #dpeSub > :nth-child(1),
+      html body .page.idle #dpeSub > :nth-child(3) {
+        flex: 0 0 calc(50% - 12px);
+      }
+      html body .page.idle #dpeSub > :nth-child(2),
+      html body .page.idle #dpeSub > :nth-child(4) {
+        flex: 0 0 calc(50% - 12px);
+      }
+      html body .page.idle #dpeSub > :nth-child(1) { order: 1; }
+      html body .page.idle #dpeSub > :nth-child(3) { order: 2; }
+      html body .page.idle #dpeSub > :nth-child(2) { order: 3; }
+      html body .page.idle #dpeSub > :nth-child(4) { order: 4; }
+      html body .page.idle #tcdfSub {
+        display: flex;
+      }
+      html body .page.idle #idleDraw {
+        align-self: end;
+      }
+
+      /* O alinhamento óptico segue o texto dentro dos controles, não a
+         tangente externa do raio. Assim rótulo e opção começam no mesmo eixo. */
+      html body .app-aside :is(
+        [data-pencil-name="MODO DE TREINO"],
+        [data-pencil-name="PROVA"],
+        [data-pencil-name="FONTE"],
+        [data-pencil-name="FORMATO"],
+        [data-pencil-name="ASSUNTO"]
+      ) {
+        padding-inline: var(--ds-space-5);
+      }
+
+      /* Configuração progressiva: aberta na escolha; recolhida após o sorteio.
+         O checkbox nativo mantém teclado e estado sem acoplar-se ao app. */
+      html body .config-panel-toggle {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+      html body .page.idle .config-panel-toggle,
+      html body .page.idle .config-panel-trigger { display: none; }
+      html body .config-panel-trigger {
+        display: none;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        gap: var(--ds-space-2);
+        padding: var(--ds-space-2) var(--ds-space-3);
+        border: 1px solid var(--d-ctl-border);
+        border-radius: var(--ds-radius);
+        background-color: var(--d-inset);
+        color: var(--d-text);
+        font-size: var(--ds-text-control);
+        line-height: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        transition: border-color .18s ease, background-color .18s ease;
+      }
+      html body .page:not(.idle) .config-panel-trigger { display: flex; }
+      html body .config-panel-trigger:hover {
+        border-color: var(--d-ctl-border-on);
+        background-color: var(--d-accent-t);
+      }
+      html body .config-panel-toggle:focus-visible + .config-panel-trigger {
+        outline: var(--focus-w) solid var(--focus-color);
+        outline-offset: var(--focus-off);
+      }
+      html body .config-panel-chevron {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        transition: transform .18s ease;
+      }
+      html body .config-panel-toggle:checked + .config-panel-trigger .config-panel-chevron {
+        transform: rotate(180deg);
+      }
+      html body .page:not(.idle) .app-aside:has(.config-panel-toggle:not(:checked)) {
+        width: 100%;
+      }
+      html body .page:not(.idle):has(.config-panel-toggle:not(:checked)) {
+        flex-direction: column;
+        gap: var(--ds-space-3);
+      }
+      html body .page:not(.idle):has(.config-panel-toggle:not(:checked)) .app-main {
+        width: 100%;
+      }
+      html body .page:not(.idle) .config-panel-toggle:not(:checked) ~ [data-pencil-name="Background+Border"] {
+        display: none;
+      }
+      html body .page:not(.idle) .app-aside:has(.config-panel-toggle:checked) {
+        width: 320px;
+        gap: var(--ds-space-2);
+      }
+      html body .page:not(.idle) .config-panel-toggle:checked + .config-panel-trigger {
+        width: 100%;
+      }
+      @media (max-width: 1100px) {
+        html body .page:not(.idle) .app-aside:has(.config-panel-toggle:checked) {
+          width: 100%;
+        }
+      }
+      @media (max-width: 760px) {
+        html body .page.idle {
+          padding-inline: var(--ds-space-4);
+        }
+        html body .page.idle .app-aside > [data-pencil-name="Background+Border"] > [data-pencil-name="Container"],
+        html body .page.idle #dpeSub {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        html body .page.idle #dpeSub > :nth-child(1),
+        html body .page.idle #dpeSub > :nth-child(2),
+        html body .page.idle #dpeSub > :nth-child(3),
+        html body .page.idle #dpeSub > :nth-child(4) {
+          flex-basis: 100%;
+        }
+        html body .page.idle #dpeSub > :nth-child(1) { order: 1; }
+        html body .page.idle #dpeSub > :nth-child(2) { order: 2; }
+        html body .page.idle #dpeSub > :nth-child(3) { order: 3; }
+        html body .page.idle #dpeSub > :nth-child(4) { order: 4; }
+        html body .page.idle #modeToggle {
+          flex-direction: column;
+        }
+        html body .app-aside :is(
+          [data-pencil-name="MODO DE TREINO"],
+          [data-pencil-name="PROVA"],
+          [data-pencil-name="FONTE"],
+          [data-pencil-name="FORMATO"],
+          [data-pencil-name="ASSUNTO"]
+        ) {
+          padding-inline: var(--ds-space-4);
+        }
       }

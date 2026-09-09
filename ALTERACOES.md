@@ -63,6 +63,52 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-09] ADOÇÃO DO DESIGN v41 E MUDANÇA DA FONTE DO SITE
+
+**Tipo:** design, configuração e documentação  
+**Ambiente:** desenvolvimento local e Netlify
+
+### Problema
+
+O redesenho produzido no Codex existia apenas como saída de build, em `public/`, sem contrapartida em `minha-banca.NOVO_3.html`. Como o Netlify executava `scripts/build_public.py` a cada publicação, o deploy regeneraria `public/` a partir da fonte antiga e apagaria o design novo sem emitir erro.
+
+### Alteração
+
+- `public/index.html`, `public/assets/styles.css` e `public/assets/app.js` substituídos pelos do Codex; `public/assets/v41.css` acrescentado;
+- `netlify.toml` passou a trazer `command = ""`, com a explicação no próprio arquivo;
+- `README.md` e `TESTES.md` deixaram de instruir a execução do build e passaram a avisar do risco;
+- `minha-banca.NOVO_3.html` e `scripts/build_public.py` tornam-se histórico.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Sem regressão identificada. A estrutura de acessibilidade corrigida em agosto está preservada. Registra-se que ocultar OAB, TCDF e discursiva por CSS não remove esses dados do arquivo público — ver P2-07.
+
+### Testes executados
+
+- conferência de integridade do trabalho do Codex contra o estado anterior: as quatro correções de 09/09 e os blocos 15 e 16 do CSS estão presentes; `header`, `main`, `footer`, `aside`, skip-link e `sr-only` preservados: PASSOU;
+- contagem do acervo no `app.js` recebido: 750 · 55 · 55 · 6 · 37: PASSOU;
+- `node --check public/assets/app.js`: PASSOU;
+- conferência SHA-256 dos quatro arquivos depois de copiados para o projeto, contra os originais do Codex: idênticos: PASSOU.
+
+### Itens não testados
+
+- comportamento do site publicado depois deste deploy;
+- fluxo completo de treino e de conta sobre o design novo;
+- celular real;
+- impressão.
+
+### Reversão
+
+`git revert` do commit devolve os quatro arquivos e o `netlify.toml` anteriores. A pasta do Codex permanece no computador da autora como cópia de origem.
+
+### Pendências relacionadas
+
+- P2-06 aberta e aplicada; P2-07 aberta; P2-05 segue.
+
 ## [2026-09-09] NORMALIZAÇÃO DE VALORES DO EXPORT — PRIMEIRO PASSO DO SISTEMA DE DESIGN
 
 **Tipo:** design  

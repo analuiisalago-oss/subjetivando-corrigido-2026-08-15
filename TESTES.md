@@ -15,19 +15,23 @@ Não substituir teste por suposição.
 
 ### Validação automatizada local
 
+> **NÃO RODE `scripts/build_public.py`.** Desde 09/09/2026 a pasta `public/` é a
+> FONTE do site, e não mais a saída desse script. Executá-lo sobrescreve
+> `index.html`, `styles.css` e `app.js` com a versão gerada a partir de
+> `minha-banca.NOVO_3.html`, que ficou congelada no design anterior — e apaga o
+> design atual sem emitir erro nenhum. Ver P2-06 em `PENDENCIAS.md`.
+
 Antes de publicar:
 
 ```bash
-python scripts/build_public.py
 node --check public/assets/app.js
 node scripts/audit_project.mjs
 node scripts/teste_consentimento.mjs
-PYTHONPYCACHEPREFIX=/tmp/subjetivando-pycache python -m py_compile pipeline/*.py scripts/build_public.py
 ```
 
 `teste_consentimento.mjs` é teste de regressão da P1-08: extrai a função de autorização do `app.js` gerado e confirma que uma recusa já registrada não volta a perguntar. Ele sai com código 1 se algum caso falhar, e pode ser encadeado com `&&`.
 
-Além disso, valide todos os arquivos JSON. `audit_project.mjs` confirma as contagens dos seis acervos, IDs únicos, ausência de padrões de segredos privados e a lista fechada de arquivos em `public/`. O script de geração deve informar nove camadas JavaScript; qualquer quantidade diferente indica que a fonte mudou e o build precisa ser revisto.
+Além disso, valide todos os arquivos JSON. `audit_project.mjs` confirma as contagens dos seis acervos, IDs únicos, ausência de padrões de segredos privados e a lista fechada de arquivos em `public/`. Desde 09/09/2026 esse script passa a ver um arquivo a mais em `public/` — o `v41.css` —, o que é esperado.
 
 ## 2. DADOS DE CADA EXECUÇÃO
 
