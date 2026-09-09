@@ -108,6 +108,12 @@ Sem impacto identificado.
 
 `git revert` do commit e novo `python3 scripts/build_public.py`. A regra está isolada num bloco próprio e comentado, e pode ser removida sozinha.
 
+### Correção posterior, no mesmo dia
+
+A primeira versão publicada não surtiu efeito. O CSS chegou ao ar íntegro — hash conferido — mas o Tailwind por CDN injeta um `<style>` em tempo de execução que entra na cascata depois de `styles.css`; com a mesma especificidade, a declaração do Tailwind prevalecia. Acrescentado `!important` às três declarações e registrado no próprio comentário do bloco 15 por que ele existe e quando poderá sair.
+
+Medição no site publicado, depois da segunda correção, em 375px: cartão da questão inteiro, barra do topo com 98px, zero elementos com conteúdo cortado, zero elementos fora da tela, zero transbordamento horizontal.
+
 ### Pendências relacionadas
 
 - P1-03 avança; P3-11 aberta para a reorganização de tela estreita, que é design e não defeito.

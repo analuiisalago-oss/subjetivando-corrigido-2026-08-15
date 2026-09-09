@@ -972,10 +972,19 @@
       /*                                                                     */
       /* Verificado em 375px (corrige os dois) e em 994px (sem alteração     */
       /* alguma). Acima de 1100px esta regra não se aplica.                  */
+      /*                                                                     */
+      /* O `!important` é necessário, não é preguiça: o Tailwind por CDN     */
+      /* injeta suas classes num <style> criado em tempo de execução, que    */
+      /* entra na cascata DEPOIS de styles.css. Como `.[flex:1_1_0]` tem a   */
+      /* mesma especificidade nos dois lugares, a declaração do Tailwind     */
+      /* venceria por vir por último, e a correção não teria efeito algum —  */
+      /* foi exatamente o que aconteceu na primeira tentativa publicada.     */
+      /* Quando o Tailwind sair do CDN e virar CSS compilado, estes três     */
+      /* `!important` podem ser removidos.                                   */
       /* ------------------------------------------------------------------ */
       @media (max-width: 1100px) {
-        .\[flex\:1_1_0\] { flex-basis: auto; }
-        .topbar-keep { height: auto; min-height: 64px; }
+        .\[flex\:1_1_0\] { flex-basis: auto !important; }
+        .topbar-keep { height: auto !important; min-height: 64px !important; }
       }
 
 </style>

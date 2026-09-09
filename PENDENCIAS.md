@@ -74,6 +74,10 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Medições depois da correção, em 375px:** cartão da questão com 620px mostrando o conteúdo inteiro; barra com 98px sem sobrepor; zero elementos com conteúdo cortado; zero transbordamento horizontal. Em 994px o resultado é idêntico ao anterior. Acima de 1100px a regra não se aplica.
 
+**Correção da correção:** a primeira versão publicada não teve efeito nenhum. A regra chegou ao ar íntegra, mas o Tailwind por CDN injeta suas classes num `<style>` criado em tempo de execução, que entra na cascata depois de `styles.css`. Com a mesma especificidade nos dois lugares, vencia a declaração do Tailwind. Resolvido com `!important` nas três declarações, o que passa a ser desnecessário quando o Tailwind deixar de vir por CDN (ver P2-04).
+
+**Lição de método registrada:** testar uma regra injetando-a no fim da cascata pelo navegador não prova que ela funcionará dentro de `styles.css`. A verificação só vale depois de publicada, no arquivo real e na posição real.
+
 **Ainda pendente:** validação visual em 768×1024, 1366×768 e 1920×1080; e o teste em aparelho real depois da publicação.
 
 ### P1-04 — Remover identidade fictícia
