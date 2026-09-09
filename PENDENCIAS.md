@@ -64,8 +64,17 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 ### P1-03 — Corrigir responsividade
 
-**Estado:** EM EXECUÇÃO. Regras de refluxo implementadas; falta validação visual nas quatro resoluções.  
-**Critérios:** 360×800, 768×1024, 1366×768 e 1920×1080 sem perda funcional.
+**Estado:** EM EXECUÇÃO. Testada em iPhone real e em viewport emulado de 375px em 09/09/2026. Dois defeitos encontrados e corrigidos; um problema de organização permanece, movido para P3-11.
+
+**Defeito 1, corrigido:** abaixo de 1100px as colunas empilham e os cartões com `flex: 1 1 0` passam a repartir altura em vez de largura. Dentro de contêiner de altura automática eles colapsam e, com `overflow: hidden`, escondem o conteúdo. Medido em 375px: o cartão da questão tinha 50px de caixa para 482px de conteúdo, ocultando 432px — incluindo o padrão de resposta e o botão de ocultar.
+
+**Defeito 2, corrigido:** a barra do topo tem altura fixa de 64px; no celular o grupo da direita quebrava de linha e cobria o conteúdo da página.
+
+**Correção:** bloco 15 do CSS, dentro de `@media (max-width: 1100px)`, com `flex-basis: auto` nos cartões e altura automática na barra.
+
+**Medições depois da correção, em 375px:** cartão da questão com 620px mostrando o conteúdo inteiro; barra com 98px sem sobrepor; zero elementos com conteúdo cortado; zero transbordamento horizontal. Em 994px o resultado é idêntico ao anterior. Acima de 1100px a regra não se aplica.
+
+**Ainda pendente:** validação visual em 768×1024, 1366×768 e 1920×1080; e o teste em aparelho real depois da publicação.
 
 ### P1-04 — Remover identidade fictícia
 
@@ -229,6 +238,12 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 ### P3-08 — Criar suporte e procedimento de incidente
 
 **Estado:** NÃO INICIADA.
+
+### P3-11 — Reorganizar o simulador para tela estreita
+
+**Estado:** NÃO INICIADA.  
+**Problema:** corrigidos os defeitos da P1-03, o celular passa a mostrar tudo, mas empilhado numa única coluna de cerca de 2.000px. Configuração no alto, questão no meio, cronômetro e anotação bem abaixo. Quem toca em "Iniciar tempo" vê o efeito longe do botão, às vezes fora da tela.  
+**Observação:** é decisão de design, não defeito. Exige escolher o que fica fixo, o que vira gaveta e onde mora o cronômetro. Não iniciar antes de o beta indicar se as pessoas usam pelo celular.
 
 ### P3-10 — Criar páginas próprias de entrada e cadastro
 

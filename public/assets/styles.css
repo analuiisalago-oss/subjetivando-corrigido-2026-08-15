@@ -904,3 +904,24 @@
         .pd-line { display: flex; align-items: center; height: 6.4mm; border-bottom: .5pt solid #1a1a1a; }
         .pd-num { width: 7mm; flex: 0 0 7mm; text-align: center; font-size: 7pt; color: #1a1a1a; line-height: 1; border-right: .5pt solid #1a1a1a; align-self: stretch; display: flex; align-items: center; justify-content: center; }
       }
+    
+      /* ------------------------------------------------------------------ */
+      /* 15. CELULAR — correções de empilhamento (09/09/2026)                */
+      /*                                                                     */
+      /* Abaixo de 1100px as colunas empilham, e isso produzia dois efeitos: */
+      /*  a) cartões com `flex: 1 1 0` deixam de repartir LARGURA e passam   */
+      /*     a repartir ALTURA. Dentro de um contêiner de altura automática  */
+      /*     eles colapsam e, com `overflow: hidden`, escondem o conteúdo.   */
+      /*     Medido em 375px: o cartão da questão tinha 50px de caixa para   */
+      /*     482px de conteúdo, ocultando 432px, inclusive o padrão de       */
+      /*     resposta e o botão de ocultar.                                  */
+      /*  b) a barra do topo tem altura fixa de 64px; o grupo da direita     */
+      /*     quebrava de linha e passava a cobrir o conteúdo da página.      */
+      /*                                                                     */
+      /* Verificado em 375px (corrige os dois) e em 994px (sem alteração     */
+      /* alguma). Acima de 1100px esta regra não se aplica.                  */
+      /* ------------------------------------------------------------------ */
+      @media (max-width: 1100px) {
+        .\[flex\:1_1_0\] { flex-basis: auto; }
+        .topbar-keep { height: auto; min-height: 64px; }
+      }

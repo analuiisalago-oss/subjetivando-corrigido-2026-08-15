@@ -63,6 +63,55 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-09] CORREÇÃO DE DOIS DEFEITOS DE LAYOUT NO CELULAR
+
+**Tipo:** correção  
+**Ambiente:** desenvolvimento local e site publicado
+
+### Problema
+
+Teste em iPhone real mostrou conteúdo cortado e barra do topo sobre o conteúdo. A medição em viewport emulado de 375px identificou duas causas, ambas ativadas apenas quando as colunas empilham abaixo de 1100px: cartões com `flex: 1 1 0` colapsando em altura e escondendo 432px sob `overflow: hidden`; e a barra do topo com altura fixa de 64px, cujo grupo da direita quebrava de linha para fora dela.
+
+### Alteração
+
+Acrescentado o bloco 15 ao CSS da fonte canônica, dentro de `@media (max-width: 1100px)`: `flex-basis: auto` nos cartões e `height: auto` com `min-height: 64px` na barra. Quatro linhas de regra, com comentário registrando as medições.
+
+### Arquivos ou serviços afetados
+
+- `minha-banca.NOVO_3.html`, bloco de estilo;
+- `public/assets/styles.css`, regenerado pelo build.
+
+`public/index.html` e `public/assets/app.js` não mudaram de tamanho.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Sem impacto identificado.
+
+### Testes executados
+
+- correção aplicada ao vivo no site publicado, via navegador, antes de tocar em arquivo: cartão passou de 50px para 620px; barra passou de 64px para 98px; elementos com conteúdo cortado passaram de 2 para 0; transbordamento horizontal permaneceu em 0: PASSOU;
+- mesma medição em 994px, com e sem a correção: resultados idênticos, sem regressão: PASSOU;
+- `node --check public/assets/app.js`: PASSOU;
+- `node scripts/audit_project.mjs`: PASSOU, contagens do acervo inalteradas: PASSOU.
+
+### Itens não testados
+
+- aparelho real depois da publicação;
+- 768×1024, 1366×768 e 1920×1080;
+- impressão depois da mudança.
+
+### Reversão
+
+`git revert` do commit e novo `python3 scripts/build_public.py`. A regra está isolada num bloco próprio e comentado, e pode ser removida sozinha.
+
+### Pendências relacionadas
+
+- P1-03 avança; P3-11 aberta para a reorganização de tela estreita, que é design e não defeito.
+
 ## [2026-09-09] AUTENTICAÇÃO COMPROVADA E TRADUÇÃO DE ERROS AMPLIADA
 
 **Tipo:** correção e configuração  
