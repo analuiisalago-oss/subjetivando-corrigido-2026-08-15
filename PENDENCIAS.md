@@ -293,6 +293,8 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Verificado nesta data:** as quatro correções de código de 09/09 (tradução de erros e consentimento) e os blocos 15 e 16 do CSS sobreviveram ao redesenho; a estrutura de acessibilidade (`header`, `main`, `footer`, `aside`, skip-link, `sr-only`) está preservada; o acervo permanece em 750 · 55 · 55 · 6 · 37; `node --check` aprova o `app.js`.
 
+**Encerrado em 10/09/2026 por remoção.** `scripts/build_public.py` e os arquivos que ele lia — `minha-banca.NOVO_3.html`, `minha-banca.NOVO.html`, `minha-banca.BACKUP.html` e as cópias de `_headers`, `_redirects` e `robots.txt` da raiz — foram removidos do repositório, antes de o projeto ser compartilhado para revisão externa. A proteção deixou de depender de alguém ler um comentário: o script não existe mais. Tudo continua recuperável pelo histórico do Git. Mantido `minha-banca.html` na raiz, como referência do estado publicado em 15/08/2026.
+
 **Pendente de decisão futura:** se algum dia o projeto quiser voltar a ter fonte única, o caminho é reconstruir a fonte a partir de `public/`, e não o contrário.
 
 ### P2-07 — Conteúdo de OAB, TCDF e discursiva apenas oculto por CSS

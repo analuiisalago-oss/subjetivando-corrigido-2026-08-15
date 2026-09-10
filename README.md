@@ -16,21 +16,44 @@ Este repositório contém o código da aplicação, os bancos de questões e a d
 
 ## 2. ESTADO ATUAL DO PROJETO
 
-Situação em 15 de agosto de 2026:
+Situação em 10 de setembro de 2026:
 
-- hospedagem de testes: Netlify;
+- hospedagem: Netlify, com publicação contínua a partir da branch `main`. O deploy manual por arrastar pasta foi encerrado em 09/09/2026;
 - backend, autenticação e sincronização: Supabase;
+- **fonte do frontend: a pasta `public/`, editada diretamente. Não existe etapa de geração, e nenhum outro arquivo deste repositório vira site;**
+- diretório publicado pelo Netlify: exclusivamente `public/`;
+- persistência local: `localStorage`; sincronização em nuvem: Supabase para quem está autenticado;
 - domínio próprio: ainda não adquirido;
 - cobrança: ainda não implementada;
 - estágio: protótipo avançado, ainda não liberado como produto pago;
-- fonte do frontend: a pasta `public/` (`index.html`, `assets/styles.css`, `assets/v41.css`, `assets/app.js`), editada diretamente desde 09/09/2026;
-- `minha-banca.NOVO_3.html`: **histórico**, congelado no design anterior. Não editar esperando efeito no site, e não regenerar `public/` a partir dele;
-- versão publicável: os quatro arquivos de `public/`, publicados como estão, sem etapa de build;
-- diretório publicado pelo Netlify: exclusivamente `public/`;
-- rotas existentes: `/`, `/defensoria`, `/oab` e `/tcdf`;
-- persistência local: `localStorage`;
-- sincronização em nuvem: Supabase para usuários autenticados;
-- design principal: tema escuro/claro, paleta botânica e interface em português do Brasil.
+- design: tema claro e escuro, paleta botânica, interface em português do Brasil.
+
+### 2.1. Rotas existentes
+
+Definidas em `public/_redirects`, na ordem em que aparecem no arquivo.
+
+| Rota | Arquivo servido | O que é |
+|---|---|---|
+| `/` | `inicio.html` | convite à criação de conta |
+| `/login`, `/cadastro`, `/recuperar-senha` | arquivos próprios | páginas de conta, sem o `app.js` |
+| `/sobre`, `/termos`, `/privacidade` | arquivos próprios | páginas institucionais, em rascunho |
+| `/dashboard`, `/treino`, `/defensoria`, `/oab`, `/tcdf` | `index.html` | o simulador |
+| `/atualizar-senha` | `index.html` | definição de nova senha, ainda em modal |
+| qualquer outra | `index.html` | curinga |
+
+A regra de `/` usa o sinal de força (`200!`) porque arquivo existente vence regra de reescrita no Netlify — sem ele, `index.html` continuaria ganhando da raiz. É a única regra do arquivo que precisa disso.
+
+### 2.2. Para quem vai contribuir
+
+O necessário antes do primeiro PR:
+
+- **o site inteiro sai de `public/`.** `index.html` e `assets/app.js` são a aplicação;
+- **`assets/app.js` tem 3,4 MB porque o acervo de questões está dentro dele**, junto de dez camadas de script sobrepostas. Procure o trecho a alterar; não abra o arquivo inteiro no editor sem necessidade;
+- **nunca reescreva o `app.js` por inteiro nem o gere a partir de outro arquivo.** Alterações são feitas por âncora conferida, uma função por vez, com conferência de que nada mais mudou. Ver P1-16 em `PENDENCIAS.md`;
+- as páginas de conta e institucionais **não carregam o `app.js`**: são arquivos estáticos com `assets/conta.js` (8 KB) e `assets/paginas.css`. Nenhuma delas carrega recurso externo;
+- `minha-banca.html`, na raiz, é o **estado publicado em 15/08/2026**, mantido só como referência para conferir regressões. Editar esse arquivo não tem efeito nenhum no site;
+- `pipeline/` é a matéria-prima do acervo, não código de aplicação;
+- antes de abrir o PR, rode os três comandos da seção 6 e o roteiro aplicável de `TESTES.md`.
 
 ## 3. ÁREAS DO PRODUTO
 
@@ -68,13 +91,11 @@ Treinamento de questões discursivas e peças técnicas relacionadas ao Tribunal
 
 ## 5. FUNCIONALIDADES AINDA NÃO CONSIDERADAS CONCLUÍDAS
 
-- teste real do fluxo completo de recuperação de senha no Supabase;
 - validação visual da responsividade em navegadores e dispositivos reais;
-- auditoria das políticas de segurança do Supabase;
 - exclusão de conta e dados;
 - possibilidade de rever, em uma área de configurações, a decisão de incorporar ou não dados anônimos;
 - nova tentativa de sincronização após falha sem exigir recarregamento manual;
-- política de privacidade, termos de uso e política de cancelamento;
+- política de privacidade, termos de uso e página sobre: **existem como páginas próprias desde 09/09/2026, mas em rascunho**, com as lacunas assinaladas na própria página — 10 na privacidade, 6 nos termos, 2 na sobre. Falta ainda a política de cancelamento. Ver P2-08;
 - domínio próprio;
 - cobrança e controle seguro de assinaturas;
 - proteção do conteúdo premium fora do HTML público;
@@ -92,7 +113,9 @@ node scripts/audit_project.mjs
 node scripts/teste_consentimento.mjs
 ```
 
-Depois, execute o roteiro aplicável de `TESTES.md`. **Não execute `scripts/build_public.py`** — ele apagaria o design atual. Ver P2-06 em `PENDENCIAS.md`.
+Depois, execute o roteiro aplicável de `TESTES.md`.
+
+`scripts/build_public.py` **foi removido em 10/09/2026**. Ele regenerava `public/` a partir de um HTML congelado e apagaria o design atual sem gerar erro. Continua recuperável pelo histórico do Git, mas não deve voltar. Ver P2-06 em `PENDENCIAS.md`.
 
 ### Se o projeto estiver conectado ao Netlify por repositório
 

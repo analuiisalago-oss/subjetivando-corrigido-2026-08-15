@@ -63,6 +63,57 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-10] LIMPEZA DA RAIZ ANTES DE ABRIR O REPOSITÓRIO A REVISÃO EXTERNA
+
+**Tipo:** documentação  
+**Ambiente:** repositório
+
+### Problema
+
+O repositório vai ser compartilhado com um colaborador para revisão por PR. A raiz continha **sete arquivos HTML de 3,4 a 3,9 MB**, nenhum deles o site, e nada na primeira tela indicava qual arquivo é a fonte. O risco não é o revisor apagar algo: é editar o arquivo errado e abrir um PR sem efeito. Além disso, `scripts/build_public.py` continuava presente — o único arquivo capaz de apagar o design atual sem gerar erro, protegido apenas por um comentário.
+
+### Alteração
+
+Removidos, todos recuperáveis pelo histórico do Git:
+
+- `scripts/build_public.py` — o script que regenerava `public/` a partir de fonte congelada;
+- `minha-banca.NOVO_3.html`, `minha-banca.NOVO.html`, `minha-banca.BACKUP.html` — o que o script lia, e cópias históricas;
+- `index-css.html`, `index-tailwind.html` e a pasta `assets/` da raiz (41 PNGs) — exports crus do Pen.dev. Verificado: os 41 PNGs são referenciados **exclusivamente** por esses dois HTML, e nenhum dos três é usado por `public/`;
+- `_headers`, `_redirects` e `robots.txt` da raiz — superados pelas versões de `public/`; só serviam de entrada para o script removido.
+
+**Mantidos deliberadamente:** `minha-banca.html`, como referência do estado publicado em 15/08/2026; `pipeline/` inteiro, que é a matéria-prima do acervo e a base da futura F2 da P1-16; os `RESPOS_*.txt` e `respostas_*.json` da raiz, conferidos como matérias distintas das de `pipeline/resultados/`, e não cópias.
+
+`README.md` atualizado: a seção 2 estava desatualizada nas rotas — listava quatro, quando existem treze. Acrescentadas a tabela de rotas (2.1) e a seção "Para quem vai contribuir" (2.2), com o que um revisor precisa saber antes do primeiro PR. Na seção 5, retirados dois itens já concluídos e corrigida a descrição dos documentos institucionais, que existem em rascunho. Na seção 6, o aviso de não executar o script foi substituído pelo registro de que ele foi removido.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Conferido antes de abrir o acesso: não há chave de serviço, JWT nem `sb_secret` em `public/assets/app.js` ou `public/index.html`. Aparecem apenas a URL do projeto Supabase e a chave `sb_publishable_`, pública por definição e protegida pela RLS comprovada em 09/09/2026.
+
+**Verificação que continua pendente e é do usuário:** se `private/` chegou a ser commitada antes de entrar no `.gitignore`, ela permanece no histórico e será clonada pelo colaborador. Confirmar com `git log --all --oneline -- private/` **antes** de conceder acesso.
+
+### Testes executados
+
+- `node scripts/audit_project.mjs` continua válido: ele audita apenas arquivos de `public/`, nenhum dos removidos;
+- conferido por busca que nenhum arquivo de `public/` referencia os PNGs da raiz nem os dois HTML de export.
+
+### Itens não testados
+
+- nada em execução mudou: nenhum arquivo removido era carregado pelo site.
+
+### Reversão
+
+`git revert` do commit desta limpeza devolve todos os arquivos. Nenhum conteúdo foi perdido — remoção do estado atual, não do histórico.
+
+### Pendências relacionadas
+
+- P2-06 encerrada por remoção;
+- P2-08 e P1-16 permanecem abertas.
+
+
 ## [2026-09-09] CORREÇÃO DA RESPOSTA TROCADA APÓS RECARREGAR A PÁGINA
 
 **Tipo:** correção  
