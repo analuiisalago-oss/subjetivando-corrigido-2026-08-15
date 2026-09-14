@@ -42,7 +42,6 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -152,7 +151,7 @@
           <span id="syncStatus" class="sync-status" data-state="local" role="status" aria-live="polite">Somente neste dispositivo</span>
           <span id="userBadge" style="display:none;" class="conta-badge"></span>
           <button type="button" id="btnLogout" style="display:none;" class="conta-acao" title="Sair da conta">
-            <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Sair
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg> Sair
           </button>
           <button
             type="button"
@@ -161,7 +160,7 @@
             aria-label="Entrar ou criar conta"
             aria-haspopup="dialog"
             class="conta-botao"
-          ><i class="fa-solid fa-circle-user" aria-hidden="true"></i></button>
+          ><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.2 18.4a6.5 6.5 0 0 1 11.6 0"/></svg></button>
           <button
             type="button"
             id="btnMenu"
@@ -236,13 +235,13 @@
           <button type="button" id="cardTreino" class="text-left group bg-botanic-surface p-8 rounded-3xl border border-botanic-sage/10 card-hover flex flex-col justify-between h-[320px] shadow-lg">
             <div>
               <div class="w-14 h-14 bg-botanic-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-botanic-primary/20 transition-colors">
-                <i class="fa-solid fa-play text-2xl text-botanic-primary" aria-hidden="true"></i>
+                <svg class="ico text-2xl text-botanic-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5z"/></svg>
               </div>
               <h3 id="treinoCardTitle" class="font-brand text-3xl text-botanic-text font-semibold mb-3">Configurar treino</h3>
               <p class="text-sm text-botanic-sage/70 leading-relaxed font-sans">Configure seu simulador, escolha os temas e comece sua prática personalizada.</p>
             </div>
             <div class="flex items-center gap-2 text-botanic-primaryHigh font-semibold text-[10px] uppercase tracking-widest mt-6 font-sans">
-              <span id="treinoCardCta">Configurar treino</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+              <span id="treinoCardCta">Configurar treino</span> <svg class="ico group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16"/><path d="M14 6l6 6-6 6"/></svg>
             </div>
           </button>
 
@@ -250,13 +249,13 @@
           <button type="button" id="cardAnotacoes" class="text-left group bg-botanic-surface p-8 rounded-3xl border border-botanic-sage/10 card-hover flex flex-col justify-between h-[320px] shadow-lg">
             <div>
               <div class="w-14 h-14 bg-botanic-sage/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-botanic-sage/20 transition-colors">
-                <i class="fa-solid fa-note-sticky text-2xl text-botanic-sage" aria-hidden="true"></i>
+                <svg class="ico text-2xl text-botanic-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v9l-6 6H5a1 1 0 0 1-1-1V5z"/><path d="M20 14h-5a1 1 0 0 0-1 1v5"/></svg>
               </div>
               <h3 class="font-brand text-3xl text-botanic-text font-semibold mb-3">Minhas Anotações</h3>
               <p class="text-sm text-botanic-sage/70 leading-relaxed font-sans">Gerencie suas notas e revisões de questões treinadas anteriormente.</p>
             </div>
             <div class="flex items-center gap-2 text-botanic-sage font-semibold text-[10px] uppercase tracking-widest mt-6 font-sans">
-              <span id="resumoAnotacoes">Abrir central</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+              <span id="resumoAnotacoes">Abrir central</span> <svg class="ico group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16"/><path d="M14 6l6 6-6 6"/></svg>
             </div>
           </button>
 
@@ -264,13 +263,13 @@
           <button type="button" id="cardHistorico" class="text-left group bg-botanic-surface p-8 rounded-3xl border border-botanic-sage/10 card-hover flex flex-col justify-between h-[320px] shadow-lg">
             <div>
               <div class="w-14 h-14 bg-botanic-text/5 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-botanic-text/10 transition-colors">
-                <i class="fa-solid fa-clock-rotate-left text-2xl text-botanic-text/60" aria-hidden="true"></i>
+                <svg class="ico text-2xl text-botanic-text/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 8v4l3 2"/></svg>
               </div>
               <h3 class="font-brand text-3xl text-botanic-text font-semibold mb-3">Histórico de Questões</h3>
               <p class="text-sm text-botanic-sage/70 leading-relaxed font-sans">Acompanhe seu progresso global e revisite simulados finalizados.</p>
             </div>
             <div class="flex items-center gap-2 text-botanic-text/50 font-semibold text-[10px] uppercase tracking-widest mt-6 font-sans">
-              <span id="resumoHistorico">Ver status global</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+              <span id="resumoHistorico">Ver status global</span> <svg class="ico group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16"/><path d="M14 6l6 6-6 6"/></svg>
             </div>
           </button>
         </div>
@@ -282,7 +281,7 @@
             <div id="ultimaAtividade" class="flex items-center justify-between p-4 bg-botanic-bg/50 rounded-2xl border border-botanic-sage/5">
               <div class="flex items-center gap-4">
                 <div class="w-10 h-10 rounded-full bg-botanic-primary/10 flex items-center justify-center text-botanic-primary">
-                  <i class="fa-solid fa-scale-balanced text-sm" aria-hidden="true"></i>
+                  <svg class="ico text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15"/><path d="M7 19h10"/><path d="M5 8h14"/><path d="M5 8l-3 6h6l-3-6z"/><path d="M19 8l-3 6h6l-3-6z"/></svg>
                 </div>
                 <div>
                   <p id="ultAtivTitulo" class="text-sm font-medium text-botanic-text">Nenhuma questão sorteada ainda</p>
@@ -1913,7 +1912,7 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
         >
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-2xl bg-botanic-primary/10 flex items-center justify-center shrink-0">
-              <i id="authIcone" class="fa-solid fa-right-to-bracket text-botanic-primary" aria-hidden="true"></i>
+              <span id="authIcone" class="ico-troca text-botanic-primary" aria-hidden="true"></span>
             </div>
             <h2
               id="authTitle"
@@ -1935,10 +1934,10 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
         <!-- abas -->
         <div id="authTabs" role="tablist" aria-label="Entrar ou criar conta" class="auth-tabs">
           <button type="button" role="tab" id="authTabEntrar" aria-selected="true" aria-controls="authFormLogin" class="auth-tab">
-            <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Entrar
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"/><path d="M14 17l5-5-5-5"/><path d="M19 12H9"/></svg> Entrar
           </button>
           <button type="button" role="tab" id="authTabCadastro" aria-selected="false" aria-controls="authFormCadastro" class="auth-tab">
-            <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Criar conta
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M18 8v6"/><path d="M15 11h6"/></svg> Criar conta
           </button>
         </div>
 
@@ -1951,14 +1950,14 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
           <div class="auth-campo">
             <label for="authEmailLogin" class="auth-label">E-mail</label>
             <div class="auth-input-wrap">
-              <i class="fa-solid fa-envelope auth-input-ico" aria-hidden="true"></i>
+              <svg class="ico auth-input-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/></svg>
               <input type="email" id="authEmailLogin" name="email" class="auth-input" autocomplete="email" placeholder="voce@exemplo.com" />
             </div>
           </div>
           <div class="auth-campo">
             <label for="authSenhaLogin" class="auth-label">Senha</label>
             <div class="auth-input-wrap">
-              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <svg class="ico auth-input-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
               <input type="password" id="authSenhaLogin" name="senha" class="auth-input" autocomplete="current-password" placeholder="Sua senha" />
             </div>
           </div>
@@ -1971,28 +1970,28 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
           <div class="auth-campo">
             <label for="authNomeCadastro" class="auth-label">Nome de exibição</label>
             <div class="auth-input-wrap">
-              <i class="fa-solid fa-user auth-input-ico" aria-hidden="true"></i>
+              <svg class="ico auth-input-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
               <input type="text" id="authNomeCadastro" name="nome" class="auth-input" autocomplete="name" placeholder="Como você quer ser chamado" />
             </div>
           </div>
           <div class="auth-campo">
             <label for="authEmailCadastro" class="auth-label">E-mail</label>
             <div class="auth-input-wrap">
-              <i class="fa-solid fa-envelope auth-input-ico" aria-hidden="true"></i>
+              <svg class="ico auth-input-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/></svg>
               <input type="email" id="authEmailCadastro" name="email" class="auth-input" autocomplete="email" placeholder="voce@exemplo.com" />
             </div>
           </div>
           <div class="auth-campo">
             <label for="authSenhaCadastro" class="auth-label">Senha</label>
             <div class="auth-input-wrap">
-              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <svg class="ico auth-input-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
               <input type="password" id="authSenhaCadastro" name="senha" class="auth-input" autocomplete="new-password" placeholder="Crie uma senha" />
             </div>
           </div>
           <div class="auth-campo">
             <label for="authSenhaCadastroConfirmar" class="auth-label">Confirmar senha</label>
             <div class="auth-input-wrap">
-              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <svg class="ico auth-input-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
               <input type="password" id="authSenhaCadastroConfirmar" name="senha2" class="auth-input" autocomplete="new-password" placeholder="Repita a senha" />
             </div>
           </div>
@@ -2005,13 +2004,13 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
           <div class="auth-campo">
             <label for="authEmailRecuperar" class="auth-label">E-mail</label>
             <div class="auth-input-wrap">
-              <i class="fa-solid fa-envelope auth-input-ico" aria-hidden="true"></i>
+              <svg class="ico auth-input-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/></svg>
               <input type="email" id="authEmailRecuperar" name="email" class="auth-input" autocomplete="email" placeholder="voce@exemplo.com" />
             </div>
           </div>
           <button type="submit" id="authBtnRecuperar" class="btn primary auth-submit">Enviar link de recuperação</button>
           <button type="button" id="authVoltarLogin" class="auth-link">
-            <i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i> Voltar para o login
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4"/><path d="M10 6l-6 6 6 6"/></svg> Voltar para o login
           </button>
         </form>
 
@@ -2021,14 +2020,14 @@ REGRA DE OURO — A banca não pontua citação "seca" de artigo. Toda tese deve
           <div class="auth-campo">
             <label for="authNovaSenha" class="auth-label">Nova senha</label>
             <div class="auth-input-wrap">
-              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <svg class="ico auth-input-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
               <input type="password" id="authNovaSenha" name="nova-senha" class="auth-input" autocomplete="new-password" minlength="8" placeholder="Digite a nova senha" />
             </div>
           </div>
           <div class="auth-campo">
             <label for="authNovaSenhaConfirmar" class="auth-label">Confirmar nova senha</label>
             <div class="auth-input-wrap">
-              <i class="fa-solid fa-lock auth-input-ico" aria-hidden="true"></i>
+              <svg class="ico auth-input-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
               <input type="password" id="authNovaSenhaConfirmar" name="confirmar-nova-senha" class="auth-input" autocomplete="new-password" minlength="8" placeholder="Repita a nova senha" />
             </div>
           </div>

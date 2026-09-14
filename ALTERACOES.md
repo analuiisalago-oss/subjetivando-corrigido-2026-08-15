@@ -63,6 +63,63 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-13] FONT AWESOME SUBSTITUÍDO POR ÍCONES SVG NA PRÓPRIA PÁGINA
+
+**Tipo:** design
+**Ambiente:** desenvolvimento, verificado em servidor local
+
+### Problema
+
+O `index.html` baixava a folha de estilos completa do Font Awesome de um CDN — 100 KB descompactados — para exibir 15 ícones. Além do peso, é uma dependência externa a mais: se o CDN falhar, os ícones somem.
+
+### Alteração
+
+As 22 tags `<i class="fa-solid ...">` do `index.html` foram substituídas por 22 elementos `<svg>` escritos na própria página, de traço, em grade de 24 px, com `stroke="currentColor"`. O `<link>` do Font Awesome foi removido.
+
+**O caso do `#authIcone`, que exigiu alterar o `app.js`:** o ícone do topo da tela de conta muda conforme a tela — entrar, criar conta, recuperar senha e definir nova senha. O `app.js` fazia isso trocando a classe do elemento. Dois desses quatro ícones não existiam no `index.html`: só apareciam em tempo de execução. Substituir apenas o HTML deixaria as telas de recuperar e de definir senha sem ícone.
+
+- `app.js` linha 2406: acrescentado o objeto `ICONES`, com o SVG dos quatro; o objeto `TITULOS` passou a guardar a chave desse objeto em vez do nome da classe;
+- `app.js` linha 2432: `icone.className = 'fa-solid ' + ...` passou a `icone.innerHTML = ICONES[...]`;
+- `index.html`: o `<i id="authIcone">` virou `<span id="authIcone" class="ico-troca">`.
+
+**`v41.css`:** acrescentada no fim a regra `html body svg.ico` com `width: 1em`, `height: 1em` e `vertical-align: -.125em`. É ela que faz o SVG acompanhar o `font-size` e herdar a cor do texto, preservando as classes `text-2xl`, `text-sm`, `text-botanic-primary` e `text-botanic-sage` que já estavam nas tags.
+
+Tamanhos: `index.html` de 117.539 para 121.299 bytes; `app.js` de 3.444.574 para 3.445.307; `v41.css` de 23.235 para 23.779. O aumento soma 4,5 KB e substitui 100 KB baixados de CDN a cada visita.
+
+### Arquivos ou serviços afetados
+
+`public/index.html`, `public/assets/app.js`, `public/assets/v41.css`. Uma dependência externa a menos.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Uma requisição a menos para terceiro (`cdnjs.cloudflare.com`) a cada abertura da página. O cabeçalho `Content-Security-Policy-Report-Only` do `_headers` ainda autoriza `cdnjs.cloudflare.com` em `style-src` e `font-src`; a autorização pode ser retirada quando não houver mais nada vindo de lá.
+
+### Testes executados
+
+- conferência das 14 tags antes de gravar: cada uma apareceu o número esperado de vezes, somando 22. O script abortaria sem escrever se qualquer contagem divergisse;
+- conferência das 2 âncoras do `app.js`: 2 de 2;
+- busca por classes `fa-` remanescentes: zero no `index.html`, zero no `app.js`;
+- `node --check public/assets/app.js`: aprovado;
+- verificação visual em servidor local pela autora: os ícones dos três cartões da tela inicial, as três setas, a barra do topo, o bloco de última atividade, as quatro telas de conta e os ícones dentro dos campos.
+
+### Itens não testados
+
+- comportamento em navegadores além do usado na verificação;
+- impressão, onde ícones de traço podem render diferente de ícones preenchidos.
+
+### Reversão
+
+`git revert` do commit desta alteração devolve as tags e o `<link>` do Font Awesome.
+
+### Pendências relacionadas
+
+- P2-02 permanece aberta: o Tailwind continua sendo carregado de CDN, e é ele que obriga ao uso de `!important`.
+
+
 ## [2026-09-10] LIMPEZA DA RAIZ ANTES DE ABRIR O REPOSITÓRIO A REVISÃO EXTERNA
 
 **Tipo:** documentação  

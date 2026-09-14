@@ -164,6 +164,8 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 
 **Estado:** NÃO INICIADA.
 
+**Font Awesome removido em 13/09/2026.** Os 15 ícones passaram a ser SVG escritos na própria página, e o `<link>` do CDN saiu do `index.html` — 100 KB a menos por visita e uma dependência externa a menos. **O Tailwind continua por CDN**, e é ele, não o Font Awesome, que produz os 85 `!important` dos dois arquivos de estilo. Retirá-lo exige substituir 3.238 usos de 339 classes utilitárias no `index.html`, trabalho que só faz sentido com o desenho já decidido.
+
 ### P2-03 — Fixar versões das dependências
 
 **Estado:** NÃO INICIADA.

@@ -2403,11 +2403,18 @@
   const abaEntrar = $('authTabEntrar');
   const abaCadastro = $('authTabCadastro');
 
+  const ICO_ATTR = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+  const ICONES = {
+    entrar: '<svg class="ico" ' + ICO_ATTR + '><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"/><path d="M14 17l5-5-5-5"/><path d="M19 12H9"/></svg>',
+    novaConta: '<svg class="ico" ' + ICO_ATTR + '><circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M18 8v6"/><path d="M15 11h6"/></svg>',
+    chave: '<svg class="ico" ' + ICO_ATTR + '><circle cx="8" cy="12" r="4"/><path d="M12 12h9"/><path d="M18 12v3"/><path d="M21 12v2"/></svg>',
+    escudo: '<svg class="ico" ' + ICO_ATTR + '><path d="M12 3l8 3v6c0 4.5-3.2 7.9-8 9-4.8-1.1-8-4.5-8-9V6l8-3z"/><path d="M12 3v18"/></svg>'
+  };
   const TITULOS = {
-    login: ['Entrar', 'fa-right-to-bracket'],
-    cadastro: ['Criar conta', 'fa-user-plus'],
-    recuperar: ['Recuperar senha', 'fa-key'],
-    atualizar: ['Definir nova senha', 'fa-shield-halved']
+    login: ['Entrar', 'entrar'],
+    cadastro: ['Criar conta', 'novaConta'],
+    recuperar: ['Recuperar senha', 'chave'],
+    atualizar: ['Definir nova senha', 'escudo']
   };
   const PRIMEIRO_CAMPO = {
     login: 'authEmailLogin',
@@ -2429,7 +2436,7 @@
     if (!TITULOS[view]) view = 'login';
     shell.dataset.view = view;
     if (titulo) titulo.textContent = TITULOS[view][0];
-    if (icone) icone.className = 'fa-solid ' + TITULOS[view][1] + ' text-botanic-primary';
+    if (icone) icone.innerHTML = ICONES[TITULOS[view][1]] || '';
     if (abaEntrar) abaEntrar.setAttribute('aria-selected', view === 'login' ? 'true' : 'false');
     if (abaCadastro) abaCadastro.setAttribute('aria-selected', view === 'cadastro' ? 'true' : 'false');
     if (!opcoes || opcoes.manterStatus !== true) definirStatus('');

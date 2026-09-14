@@ -607,3 +607,21 @@ html body #ringProgress {
     display: inline; font-size: 10px;
   }
 }
+
+/* ========================================================================
+   Acréscimos de 13/09/2026 — escreva sempre DEPOIS desta linha.
+   ======================================================================== */
+
+/* Ícones em SVG, no lugar do Font Awesome. Acompanham o tamanho da fonte
+   e a cor do texto, como as tags <i> faziam. */
+html body svg.ico {
+  width: 1em;
+  height: 1em;
+  vertical-align: -.125em;
+  flex-shrink: 0;
+}
+html body .ico-troca {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
