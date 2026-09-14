@@ -625,3 +625,17 @@ html body .ico-troca {
   align-items: center;
   justify-content: center;
 }
+
+/* Área de toque do controle de duração e do botão de menu. Estava sendo
+   escrita pelo app.js em tempo de execução até 14/09/2026. O seletor por id
+   vence as classes utilitárias por especificidade, independentemente da
+   ordem de carregamento. */
+html body #timeSlider {
+  height: 24px;
+  padding: 9px 0;
+  background-clip: content-box;
+}
+html body #btnMenu {
+  padding: 11px 13px;
+  margin: -11px -13px;
+}

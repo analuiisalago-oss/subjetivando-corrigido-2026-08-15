@@ -1385,12 +1385,8 @@
     if (aberto) { aberto.classList.remove('open'); e.preventDefault(); }
   });
 
-  /* ---------- 2.5.8: área de toque do slider e do botão de menu ---------- */
-  const estilo = document.createElement('style');
-  estilo.textContent =
-    '#timeSlider{padding:9px 0;background-clip:content-box;height:24px;}' +
-    '#btnMenu{padding:11px 13px;margin:-11px -13px;}';
-  document.head.appendChild(estilo);
+  /* 2.5.8: a área de toque do slider e do botão de menu passou para o
+     v41.css em 14/09/2026. Não reintroduzir estilo por JavaScript aqui. */
 })();
 
 ;
