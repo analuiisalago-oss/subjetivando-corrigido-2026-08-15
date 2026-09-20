@@ -91,10 +91,22 @@
       : '';
   }
 
+  // Cada sorteio reescreve drawActions.innerHTML e cria um #btnRedraw novo,
+  // enquanto o primeiro continua em #questionTopActions — dois elementos com
+  // o mesmo id, os dois visíveis. O ouvinte doDraw fica sempre no do topo,
+  // porque a linha que o registra usa getElementById e #questionTopActions vem
+  // antes na marcação. Então é o duplicado de baixo que se descarta: ele nunca
+  // recebeu ouvinte e clicar nele não faz nada. Mover o novo para o topo e
+  // jogar fora o antigo pararia o "Sortear outra". Ver P1-17.
   function moveRedrawToTop() {
     const topActions = $('questionTopActions');
-    const redraw = $('btnRedraw');
-    if (!topActions || !redraw || redraw.parentElement === topActions) return;
+    if (!topActions) return;
+    const noTopo = topActions.querySelector('#btnRedraw');
+    const acoes = $('drawActions');
+    const recemCriado = acoes ? acoes.querySelector('#btnRedraw') : null;
+    if (noTopo && recemCriado && noTopo !== recemCriado) { recemCriado.remove(); return; }
+    const redraw = recemCriado || $('btnRedraw');
+    if (!redraw || redraw.parentElement === topActions) return;
     topActions.appendChild(redraw);
     redraw.textContent = 'Sortear outra';
     redraw.classList.remove('ghost');

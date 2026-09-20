@@ -396,15 +396,17 @@ Os três documentos estão em **rascunho, com as lacunas visivelmente assinalada
 
 ### P1-17 — Dois botões "Sortear outra" com o mesmo id
 
-**Estado:** NÃO INICIADA. Defeito confirmado e reproduzido em 20/09/2026, no site publicado, em estado limpo.
+**Estado:** CONCLUÍDA em 20/09/2026. Registro em `ALTERACOES.md`.
 
 **Sintoma:** depois do segundo sorteio seguido, a tela mostra duas linhas com "Sortear outra", ambas visíveis e ambas com `id="btnRedraw"`. Uma fica em `#questionTopActions`, outra em `#drawActions`.
 
 **Causa, conferida no `app.js`:** cada sorteio reescreve `drawActions.innerHTML` criando um `<button id="btnRedraw">` novo — linhas 741, 781, 852, 884 e 912. Um `MutationObserver` sobre `#drawActions` chama `moveRedrawToTop()`, que faz `document.getElementById('btnRedraw')` e move o resultado para `#questionTopActions`. Como `getElementById` devolve o **primeiro** do documento, e `#questionTopActions` vem antes de `#drawActions` na marcação, a partir do segundo sorteio a função encontra o botão que ela mesma já moveu, cai no `return` da terceira linha e deixa o novo onde está. A partir daí existem dois elementos com o mesmo id, o que também quebra qualquer `getElementById('btnRedraw')` posterior.
 
-**Correção proposta, a decidir:** em `moveRedrawToTop()`, procurar o botão dentro de `#drawActions` em vez de no documento inteiro, e remover o que já estiver em `#questionTopActions` antes de mover o novo. São poucas linhas, numa função de nove, e não tocam no acervo.
+**A correção proposta acima estava errada pela metade, e a leitura do código antes de editar mostrou por quê.** O ouvinte `doDraw` fica sempre no botão do topo, porque a linha que o registra também usa `getElementById` e encontra o do topo primeiro. O duplicado de baixo nunca recebe ouvinte — clicar nele não faz nada. Remover o do topo e promover o novo, como estava escrito aqui, teria parado o "Sortear outra".
 
-**Restrição:** o `app.js` tem 3,4 MB. A alteração vai por âncora conferida, nunca por reescrita do arquivo, e exige conferência da tela antes e depois — ver a armadilha registrada na P1-16.
+**O que foi feito:** `moveRedrawToTop()` procura o botão dentro de `#drawActions` e, quando já existe um no topo, descarta o recém-criado. Uma função, nenhuma outra linha do `app.js` tocada. Conferido em servidor local nos dois modos, com três sorteios seguidos em cada: um botão visível e enunciado diferente a cada clique.
+
+**Fica em aberto, defeito anterior a esta correção:** `moveRedrawToTop()` escreve "Sortear outra" no botão que move, mesmo quando o sorteio o criou como "Sortear outro" — o que acontece nos modos de tema, nas linhas 741, 781 e 884. O rótulo no topo sai no feminino para tema masculino. Não foi mexido porque é decisão de texto, não de código.
 
 ### P1-16 — Identidade de questão e modelo de sessão
 

@@ -63,6 +63,62 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-20] DOIS BOTÕES "SORTEAR OUTRA" AO MESMO TEMPO
+
+**Tipo:** correção
+**Ambiente:** desenvolvimento, verificado em servidor local
+
+### Problema
+
+A partir do segundo sorteio seguido, a tela mostrava duas linhas com "Sortear outra", ambas visíveis, ambas com `id="btnRedraw"`. Uma em `#questionTopActions`, outra em `#drawActions`.
+
+Cada sorteio reescreve `drawActions.innerHTML` e cria um botão novo com esse id — linhas 741, 781, 852, 884 e 912. Um `MutationObserver` sobre `#drawActions` chama `moveRedrawToTop()`, que fazia `document.getElementById('btnRedraw')` e movia o resultado para o topo. Como `getElementById` devolve o primeiro do documento e `#questionTopActions` vem antes de `#drawActions` na marcação, a partir do segundo sorteio a função encontrava o botão que ela mesma já tinha movido, caía no `return` e deixava o novo onde estava.
+
+### Alteração
+
+`moveRedrawToTop()` passa a procurar o botão **dentro de `#drawActions`** e, quando já existe um no topo, descarta o recém-criado em vez de movê-lo.
+
+A ordem importa e é o contrário do que a P1-17 tinha proposto. O ouvinte `doDraw` fica sempre no botão do topo, porque a linha que o registra também usa `getElementById` e encontra o do topo primeiro. O duplicado de baixo nunca recebe ouvinte: clicar nele não faz nada. Mover o novo para o topo e descartar o antigo pararia o "Sortear outra". Por isso o que se descarta é o de baixo.
+
+Uma função, de nove linhas para dezenove com os comentários. Nenhuma outra linha do `app.js` foi tocada.
+
+### Arquivos ou serviços afetados
+
+- `public/assets/app.js` — de 3.445.134 para 3.445.961 bytes;
+- `public/assets/tailwind.css` — regerado com `--minify`, de 24.325 para 15.790 bytes. A geração anterior saiu sem minificar porque o comando no terminal ficou `--minifygit` num colar emendado. O CSS é o mesmo.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Sem impacto identificado.
+
+### Testes executados
+
+- `node --check public/assets/app.js`: PASSOU;
+- modo "Questões passadas", três sorteios seguidos: um único `#btnRedraw` visível em cada um, sempre em `#questionTopActions`: PASSOU;
+- nos mesmos três sorteios, o enunciado mudou a cada clique, o que confirma que o ouvinte `doDraw` continua no botão que ficou: PASSOU;
+- modo "Temas do edital", três sorteios seguidos: um único botão visível em cada um, tema diferente a cada clique: PASSOU;
+- painel de resposta: abriu com 2.141 caracteres, `espelhoText` com 1.298, rótulo "Ocultar resposta"; fechou no segundo clique e voltou a "Ver resposta": PASSOU;
+- `Iniciar cronômetro`, que esvazia `#drawActions`: o botão do topo permaneceu, um só: PASSOU;
+- `tailwind.css` servido: 15.790 bytes, minificado, 282 regras, normalização presente, ordem das folhas `styles.css → v41.css → tailwind.css`: PASSOU.
+
+### Itens não testados
+
+- o site publicado, porque a alteração ainda não foi ao ar;
+- os modos "Treino OAB" e "Treino TCDF", que usam a mesma função mas outros caminhos de sorteio;
+- o rótulo do botão no topo: `moveRedrawToTop()` escreve "Sortear outra" mesmo quando o sorteio criou "Sortear outro", no modo de temas. É defeito anterior a esta correção e não foi mexido.
+
+### Reversão
+
+`git revert` do commit.
+
+### Pendências relacionadas
+
+- P1-17, que passa a CONCLUÍDA, com a correção do que ela mesma propunha.
+
 ## [2026-09-20] TAILWIND DEIXA DE VIR POR CDN E PASSA A SER GERADO NA MÁQUINA
 
 **Tipo:** design
