@@ -8,39 +8,11 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Subjetivando</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='9' cy='13.5' r='2.5' fill='%2338a372' opacity='.45'/%3E%3Ccircle cx='16' cy='10.6' r='3.1' fill='%2338a372'/%3E%3Ccircle cx='23' cy='13.5' r='2.5' fill='%2338a372' opacity='.45'/%3E%3Crect x='4.5' y='19' width='23' height='3.4' rx='1.7' fill='%2338a372' opacity='.85'/%3E%3Crect x='8' y='24.6' width='16' height='2.2' rx='1.1' fill='%2338a372' opacity='.28'/%3E%3C/svg%3E" />
-    <script>
-      /* Configuração do export Pen.dev + a paleta "botanic" do dashboard.
-         As cores viram variáveis CSS para que as MESMAS classes do design
-         (bg-botanic-surface, text-botanic-sage/70, ...) sirvam aos dois temas.
-         Os valores do tema escuro são exatamente os do arquivo do dashboard. */
-      tailwind = {
-        config: {
-          corePlugins: { preflight: false },
-          theme: {
-            extend: {
-              fontFamily: {
-                sans: ['Inter', 'sans-serif'],
-                serif: ['Lora', 'serif'],
-                brand: ['"Plus Jakarta Sans"', 'sans-serif']
-              },
-              colors: {
-                botanic: {
-                  bg:          'rgb(var(--bt-bg) / <alpha-value>)',
-                  surface:     'rgb(var(--bt-surface) / <alpha-value>)',
-                  text:        'rgb(var(--bt-text) / <alpha-value>)',
-                  primary:     'rgb(var(--bt-primary) / <alpha-value>)',
-                  primaryHigh: 'rgb(var(--bt-primary-high) / <alpha-value>)',
-                  sage:        'rgb(var(--bt-sage) / <alpha-value>)',
-                  alert:       'rgb(var(--bt-alert) / <alpha-value>)',
-                  brand:       'rgb(var(--bt-brand) / <alpha-value>)'
-                }
-              }
-            }
-          }
-        }
-      };
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- O Tailwind deixou de ser carregado de CDN em 20/09/2026. O CSS é gerado
+         na máquina, a partir de tailwind.config.js na raiz do projeto, e servido
+         como /assets/tailwind.css. Ao acrescentar uma classe do Tailwind neste
+         arquivo ou no app.js, gerar de novo:
+           node node_modules/tailwindcss/lib/cli.js -i tailwind-entrada.css -o public/assets/tailwind.css --minify -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,6 +22,10 @@
     />
     <link rel="stylesheet" href="/assets/styles.css?v=design-preview-41" />
     <link rel="stylesheet" href="/assets/v41.css?v=approval-v41" />
+    <!-- O tailwind.css fica por último de propósito: é a posição que o estilo
+         injetado pelo CDN ocupava na cascata. Trocar esta ordem altera quem
+         vence entre .btn e as classes utilitárias, e exige nova conferência. -->
+    <link rel="stylesheet" href="/assets/tailwind.css" />
   </head>
   <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>

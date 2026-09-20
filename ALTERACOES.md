@@ -63,6 +63,124 @@ Como voltar ao estado anterior.
 
 ## HISTÓRICO INICIAL CONHECIDO
 
+## [2026-09-20] TAILWIND DEIXA DE VIR POR CDN E PASSA A SER GERADO NA MÁQUINA
+
+**Tipo:** design
+**Ambiente:** desenvolvimento, verificado em servidor local
+
+### Problema
+
+O `index.html` carregava o Tailwind pelo script `cdn.tailwindcss.com`. Esse script não é uma folha de estilo: é um programa que chega ao navegador do visitante, lê a página ali na hora, descobre quais das 339 classes utilitárias estão em uso e só então escreve o CSS, num `<style>` criado em tempo de execução. Esse `<style>` entra na cascata depois de `styles.css` e de `v41.css`, o que inverte a ordem esperada e é a causa dos 85 `!important` dos dois arquivos.
+
+Na conferência apareceu um segundo defeito, até então desconhecido. O bloco de configuração do Tailwind dentro do `index.html` era atribuído **antes** da linha que carrega o script. O script, ao carregar, cria o próprio objeto `tailwind` e descarta o que já estava ali. A configuração nunca foi lida. As três famílias de fonte (`Inter`, `Lora`, `Plus Jakarta Sans`) e as oito cores `botanic` nunca chegaram a ser registradas no Tailwind, e `corePlugins: { preflight: false }` nunca desligou a normalização — ela sempre esteve ligada. A prova é a pilha de fontes medida no navegador: `ui-sans-serif, system-ui, sans-serif`, que é o padrão do Tailwind, não o `Inter` que a configuração pedia. O que funciona no site funciona por `styles.css` e `v41.css`, incluindo os remendos manuais das linhas 1056 e 1057 do `styles.css` para duas dessas cores.
+
+### Alteração
+
+O CSS do Tailwind passa a ser gerado na máquina e servido como arquivo estático, de dentro de `public/`.
+
+- `tailwind.config.js` e `tailwind-entrada.css`, na raiz do projeto, definem a geração. A configuração reproduz o que o CDN de fato executava: tema padrão do Tailwind e normalização ligada. O tema personalizado não foi reintroduzido, porque acrescentá-lo agora mudaria o site.
+- A varredura cobre `public/index.html` e `public/assets/app.js`, para alcançar também as classes que o JavaScript acrescenta.
+- `public/assets/tailwind.css`, com 15.790 bytes e 282 regras, é o arquivo gerado. Substituir as 339 classes no `index.html` não foi necessário: o gerador escreve só as regras que a varredura encontra.
+- O `<link>` fica **depois** de `styles.css` e de `v41.css`, que é a posição que o `<style>` injetado pelo CDN ocupava. Posto antes, sete botões mudavam de `justify-content: flex-start` para `center`, porque `.justify-start` e `.btn` têm a mesma especificidade e quem vence é o último carregado.
+- O bloco de 25 linhas de configuração saiu do `index.html` e foi substituído por um comentário com o comando de geração.
+
+Os 85 `!important` continuam necessários e não foram tocados. Retirá-los exige mover o `tailwind.css` para antes das outras folhas, o que é alteração separada e com conferência própria.
+
+### Arquivos ou serviços afetados
+
+- `public/index.html`;
+- `public/assets/tailwind.css` (novo);
+- `tailwind.config.js` (novo);
+- `tailwind-entrada.css` (novo);
+- `servidor-local.js` (novo; serve `public/` na máquina para conferência e não vai ao ar);
+- `node_modules/`, com `tailwindcss` 3, já ignorado pelo git.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Uma dependência externa a menos em tempo de execução: o navegador do visitante deixa de buscar e executar script de terceiro a cada visita. Sobram dois endereços externos no `index.html`, a biblioteca do Supabase em `cdn.jsdelivr.net` e as fontes em `fonts.googleapis.com`. Libera a parte da P1-09 que dependia da saída do Tailwind.
+
+### Testes executados
+
+- comparação de 592 elementos entre a versão com CDN e a versão com arquivo local, a 1280×900, medindo 39 propriedades calculadas e a caixa de cada elemento, com tolerância de 1 px: 0 diferenças: PASSOU;
+- a mesma comparação a 390×844: 0 diferenças: PASSOU;
+- altura total da página idêntica nas duas larguras, 988 px e 1350 px: PASSOU;
+- ausência do script do CDN e presença do `<link>` local, conferidas no DOM das duas versões: PASSOU;
+- presença da normalização no arquivo gerado, com `#e5e7eb` na borda e `ui-sans-serif` na fonte, que são os valores medidos no lado do CDN: PASSOU.
+
+### Itens não testados
+
+- o site publicado, porque a alteração ainda não foi ao ar;
+- larguras entre 391 px e 1279 px;
+- as telas que só aparecem depois de entrar na conta;
+- as demais páginas de `public/`.
+
+### Reversão
+
+`git revert` do commit. O script do CDN volta ao `index.html` e o `tailwind.css` deixa de ser carregado.
+
+### Pendências relacionadas
+
+- P2-02, que passa a CONCLUÍDA;
+- P1-09, cuja parte bloqueada pelo CDN fica liberada;
+- item novo dentro da P2-01: mover o `tailwind.css` para antes das outras folhas e retirar os 85 `!important`.
+
+## [2026-09-14] ESTILO INJETADO PELO JAVASCRIPT PASSOU PARA O CSS
+
+**Tipo:** design
+**Ambiente:** desenvolvimento
+
+### Problema
+
+O `app.js` criava um elemento `<style>` e o acrescentava à página ao abrir, com duas regras: a área de toque do controle de duração e a do botão de menu. Eram a quinta e a sexta fonte de estilo da página, atrás dos dois arquivos CSS, do Tailwind, do Font Awesome e do Google Fonts.
+
+Estilo escrito por JavaScript não aparece em busca nos arquivos de CSS. Quem procurasse por que o controle de duração tem 24 px de altura não encontraria a resposta em lugar nenhum dos dois arquivos de estilo.
+
+### Alteração
+
+`public/assets/app.js`, linha 1389: removido o trecho que criava o `<style>` e o pendurava na página. No lugar ficou um comentário registrando para onde as regras foram e que não devem voltar como JavaScript. O arquivo passou a ter zero `createElement('style')`.
+
+`public/assets/v41.css`, linha 633: as duas regras escritas como CSS, com os seletores `html body #timeSlider` e `html body #btnMenu`.
+
+**Por que não foi preciso `!important`:** as regras estavam sendo injetadas por último para vencer as classes utilitárias do Tailwind. Escritas com seletor por id, vencem por especificidade — um id supera qualquer classe, independentemente da ordem de carregamento. A ordem deixou de importar para esse caso.
+
+Tamanhos: `app.js` de 3.445.307 para 3.445.134 bytes; `v41.css` de 23.779 para 24.200.
+
+### Arquivos ou serviços afetados
+
+`public/assets/app.js`, `public/assets/v41.css`.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Nenhum impacto.
+
+### Testes executados
+
+- conferência da âncora no `app.js` antes de gravar: 1 ocorrência, como esperado;
+- `node --check public/assets/app.js`: aprovado;
+- busca por `createElement('style')` no `app.js`: zero;
+- verificação em servidor local pela autora: arrasto do controle de duração e clique no botão de menu, em janela larga e estreita.
+
+### Itens não testados
+
+- toque em aparelho físico. A verificação foi feita em navegador de computador, inclusive em largura estreita.
+
+### Reversão
+
+`git revert` do commit desta alteração devolve a injeção por JavaScript e retira as regras do `v41.css`.
+
+### Pendências relacionadas
+
+- P2-02 permanece aberta. Com esta alteração restam quatro fontes de estilo na página: `styles.css`, `v41.css`, o Tailwind por CDN e o Google Fonts. Das quatro, só o Tailwind disputa as mesmas propriedades que os dois arquivos.
+
+
 ## [2026-09-13] FONT AWESOME SUBSTITUÍDO POR ÍCONES SVG NA PRÓPRIA PÁGINA
 
 **Tipo:** design

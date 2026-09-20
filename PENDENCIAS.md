@@ -160,9 +160,19 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 **Estado:** EM EXECUÇÃO. A saída pública separa HTML, CSS e JavaScript; dados e módulos ainda permanecem concentrados no JavaScript.  
 **Ordem:** CSS, scripts, dados, build do Tailwind.
 
+**Build do Tailwind feito em 20/09/2026** — ver P2-02.
+
+**Próximo passo desta pendência, aberto em 20/09/2026:** mover o `<link>` do `tailwind.css` para antes de `styles.css` e de `v41.css` e retirar os 85 `!important`, que existem só por causa da ordem invertida. A troca altera quem vence entre as classes utilitárias e as regras autorais, e um efeito já é conhecido: sete botões (`btnPistas`, `btnToggleEspelho`, `btnTheme`, `btnManage`, `btnNotasMenu`, `btnSom`, `btnAbout`) passam de `justify-content: flex-start` para `center`. Exige a mesma comparação elemento a elemento usada na P2-02, e decisão sobre qual dos dois valores é o desejado em cada caso.
+
 ### P2-02 — Retirar Tailwind CDN da produção
 
-**Estado:** NÃO INICIADA.
+**Estado:** CONCLUÍDA em 20/09/2026.
+
+**Tailwind retirado em 20/09/2026.** O CSS passou a ser gerado na máquina, a partir de `tailwind.config.js`, e servido como `public/assets/tailwind.css`. As 339 classes utilitárias não precisaram ser substituídas: o gerador varre o `index.html` e o `app.js` e escreve só as regras em uso. Conferido elemento a elemento, em duas larguras, com zero diferenças. Registro em `ALTERACOES.md`.
+
+**O que a conclusão não resolve.** A configuração que estava dentro do `index.html` nunca foi lida pelo CDN, porque era atribuída antes do script que a lê. As três fontes e as oito cores `botanic` nunca chegaram ao Tailwind, e a normalização nunca foi desligada. O arquivo gerado reproduz isso de propósito, para não alterar o site. Registrar o tema de verdade é decisão de desenho, não de migração.
+
+**Os 85 `!important` continuam lá.** Existem porque o Tailwind entra na cascata depois de `styles.css` e de `v41.css`, e o arquivo gerado foi posto na mesma posição para preservar o resultado. Retirá-los é mover o `<link>` para antes das outras folhas e conferir de novo — ver P2-01.
 
 **Font Awesome removido em 13/09/2026.** Os 15 ícones passaram a ser SVG escritos na própria página, e o `<link>` do CDN saiu do `index.html` — 100 KB a menos por visita e uma dependência externa a menos. **O Tailwind continua por CDN**, e é ele, não o Font Awesome, que produz os 85 `!important` dos dois arquivos de estilo. Retirá-lo exige substituir 3.238 usos de 339 classes utilitárias no `index.html`, trabalho que só faz sentido com o desenho já decidido.
 
