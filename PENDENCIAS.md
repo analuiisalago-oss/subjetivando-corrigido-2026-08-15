@@ -358,6 +358,8 @@ Ao concluir, registrar a mudança em `ALTERACOES.md` e mover o item para “Conc
 | E4 | Páginas próprias de conta | **CONCLUÍDA em 09/09/2026** — `/login`, `/cadastro` e `/recuperar-senha` como arquivos próprios, sem roteador | baixo |
 | E5 | Separar `/` do simulador | **CONCLUÍDA em 09/09/2026** — `/` é convite; simulador em `/dashboard` | **alto** |
 | E6 | Guardas de rota e limpeza das sobreposições | redirecionamentos; controles fora de contexto deixam de existir | médio |
+
+**Decisão da autora, 20/09/2026: `/dashboard` passa a exigir sessão.** Hoje não exige. Conferido no site publicado em janela anônima: `/dashboard` abre o simulador inteiro, com as três telas e o acervo, sem nenhuma conta. Isso é a E6 e continua não iniciada. A decisão de 09/09 de deixar o visitante treinar 5 questões por dispositivo precisa ser reconciliada com esta: ou o limite de visitante vive em `/` e `/dashboard` exige sessão, ou `/dashboard` aceita visitante até a cota. A autora decidiu pela primeira.
 | E7 | `/conta` | tela própria | baixo |
 
 **E3 concluída em 09/09/2026.** As três páginas foram feitas como arquivos estáticos independentes — `public/sobre.html`, `public/termos.html`, `public/privacidade.html` e a folha `public/assets/paginas.css` —, servidas por regras próprias em `_redirects`, antes do curinga. Decisão deliberada: são páginas de texto, não precisam do `app.js` de 3,4 MB nem do roteador, e **não carregam nenhum recurso externo** — nenhuma CDN, nenhuma fonte do Google, nenhum IP de leitor entregue a terceiro. Verificado em navegador: zero requisição externa, zero erro de script, zero transbordamento horizontal em 1100px e em 390px, temas claro e escuro.
@@ -395,6 +397,14 @@ Os três documentos estão em **rascunho, com as lacunas visivelmente assinalada
 ### P1-16 — Identidade de questão e modelo de sessão
 
 **Estado:** PLANEJADA em 09/09/2026, execução não iniciada.
+
+**Defeito observado em 20/09/2026, causa ainda não confirmada.** Em janela normal do Chrome da autora, o simulador apresentou duas linhas com "Sortear outra" ao mesmo tempo, e o painel de resposta abriu mostrando só o título e fechou em seguida. Em janela anônima, no mesmo navegador e no mesmo endereço, os dois sintomas desapareceram.
+
+O que está conferido: o site não registra service worker; o estado da sessão fica em `localStorage`, nas chaves `subj_sessao_v1` e `subj_tela_v1`; a janela anônima começa sem essas chaves; e na janela anônima o comportamento é correto. O painel de resposta, testado em sessão limpa, abre com o texto inteiro e permanece aberto.
+
+O que **não** está conferido: que apagar essas duas chaves resolva. A hipótese é que um estado antigo ponha a tela de início e a tela de questão no ar ao mesmo tempo e dispare um sorteio logo depois do clique, o que chamaria `limparEspelho()` sobre a resposta recém-aberta. Confirmar antes de tratar como causa.
+
+Isto é matéria desta pendência porque o instantâneo de sessão não tem migração: a versão sobe de 2 para 3 e descarta o que é antigo, mas nada impede que um instantâneo da versão corrente descreva um estado de tela impossível. Qualquer modelo de sessão novo precisa validar o estado que restaura, não só a versão dele.
 
 **Problema:** nenhuma questão tem identidade própria. O aplicativo identifica uma questão pelo **hash do texto da pergunta** (`'q' + base36`, gravado como `questao_hash` no Supabase) — se o texto for corrigido, a questão vira outra e a anotação e o "já respondida" da pessoa se perdem. E a camada D restaura a tela **reproduzindo o HTML salvo do DOM**, sem saber de que questão se trata: ela redesenha pixels, não estado.
 
