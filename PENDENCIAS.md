@@ -394,15 +394,29 @@ Os três documentos estão em **rascunho, com as lacunas visivelmente assinalada
 2. `v41.css` esconde OAB, TCDF e discursiva por CSS; com rotas passariam a existir dois mecanismos para o mesmo fim;
 3. `public/` é a fonte desde 09/09/2026 — `scripts/build_public.py` não pode ser executado durante esta implementação. Ver P2-06.
 
+### P1-17 — Dois botões "Sortear outra" com o mesmo id
+
+**Estado:** NÃO INICIADA. Defeito confirmado e reproduzido em 20/09/2026, no site publicado, em estado limpo.
+
+**Sintoma:** depois do segundo sorteio seguido, a tela mostra duas linhas com "Sortear outra", ambas visíveis e ambas com `id="btnRedraw"`. Uma fica em `#questionTopActions`, outra em `#drawActions`.
+
+**Causa, conferida no `app.js`:** cada sorteio reescreve `drawActions.innerHTML` criando um `<button id="btnRedraw">` novo — linhas 741, 781, 852, 884 e 912. Um `MutationObserver` sobre `#drawActions` chama `moveRedrawToTop()`, que faz `document.getElementById('btnRedraw')` e move o resultado para `#questionTopActions`. Como `getElementById` devolve o **primeiro** do documento, e `#questionTopActions` vem antes de `#drawActions` na marcação, a partir do segundo sorteio a função encontra o botão que ela mesma já moveu, cai no `return` da terceira linha e deixa o novo onde está. A partir daí existem dois elementos com o mesmo id, o que também quebra qualquer `getElementById('btnRedraw')` posterior.
+
+**Correção proposta, a decidir:** em `moveRedrawToTop()`, procurar o botão dentro de `#drawActions` em vez de no documento inteiro, e remover o que já estiver em `#questionTopActions` antes de mover o novo. São poucas linhas, numa função de nove, e não tocam no acervo.
+
+**Restrição:** o `app.js` tem 3,4 MB. A alteração vai por âncora conferida, nunca por reescrita do arquivo, e exige conferência da tela antes e depois — ver a armadilha registrada na P1-16.
+
 ### P1-16 — Identidade de questão e modelo de sessão
 
 **Estado:** PLANEJADA em 09/09/2026, execução não iniciada.
 
-**Defeito observado em 20/09/2026, causa ainda não confirmada.** Em janela normal do Chrome da autora, o simulador apresentou duas linhas com "Sortear outra" ao mesmo tempo, e o painel de resposta abriu mostrando só o título e fechou em seguida. Em janela anônima, no mesmo navegador e no mesmo endereço, os dois sintomas desapareceram.
+**Defeito confirmado em 20/09/2026: o instantâneo restaura um painel de resposta degradado.** No navegador da autora, o `subj_sessao_v1` gravado continha `espelhoHTML` com 5.796 caracteres de marcação mas apenas 886 caracteres de texto, e `espelhoAberto: true`. Restaurado, o painel abria com 83 px de altura — o cabeçalho e nada mais — e o `interceptar()` o fechava no clique seguinte. É o que a autora descreveu como "aparece só a linha com o título e logo fecha".
 
-O que está conferido: o site não registra service worker; o estado da sessão fica em `localStorage`, nas chaves `subj_sessao_v1` e `subj_tela_v1`; a janela anônima começa sem essas chaves; e na janela anônima o comportamento é correto. O painel de resposta, testado em sessão limpa, abre com o texto inteiro e permanece aberto.
+Apagadas as chaves `subj_sessao_v1` e `subj_tela_v1`, e sorteada uma questão de banca nova, o painel passou a abrir com o `espelhoText` preenchido e a permanecer aberto. Conferido no site publicado, na janela da autora.
 
-O que **não** está conferido: que apagar essas duas chaves resolva. A hipótese é que um estado antigo ponha a tela de início e a tela de questão no ar ao mesmo tempo e dispare um sorteio logo depois do clique, o que chamaria `limparEspelho()` sobre a resposta recém-aberta. Confirmar antes de tratar como causa.
+**A causa é estrutural, não o conteúdo de um instantâneo.** `salvar()` grava `espelhoPanel.innerHTML` sem verificar se o painel tem conteúdo, e `limparEspelho()` — acrescentada em 09/09/2026 para corrigir a resposta trocada — esvazia esse painel no sorteio. Um `salvar()` disparado na janela entre o esvaziamento e a renderização grava um espelho aberto e vazio, que o `restaurar()` devolve fielmente. A versão do instantâneo não protege contra isso: ela distingue formatos, não estados possíveis.
+
+**O que o modelo de sessão novo precisa fazer:** validar o estado que restaura, não só a versão dele. Um espelho marcado como aberto e sem texto é estado impossível e deve ser descartado na leitura, não devolvido à tela.
 
 Isto é matéria desta pendência porque o instantâneo de sessão não tem migração: a versão sobe de 2 para 3 e descarta o que é antigo, mas nada impede que um instantâneo da versão corrente descreva um estado de tela impossível. Qualquer modelo de sessão novo precisa validar o estado que restaura, não só a versão dele.
 
