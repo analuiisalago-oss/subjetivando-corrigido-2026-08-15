@@ -1,4 +1,4 @@
-# Minha Banca — retomada
+# Subjetivando
 
 > **DOCUMENTO HISTÓRICO (04/08/2026).** Este roteiro descreve uma etapa editorial anterior e não representa o estado publicável atual. A fonte canônica da interface é `minha-banca.NOVO_3.html`; não substitua esse arquivo pelos HTMLs do pipeline. Antes de incorporar respostas processadas, conclua `pipeline/PONTOS-A-VERIFICAR.md`, valide o mérito jurídico e faça uma mesclagem controlada conforme `PENDENCIAS.md`.
 
