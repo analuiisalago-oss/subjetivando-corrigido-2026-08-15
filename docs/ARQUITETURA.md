@@ -8,24 +8,34 @@ Este documento explica como as partes do Subjetivando se relacionam. Ele deve se
 
 ### 2.1. Frontend
 
-A aplicação atual é uma página única executada no navegador. A fonte canônica `minha-banca.NOVO_3.html` ainda reúne interface e dados, mas a versão publicável é gerada em três arquivos:
+Desde 09/09/2026 a pasta `public/` é a fonte do site e vai ao ar como está. Não existe etapa de geração; o antigo `scripts/build_public.py` e o `minha-banca.NOVO_3.html` que ele lia foram removidos em 10/09/2026 (ver P2-14 em `PENDENCIAS.md`).
 
-- `public/index.html`: marcação e configuração inicial;
-- `public/assets/styles.css`: estilos autorais;
-- `public/assets/app.js`: lógica, integrações e acervo atualmente público.
+O simulador é uma página única:
 
-A fonte canônica reúne:
+- `public/index.html`: marcação (export do Pen.dev, com atributos `data-pencil-name` usados como seletores);
+- `public/assets/styles.css` e `public/assets/v41.css`: estilos autorais;
+- `public/assets/tailwind.css`: classes utilitárias, geradas por `npm run css` e carregadas por último de propósito;
+- `public/assets/fonts.css` e `public/assets/fonts/`: Inter, Lora e Plus Jakarta Sans servidas pelo próprio site;
+- `public/assets/vendor/supabase.js`: biblioteca do Supabase, versão fixada;
+- `public/assets/app.js`: lógica, integrações e todo o acervo.
 
-- HTML da interface;
-- estilos CSS;
-- configuração e carregamento do Tailwind por CDN;
-- JavaScript do simulador;
-- bancos extensos de questões;
-- camada de acessibilidade;
-- recursos de anotações e histórico;
-- autenticação Supabase;
-- sincronização Supabase;
-- controle de rotas.
+O `app.js` tem cerca de 3,4 MB e 3.100 linhas. 97% do peso está em cinco linhas de dados (`OAB_ITEMS`, `DPE_ORAL_QUESTOES`, `TCDF_PROVAS`, `TCDF_TEMAS`, `TCDF_DISCURSIVAS`), cada uma serializada numa linha só. O código é uma sequência de camadas, cada uma numa função autoexecutada, que se acrescentam por cima da anterior sem alterá-la:
+
+| Ordem | Camada (comentário de abertura) | O que faz |
+|---|---|---|
+| 1 | Shim de áudio | permite silenciar o alarme do cronômetro |
+| 2 | UX v41 | experiência exclusiva de Defensorias: resumo da configuração, estados vazios, teclado |
+| 3 | aplicativo original | dados do acervo, sorteio, cronômetro, temas personalizados, tema claro/escuro, impressão |
+| 4 | Camada de acessibilidade | região viva, rótulos, foco em modais, Escape |
+| 5 | Camada de funcionalidades | alarme prolongado, marca na impressão, anotações por questão |
+| 6 | Camada 2 | estado da questão, voltar ao início e continuidade ao recarregar (instantâneo `subj_sessao_v1`) |
+| 7 | Tela inicial (dashboard) | cartões, última atividade e metas |
+| 8 | Conta — camada visual | modal de conta, hoje só para `/atualizar-senha` |
+| 9 | Conta — lógica real | Supabase: sessão, nova senha, sair, cabeçalho |
+| 10 | Sincronização de progresso | espelha `localStorage` nas tabelas do Supabase |
+| 11 | Áreas com endereço próprio | `/defensoria`, `/oab`, `/tcdf` simulando clique no seletor de modo |
+
+As páginas de conta e institucionais (`inicio.html`, `login.html`, `cadastro.html`, `recuperar-senha.html`, `sobre.html`, `termos.html`, `privacidade.html`) não carregam o `app.js`. Usam `assets/paginas.css` e, as de conta, `assets/conta.js` com a biblioteca do Supabase.
 
 Essa separação melhora cache, diagnóstico e segurança operacional, mas o JavaScript publicável ainda é grande e contém todo o acervo. Não é a arquitetura final recomendada para produto pago.
 
@@ -58,19 +68,20 @@ O navegador armazena dados em `localStorage`, inclusive:
 
 As chaves exatas devem ser inventariadas em `BANCO-DE-DADOS.md` antes de refatorações.
 
-### 2.5. Rotas — estado atual
+### 2.5. Rotas — estado atual (22/09/2026)
 
-| Rota | Área |
-|---|---|
-| `/` | abre direto no simulador |
-| `/defensoria` | Defensorias |
-| `/oab` | OAB 2ª fase |
-| `/tcdf` | TCDF |
-| `/atualizar-senha` | definição de nova senha após link do Supabase |
+| Rota | Arquivo servido | O que é |
+|---|---|---|
+| `/` | `inicio.html` | convite à criação de conta (regra `200!`) |
+| `/login`, `/cadastro`, `/recuperar-senha` | arquivos próprios | páginas de conta, sem o `app.js` |
+| `/sobre`, `/termos`, `/privacidade` | arquivos próprios | páginas institucionais, em rascunho |
+| `/dashboard`, `/treino`, `/defensoria`, `/oab`, `/tcdf` | `index.html` | o simulador |
+| `/atualizar-senha` | `index.html` | definição de nova senha, ainda em modal |
+| qualquer outra | `index.html` | curinga `/* /index.html 200` |
 
-Como se trata de uma aplicação de página única, o Netlify entrega `index.html` em qualquer caminho — a última regra de `public/_redirects` é um curinga `/* /index.html 200`.
+O mapa decidido na seção 2.6 está implantado até a etapa E5 da P1-15. Continuam como limitações: `/dashboard` não exige sessão (decisão de 20/09/2026, etapa E6, não iniciada); as rotas privadas `/hoje`, `/historico`, `/anotacoes` e `/conta` não existem; e a troca de área continua feita por uma camada que **simula um clique** no botão de modo, oculto por CSS.
 
-Esse desenho é o que será substituído pela seção 2.6. Suas limitações: `/` não distingue quem chega de quem já usa; nenhuma tela tem endereço próprio; e a troca de área é feita por uma camada que **simula um clique** no botão de modo — que hoje está oculto por CSS.
+O servidor local (`npm run dev`) aplica as mesmas regras de `_redirects` e `_headers`.
 
 ### 2.6. Modelo de acesso e mapa de rotas — decidido em 09/09/2026
 
@@ -141,7 +152,7 @@ O roteador entrega o que o plano exige: URL própria, título próprio, recarreg
 
 #### Pendências abertas por este mapa
 
-- `/` deixa de abrir o simulador. É a mudança mais sensível: altera a primeira impressão do produto;
+- ~~`/` deixa de abrir o simulador~~ — feito em 09/09/2026 (E5 da P1-15): `/` é o convite e o simulador está em `/dashboard`;
 - `/oab` e `/tcdf` precisam de destino definido — redirecionar para `/` ou responder 410 — coerente com o nicho decidido;
 - `/defensoria` provavelmente passa a `/treino`;
 - a camada de rotas atual precisa ser **substituída**, não estendida: ela muda de modo clicando num `#modeToggle` que o `v41.css` oculta;
@@ -174,7 +185,7 @@ O roteador entrega o que o plano exige: URL própria, título próprio, recarreg
 6. O frontend chama o método oficial do Supabase para atualização.
 7. A aplicação exibe confirmação e registra eventual erro sem expor dados internos.
 
-Status: **IMPLEMENTADO NO FRONTEND — PENDENTE CONFIGURAÇÃO E TESTE REAL NO SUPABASE**.
+Status: **IMPLEMENTADO E TESTADO** com conta e e-mail reais no site publicado em 09/09/2026 (P1-05). A definição de nova senha continua no modal do `app.js`.
 
 ## 4. ARQUITETURA-ALVO DO FRONTEND
 
@@ -197,7 +208,11 @@ supabase/
   migrações e consultas versionadas
 ```
 
-O Tailwind deve ser compilado no processo de build. O uso de `cdn.tailwindcss.com` deve ser removido da produção depois que a equivalência visual for validada. O próximo passo arquitetural recomendado é modularizar `public/assets/app.js` sem alterar simultaneamente o banco.
+O Tailwind já é compilado na máquina (`npm run css`, desde 20/09/2026) e o CDN saiu da produção. O próximo passo arquitetural recomendado é tirar o acervo do `app.js` para dados com identificador estável (F2 da P1-16) e depois modularizar o restante, sem alterar simultaneamente o banco.
+
+### 4.1. Treino oral com IA
+
+A correção da fala por IA e o examinador com reperguntas exigem uma função no servidor, porque a chave do provedor de IA não pode ir ao navegador. A proposta, com OpenRouter, RAG e base vetorial no próprio Supabase, está em `IA-PROVA-ORAL.md` (P2-18).
 
 ## 5. ARQUITETURA-ALVO PARA PAGAMENTOS
 
@@ -264,16 +279,16 @@ Produção e homologação devem, preferencialmente, usar projetos Supabase dist
 
 ## 8. DEPENDÊNCIAS EXTERNAS CONHECIDAS
 
-- Netlify;
-- Supabase JavaScript;
-- Tailwind CSS;
-- Font Awesome;
-- Google Fonts;
+- Netlify: hospedagem;
+- Supabase: autenticação e banco. Biblioteca `@supabase/supabase-js` 2.116.0, servida de `public/assets/vendor/`;
+- Tailwind CSS 3.4.19: só na máquina, para gerar `tailwind.css`;
+- fontes Inter, Lora e Plus Jakarta Sans (SIL Open Font License), servidas de `public/assets/fonts/`;
+- futuro provedor de IA: OpenRouter, em análise (P2-18);
 - futuro provedor de pagamento: **A DEFINIR**;
 - futuro serviço de monitoramento: **A DEFINIR**;
 - futuro provedor de e-mail transacional: **A DEFINIR**.
 
-Versões de bibliotecas devem ser fixadas e atualizadas de forma controlada.
+Versões de bibliotecas devem ser fixadas e atualizadas de forma controlada. Desde 22/09/2026 nenhum arquivo do site vem de CDN; as versões estão em `package.json` (P2-03).
 
 ## 9. DECISÕES QUE EXIGEM REGISTRO
 

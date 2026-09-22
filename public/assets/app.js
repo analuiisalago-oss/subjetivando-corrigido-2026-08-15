@@ -2493,7 +2493,7 @@
      abrir o modal, de modo que "criar conta" deixa de existir no contexto de
      quem já está autenticado. O modal permanece neste arquivo porque continua
      servindo à definição de nova senha em /atualizar-senha — fluxo testado de
-     ponta a ponta em 09/09/2026, que não se mexe. Ver PENDENCIAS.md. */
+     ponta a ponta em 09/09/2026, que não se mexe. Ver docs/PENDENCIAS.md. */
   if ($('btnConta')) $('btnConta').addEventListener('click', () => { window.location.href = '/login'; });
   if ($('btnCloseAuth')) $('btnCloseAuth').addEventListener('click', fechar);
   backdrop.addEventListener('click', (e) => { if (e.target === backdrop) fechar(); });

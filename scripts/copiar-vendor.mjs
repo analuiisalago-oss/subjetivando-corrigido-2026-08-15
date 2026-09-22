@@ -10,7 +10,7 @@
    de entrar a um terceiro.
 
    Para atualizar: npm install --save-dev --save-exact @supabase/supabase-js@<versão>,
-   npm run vendor, e repetir o roteiro de autenticação de TESTES.md. */
+   npm run vendor, e repetir o roteiro de autenticação de docs/TESTES.md. */
 
 import fs from 'node:fs';
 import path from 'node:path';

@@ -74,7 +74,7 @@ Autenticação responde “quem é o usuário”. RLS responde “quais dados el
 
 Todas as tabelas com dados pessoais devem ter políticas que comparem o usuário autenticado ao proprietário da linha. Nunca confiar apenas em filtros do JavaScript.
 
-Auditoria atual das políticas: **PENDENTE**.
+Auditoria das políticas: **CONCLUÍDA em 09/09/2026** (P0-01 em `PENDENCIAS.md`), com comprovação prática contra a API pública. Falta o teste com dois usuários autenticados (seção 10 de `TESTES.md`).
 
 ## 7. PAGAMENTOS
 
@@ -93,8 +93,8 @@ Auditoria atual das políticas: **PENDENTE**.
 
 Antes da produção:
 
-- retirar Tailwind CDN;
-- fixar versões de dependências;
+- ~~retirar Tailwind CDN~~ — feito em 20/09/2026;
+- ~~fixar versões de dependências~~ — feito em 22/09/2026: nenhum arquivo do site vem de CDN (P2-03);
 - reduzir scripts inline;
 - configurar Content Security Policy;
 - adicionar `X-Content-Type-Options`;
@@ -117,19 +117,29 @@ Estado em 15 de agosto de 2026:
 - capturas com dados identificáveis foram movidas para `private/`;
 - a recuperação de senha foi implementada, mas depende de teste real e URLs autorizadas no Supabase.
 
+Estado em 22 de setembro de 2026:
+
+- recuperação de senha testada de ponta a ponta em 09/09/2026;
+- RLS auditada e comprovada contra a API pública em 09/09/2026;
+- histórico inteiro do Git sem `private/`, sem `.env` e sem chave secreta (P0-02);
+- todo arquivo do site é servido pelo próprio endereço: Tailwind gerado na máquina, biblioteca do Supabase 2.116.0 e fontes em `public/assets/`. O navegador de quem visita só fala com o Netlify e, para conta e sincronização, com o Supabase;
+- `npm run check` e o GitHub Actions procuram padrões de chave secreta em `public/` a cada mudança.
+
 ## 9. ARQUIVO `_headers`
 
 O arquivo deve ser criado e testado progressivamente. Uma política de segurança excessivamente rígida pode quebrar fontes, Supabase ou scripts atuais. Não copiar configuração pronta sem listar todos os domínios necessários.
 
-Status: **IMPLEMENTAÇÃO TRANSITÓRIA**. `_headers` contém cabeçalhos de proteção e uma Content Security Policy em modo de relatório. Ela ainda não é aplicada de forma bloqueante porque Tailwind e parte da configuração continuam dependentes de CDN e código inline. Torná-la obrigatória sem teste poderia retirar estilos ou impedir autenticação.
+Status: **IMPLEMENTAÇÃO TRANSITÓRIA**. `_headers` contém cabeçalhos de proteção e uma Content Security Policy em modo de relatório. Desde 22/09/2026 ela lista só o que o site usa: `'self'` para script, estilo e fonte, `data:` para imagem e fonte, e o projeto Supabase em `connect-src`.
 
 Antes de converter a política de relatório em política efetiva:
 
-1. compilar o Tailwind;
-2. fixar ou hospedar as dependências;
-3. remover o último script inline ou autorizar seu hash;
+1. ~~compilar o Tailwind~~ — feito em 20/09/2026;
+2. ~~fixar ou hospedar as dependências~~ — feito em 22/09/2026;
+3. remover o último script inline (`inicio.html`) ou autorizar seu hash; os atributos `style` do `index.html` mantêm `'unsafe-inline'` em `style-src`;
 4. verificar console e cabeçalhos no endereço publicado;
 5. testar login, recuperação, impressão e ambos os temas.
+
+Quando existir a IA da prova oral (P2-18), `Permissions-Policy` precisará liberar o microfone para o próprio site (`microphone=(self)`); hoje ele está bloqueado.
 
 ## 10. AMBIENTES
 
@@ -224,7 +234,7 @@ Não publicar detalhes exploráveis antes da correção. Não prometer recompens
 
 - [ ] 2FA nas contas administrativas;
 - [ ] RLS auditada e testada com dois usuários;
-- [ ] recuperação de senha completa;
+- [x] recuperação de senha completa (09/09/2026);
 - [ ] exclusão de conta implementada;
 - [ ] política de privacidade publicada;
 - [ ] segredos somente no servidor;
@@ -232,7 +242,7 @@ Não publicar detalhes exploráveis antes da correção. Não prometer recompens
 - [ ] conteúdo premium fora do HTML público;
 - [ ] backups confirmados e restauração testada;
 - [ ] ambiente de homologação separado;
-- [ ] dependências fixadas;
+- [x] dependências fixadas (22/09/2026);
 - [ ] cabeçalhos de segurança testados;
 - [ ] logs sem dados sensíveis;
 - [ ] plano de incidente documentado;

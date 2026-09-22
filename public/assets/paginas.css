@@ -2,7 +2,7 @@
    Deliberadamente independente de styles.css, v41.css e do Tailwind:
    estas páginas não carregam NENHUM recurso externo — sem CDN, sem
    fontes do Google, sem biblioteca. Nenhum IP de leitor é entregue a
-   terceiro para lê-las. Ver ARQUITETURA.md, seção 2.6. */
+   terceiro para lê-las. Ver docs/ARQUITETURA.md, seção 2.6. */
 
 :root {
   --fundo: #121614;

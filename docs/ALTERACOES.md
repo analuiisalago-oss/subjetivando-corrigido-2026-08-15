@@ -61,7 +61,326 @@ Como voltar ao estado anterior.
 - referência em PENDENCIAS.md;
 ```
 
-## HISTÓRICO INICIAL CONHECIDO
+## HISTÓRICO
+
+Entradas em ordem cronológica inversa: a mais recente primeiro.
+
+## [2026-09-22] DOCUMENTAÇÃO MOVIDA PARA `docs/`, ATUALIZADA E COM GUIA DE IA
+
+**Tipo:** documentação
+**Responsável:** Fernando, com assistência de IA, na branch `modificacoes-fernando`
+**Ambiente:** repositório
+
+### Problema
+
+A reorganização de 20/09/2026 mudou arquivos de lugar, e a documentação não acompanhou. O `README.md` apontava `minha-banca.html` na raiz, que tinha sido retirado, `pipeline/`, que passou a `acervo/pipeline/`, e `AUDITORIA-INTEGRAL-2026-08-15.md` na raiz, que foi para `docs/historico/`. `ARQUITETURA.md` ainda descrevia `minha-banca.NOVO_3.html` como fonte e o site como gerado. `BANCO-DE-DADOS.md` e `SEGURANCA.md` davam a RLS como não auditada, embora a P0-01 esteja concluída desde 09/09. `PENDENCIAS.md` tinha cinco números usados duas vezes, itens fora da seção de prioridade e uma tabela partida ao meio. Não havia instrução para agentes de IA na raiz.
+
+### Alteração
+
+- os sete documentos de governança foram para `docs/` (`git mv`, histórico preservado). Na raiz ficam `README.md`, `AGENTS.md` e `CLAUDE.md`;
+- `README.md` reescrito: estado em 22/09/2026, comandos (`npm run dev`, `check`, `css`, `vendor`), mapa do repositório e rotas;
+- `AGENTS.md` criado para agentes de IA (Codex, Claude Code, Cursor): o que ler, onde fica o site, como editar o `app.js` por âncora, comandos e o que não fazer. `CLAUDE.md` só importa o `AGENTS.md`;
+- `PENDENCIAS.md` reorganizada: abertas por prioridade, concluídas na seção 7, IDs repetidos renumerados (tabela na seção 1.1: P2-13 a P2-17), P1-13 fechada por leitura do código, P2-03 e P2-17 fechadas, P2-18 aberta para a IA da prova oral, P3-10 registrada como citada e nunca escrita;
+- `ARQUITETURA.md`, `BANCO-DE-DADOS.md`, `SEGURANCA.md` e `TESTES.md` atualizados ao estado real;
+- `IA-PROVA-ORAL.md` criado: proposta de treino oral com IA em linguagem para quem não é da área, com OpenRouter, RAG, base vetorial no Supabase, custo estimado com preços consultados em 22/09/2026 e fases;
+- `acervo/LEIA-ME.md` criado: o que é cada coisa em `acervo/`, relação com o site e como recuperar arquivos retirados;
+- `supabase/LEIA-ME.md`: estado da auditoria e URL `/dashboard` na lista de Redirect URLs;
+- comentários de `netlify.toml`, `app.js`, `paginas.css` e `copiar-vendor.mjs` apontam para `docs/`.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Varredura do histórico inteiro do Git feita para a P0-02: `private/` e `.env` nunca foram commitados e nenhum commit contém chave secreta.
+
+### Testes executados
+
+- busca por referências aos caminhos antigos depois da mudança: só restam em `docs/historico/`, marcados como históricos: PASSOU;
+- `npm run check`: PASSOU.
+
+### Itens não testados
+
+- leitura dos documentos pela autora.
+
+### Reversão
+
+`git revert` do commit. Os documentos voltam à raiz com o conteúdo anterior.
+
+### Pendências relacionadas
+
+- P1-13, P2-03 e P2-17 concluídas; P2-18 aberta; P3-10 a confirmar.
+
+## [2026-09-22] PAINEL DE RESPOSTA VAZIO DEPOIS DE RECARREGAR
+
+**Tipo:** correção
+**Responsável:** Fernando, com assistência de IA
+**Versão ou commit:** `73f77f8`
+**Ambiente:** desenvolvimento, verificado em servidor local
+
+### Problema
+
+Relatado pela autora em 20/09/2026: depois de recarregar, o painel "Resposta / fundamentos esperados" abria só com o título e fechava no clique seguinte. O instantâneo de sessão guardava o botão de resposta visível e o painel sem o texto da resposta, estado gravado na janela entre `limparEspelho()` e a renderização (diagnóstico da P1-16).
+
+### Alteração
+
+`public/assets/app.js`, camada D: nova função `espelhoTemResposta()`, ao lado de `sanitizarFragmento()`, e uma linha em `restaurar()`. Antes de repor a questão, confere se o painel salvo tem mais de 20 caracteres em `#espelhoText` ou `#modeloText`, o mesmo limite de `garantirCache()`. Se o botão de resposta estava visível e não há texto, a questão não é reposta: a configuração volta e o próximo sorteio parte do zero. O formato do instantâneo não mudou (continua `v: 3`), então nenhum instantâneo válido é descartado.
+
+### Arquivos ou serviços afetados
+
+- `public/assets/app.js`.
+
+### Banco de dados
+
+Nenhuma alteração. Um instantâneo degradado guardado em `sessoes` passa a ser recusado na leitura, como o local.
+
+### Segurança e privacidade
+
+Sem impacto identificado.
+
+### Testes executados
+
+- instantâneo montado igual ao da autora (`#espelhoText` vazio, painel aberto), com o código anterior: painel de 83 px e 0 caracteres, defeito reproduzido;
+- o mesmo instantâneo com a correção: tela de configuração, "Questões passadas" mantido, nenhum painel vazio, nenhum erro no console: PASSOU;
+- instantâneo válido (questão de banca, resposta aberta com 905 caracteres), recarregado: questão e resposta repostas; "Ocultar resposta" e "Ver resposta" funcionam: PASSOU;
+- modo "Temas do edital", tema sorteado e página recarregada: tema reposto: PASSOU;
+- `npm run check`: PASSOU.
+
+### Itens não testados
+
+- o site publicado;
+- conta autenticada com o instantâneo vindo da nuvem.
+
+### Reversão
+
+`git revert 73f77f8`.
+
+### Pendências relacionadas
+
+- P1-16: sintoma contido; F2 a F6 continuam abertas.
+
+## [2026-09-22] RÓTULO "SORTEAR OUTRO" E TEXTOS DE NAVEGAÇÃO
+
+**Tipo:** correção
+**Responsável:** Fernando, com assistência de IA
+**Versão ou commit:** `3776db5` e `f0f04ed`
+**Ambiente:** desenvolvimento, verificado em servidor local
+
+### Problema
+
+- `moveRedrawToTop()` escrevia "Sortear outra" em qualquer botão que movia para o topo, inclusive no sorteio de tema, que o cria como "Sortear outro". Registrado como resto da P1-17;
+- `/login`, `/cadastro` e `/recuperar-senha` tinham o link "Voltar ao treino" para `/`, que desde 09/09/2026 é o convite, não o treino;
+- `inicio.html` dizia "Você já está conectada." a qualquer pessoa.
+
+### Alteração
+
+- `app.js`: `moveRedrawToTop()` mantém o rótulo que o sorteio escreveu e, quando descarta o duplicado, passa o rótulo dele ao botão do topo;
+- as três páginas de conta: "Voltar ao início";
+- `inicio.html`: "Sua sessão já está aberta neste navegador.", que também descreve o que o código confere.
+
+### Arquivos ou serviços afetados
+
+- `public/assets/app.js`, `public/login.html`, `public/cadastro.html`, `public/recuperar-senha.html`, `public/inicio.html`.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Sem impacto identificado.
+
+### Testes executados
+
+- dois sorteios de tema: "Sortear outro"; troca para "Questões passadas" e dois sorteios: "Sortear outra"; sempre um único `#btnRedraw`, no topo e visível; enunciado diferente a cada clique: PASSOU;
+- `npm run check`: PASSOU.
+
+### Itens não testados
+
+- modos OAB e TCDF, ocultos por CSS.
+
+### Reversão
+
+`git revert` dos dois commits.
+
+### Pendências relacionadas
+
+- P1-17.
+
+## [2026-09-22] FONTES SERVIDAS PELO PRÓPRIO SITE E POLÍTICA DE PRIVACIDADE CORRIGIDA
+
+**Tipo:** segurança e privacidade
+**Responsável:** Fernando, com assistência de IA
+**Versão ou commit:** `be06bed`
+**Ambiente:** desenvolvimento, verificado em servidor local
+
+### Problema
+
+O simulador buscava Inter, Lora e Plus Jakarta Sans em `fonts.googleapis.com` a cada visita, o que entregava o IP de quem abria a tela ao Google, com ou sem conta. A política de privacidade listava "Cloudflare, jsDelivr, Tailwind e Google Fonts" como destinatários do IP, dois deles já retirados do site em 13/09 e 20/09.
+
+### Alteração
+
+- `public/assets/fonts/`: os 18 subconjuntos `.woff2` que o Google servia para as três famílias, sem alteração, e `OFL.txt` com a licença (SIL Open Font License 1.1);
+- `public/assets/fonts.css`: as mesmas regras `@font-face` e `unicode-range` do Google, com os endereços trocados;
+- `index.html`: os dois `preconnect` e o `<link>` do Google deram lugar a `fonts.css`;
+- `_headers`: CSP em modo de relatório só com `'self'` para estilo e fonte;
+- `audit_project.mjs`: aceita as fontes por padrão de nome e confere que cada arquivo está citado em `fonts.css`;
+- `privacidade.html`: saem a linha de CDNs da tabela de fornecedores e o parágrafo "Pretendemos passar a hospedar...", substituídos por um parágrafo que diz que nenhuma página carrega recurso de outras empresas. Uma lacuna "a completar" a menos.
+
+### Arquivos ou serviços afetados
+
+- `public/index.html`, `public/_headers`, `public/privacidade.html`, `public/assets/fonts.css`, `public/assets/fonts/` (novos), `scripts/audit_project.mjs`.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Melhora: o simulador deixa de contatar terceiros ao abrir. Quem visita sem conta tem o IP visto só pelo Netlify.
+
+### Testes executados
+
+- `/dashboard` a 1366×768, captura com fontes locais e com Google Fonts: idênticas pixel a pixel: PASSOU;
+- largura de uma amostra com acentos, setas, frações e símbolos nas três famílias, pesos 400 e 700: idêntica nas duas versões: PASSOU;
+- `/dashboard` e `/privacidade`: nenhuma requisição fora do próprio endereço: PASSOU;
+- `npm run check`: PASSOU.
+
+### Itens não testados
+
+- o site publicado;
+- impressão.
+
+### Reversão
+
+`git revert be06bed`.
+
+### Pendências relacionadas
+
+- P2-03 e P2-16; P3-05 e P3-07 avançam.
+
+## [2026-09-22] BIBLIOTECA DO SUPABASE SERVIDA PELO PRÓPRIO SITE, VERSÃO FIXADA
+
+**Tipo:** segurança
+**Responsável:** Fernando, com assistência de IA
+**Versão ou commit:** `9e2318f`
+**Ambiente:** desenvolvimento, verificado em servidor local
+
+### Problema
+
+`index.html`, `login.html`, `cadastro.html` e `recuperar-senha.html` carregavam `@supabase/supabase-js@2` de `cdn.jsdelivr.net`. O `@2` sem número seguia a versão mais nova publicada: em 22/09/2026 a CDN passou a servir a 2.117.0, lançada no mesmo dia, sem teste aqui. Além disso, o IP de quem abria a tela de entrar ia para a jsDelivr, e uma falha da CDN impedia o login.
+
+### Alteração
+
+- versão fixada em 2.116.0, a que estava no ar no teste de autenticação de ponta a ponta de 09/09/2026, em `package.json`;
+- `public/assets/vendor/supabase.js`, gerado por `npm run vendor` (`scripts/copiar-vendor.mjs`) a partir de `node_modules`, com cabeçalho de versão e licença. O conteúdo é idêntico ao que a CDN servia para a 2.116.0;
+- as quatro páginas passam a carregar `/assets/vendor/supabase.js`;
+- `_headers`: CSP em modo de relatório sem `cdn.jsdelivr.net`, `cdn.tailwindcss.com` e `cdnjs.cloudflare.com`;
+- `conta.js`: comentário atualizado; a proteção contra biblioteca ausente continua.
+
+### Arquivos ou serviços afetados
+
+- `public/index.html`, `public/login.html`, `public/cadastro.html`, `public/recuperar-senha.html`, `public/_headers`, `public/assets/conta.js`, `public/assets/vendor/supabase.js` (novo), `scripts/copiar-vendor.mjs` (novo), `scripts/audit_project.mjs`, `package.json`.
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+Melhora: versão controlada e uma empresa a menos recebendo o IP.
+
+### Testes executados
+
+- `/login` no navegador: biblioteca carregada do próprio endereço, nenhuma requisição externa: PASSOU;
+- envio vazio: "Preencha e-mail e senha.": PASSOU;
+- login com conta inexistente: o Supabase respondeu e a tela mostrou "E-mail ou senha incorretos.": PASSOU;
+- `/dashboard`: camadas de conta e sincronização carregadas, nenhum erro no console: PASSOU;
+- `npm run check`: PASSOU.
+
+### Itens não testados
+
+- login, cadastro e recuperação com conta real, no site publicado.
+
+### Reversão
+
+`git revert 9e2318f`.
+
+### Pendências relacionadas
+
+- P2-17 concluída; P2-03 concluída com as fontes.
+
+## [2026-09-22] AUDITORIA CORRIGIDA E FERRAMENTAS DE VERIFICAÇÃO
+
+**Tipo:** configuração
+**Responsável:** Fernando, com assistência de IA
+**Versão ou commit:** `10e1b52`, `9912ac3`, `3bae908` e `8325007`
+**Ambiente:** desenvolvimento
+
+### Problema
+
+- `node scripts/audit_project.mjs` falhava desde 20/09/2026: o `tailwind.css` entrou em `public/` sem entrar na lista fechada da auditoria;
+- `servidor-local.js` não lia o `_redirects`: na máquina, `/` abria o simulador em vez de `inicio.html`, e `/login`, `/cadastro`, `/sobre`, `/termos` e `/privacidade` davam 404;
+- o Tailwind era gerado com um `node_modules` instalado à mão, sem versão registrada;
+- nada rodava a verificação automaticamente.
+
+### Alteração
+
+- `audit_project.mjs` passa a esperar `assets/tailwind.css`;
+- `servidor-local.js` vai para `scripts/` e aplica `_redirects` e `_headers` como o Netlify: caminho exato ou terminado em `/*`, reescrita 200, redirecionamento 301/302, `!` para forçar;
+- `package.json` com `tailwindcss` 3.4.19 exato, a única versão testada que regera o `tailwind.css` atual byte a byte (3.4.17 e 3.4.18 não), e os atalhos `npm run dev`, `npm run css` e `npm run check`;
+- `.editorconfig` e `.gitattributes`;
+- `.github/workflows/verificacao.yml`: em todo push para `main` e todo PR, roda `npm ci`, `npm run check` e confere se o `tailwind.css` está atualizado.
+
+### Arquivos ou serviços afetados
+
+- `scripts/audit_project.mjs`, `scripts/servidor-local.js` (movido), `package.json` e `package-lock.json` (novos), `tailwind.config.js` e `public/index.html` (comentários), `.editorconfig`, `.gitattributes`, `.github/workflows/verificacao.yml` (novos).
+
+### Banco de dados
+
+Nenhuma alteração.
+
+### Segurança e privacidade
+
+O workflow tem só permissão de leitura do repositório.
+
+### Testes executados
+
+- servidor local, por `curl`: `/` → `inicio.html`, `/login` → `login.html`, `/cadastro/` → `cadastro.html`, `/dashboard` e `/dashboard/x` → `index.html`, caminho inexistente → curinga, tentativa de sair de `public/` → `index.html`, cabeçalhos do `_headers` na resposta: PASSOU;
+- `npm run css` com a versão fixada: `tailwind.css` sem nenhuma diferença: PASSOU;
+- passos do workflow executados na máquina: PASSOU.
+
+### Itens não testados
+
+- o workflow no GitHub, que só roda depois do push.
+
+### Reversão
+
+`git revert` dos quatro commits.
+
+### Pendências relacionadas
+
+- P2-01, P2-03.
+
+## [2026-09-20] REORGANIZAÇÃO DA PASTA: ACERVO, DOCS E DESCARTE
+
+**Tipo:** documentação
+**Responsável:** Ana Luísa
+**Versão ou commit:** `126e3d7`
+**Ambiente:** repositório
+
+*Entrada escrita em 22/09/2026, a partir do commit, porque a reorganização não tinha registro aqui.*
+
+### Alteração
+
+- `pipeline/`, `ACERVO-REFINADO-718.html` e os `respostas_*.json` da raiz foram para `acervo/`;
+- `AUDITORIA-INTEGRAL-2026-08-15.md`, `RETOMAR.md`, `UX-V41-HANDOFF.md` e `auditoria-acessibilidade.md` foram para `docs/historico/`;
+- saíram do repositório os quatro `RESPOS_*.txt`, `pipeline/minha-banca.ANTES-PATCH.html` e o `minha-banca.html` da raiz (estado publicado em 15/08/2026). `_descartar/` entrou no `.gitignore`.
+
+### Reversão
+
+Os arquivos retirados continuam no histórico: `git show 126e3d7~1:minha-banca.html`, por exemplo.
 
 ## [2026-09-20] DOIS BOTÕES "SORTEAR OUTRA" AO MESMO TEMPO
 
