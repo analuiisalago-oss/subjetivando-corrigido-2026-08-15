@@ -1,0 +1,33 @@
+# Roda a verificação do projeto em todo push para main e em todo PR.
+# É o mesmo que rodar `npm run check` na máquina, mais a conferência de que
+# public/assets/tailwind.css foi gerado de novo depois de uma classe nova.
+name: Verificação
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Sintaxe, auditoria e teste de consentimento
+        run: npm run check
+      - name: tailwind.css corresponde ao que o index.html e o app.js usam
+        run: |
+          npm run css
+          git diff --exit-code -- public/assets/tailwind.css || {
+            echo "::error::public/assets/tailwind.css está desatualizado. Rode 'npm run css' e faça commit do resultado."
+            exit 1
+          }
