@@ -1985,6 +1985,21 @@
     return template.innerHTML;
   }
 
+  // P1-16, 22/09/2026. Com o botão de resposta visível, o painel salvo precisa
+  // trazer o texto da resposta. Sem ele, o instantâneo foi gravado na janela
+  // entre limparEspelho() e a renderização, e restaurá-lo abre só o cabeçalho
+  // do painel ("aparece só a linha com o título e logo fecha"). Mesmo limite
+  // de 20 caracteres que garantirCache() usa para dizer que já renderizou.
+  function espelhoTemResposta(html) {
+    const template = document.createElement('template');
+    template.innerHTML = sanitizarFragmento(html);
+    const tamanho = (id) => {
+      const el = template.content.querySelector('#' + id);
+      return el ? el.textContent.trim().length : 0;
+    };
+    return tamanho('espelhoText') > 20 || tamanho('modeloText') > 20;
+  }
+
   function restaurar() {
     let s = null;
     try { s = JSON.parse(localStorage.getItem(K_SESSAO) || 'null'); } catch (e) {}
@@ -2005,6 +2020,9 @@
 
     const temQuestao = s.questao && s.questao.indexOf('topic-text') + s.questao.indexOf('enunciado-text') > -2;
     if (s.idle || !temQuestao) { restaurando = false; return; }
+    // Estado impossível é descartado na leitura: a configuração já foi reposta
+    // acima, a questão não. O próximo sorteio parte do zero, com resposta certa.
+    if (s.acoesEspelho && !espelhoTemResposta(s.espelhoHTML)) { restaurando = false; return; }
 
     // 2. sorteio sintético só para religar os botões que o app cria (Sortear
     //    outro / Iniciar tempo). O item sorteado é descartado logo em seguida,
