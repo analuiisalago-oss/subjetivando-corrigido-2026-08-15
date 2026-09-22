@@ -104,11 +104,16 @@
     const noTopo = topActions.querySelector('#btnRedraw');
     const acoes = $('drawActions');
     const recemCriado = acoes ? acoes.querySelector('#btnRedraw') : null;
-    if (noTopo && recemCriado && noTopo !== recemCriado) { recemCriado.remove(); return; }
+    // O rótulo segue o que o sorteio escreveu: "Sortear outro" para tema,
+    // "Sortear outra" para questão, peça e prova (22/09/2026, resto da P1-17).
+    if (noTopo && recemCriado && noTopo !== recemCriado) {
+      noTopo.textContent = recemCriado.textContent;
+      recemCriado.remove();
+      return;
+    }
     const redraw = recemCriado || $('btnRedraw');
     if (!redraw || redraw.parentElement === topActions) return;
     topActions.appendChild(redraw);
-    redraw.textContent = 'Sortear outra';
     redraw.classList.remove('ghost');
     redraw.classList.add('top-action');
   }
