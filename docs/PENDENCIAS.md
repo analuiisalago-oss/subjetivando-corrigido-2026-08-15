@@ -49,6 +49,20 @@ Mantiveram o número: P2-05 (política editorial), P2-06 (modelo de conteúdo pr
 
 **Ainda falta:** verificar as variáveis de ambiente configuradas no Netlify e no Supabase.
 
+### P0-04 — O Netlify parou de publicar a `main` em 20/09/2026
+
+**Estado:** EM ANÁLISE, aberta em 22/09/2026. Depende de alguém com acesso ao painel do Netlify.
+
+**Constatado em 22/09/2026, sem acesso ao painel:** o site no ar serve o `app.js` e o `tailwind.css` do commit `dcc9562` (20/09, 16:04, "Tailwind gerado na máquina"). O `tailwind.css` publicado tem 24.325 bytes, a versão não minificada daquele commit. Os cinco commits seguintes da `main` (`126e3d7`, `3a608c2`, `f3c0d8f`, `febbb56` e `491d989`) nunca foram ao ar: a correção dos dois botões "Sortear outra" (P1-17) não está no site. O Deploy Preview do PR #1 também falhou, e o GitHub Actions do mesmo PR passou.
+
+**Causa: A CONFIRMAR.** O log do deploy exige login no Netlify. Hipóteses, da mais provável para a menos:
+
+1. cota do plano gratuito, que é por créditos: 300 por mês, 15 por deploy de produção. A `main` recebeu 22 commits em setembro; banda e requisições também gastam créditos. Há relatos recentes no fórum do Netlify de deploys de produção pausados no plano gratuito com o site ainda no ar;
+2. publicação automática desligada ou builds parados no painel;
+3. algum erro de build introduzido a partir de `126e3d7`. A reorganização não mexeu em `public/` nem na raiz, o que torna esta a menos provável.
+
+**Para resolver:** no Netlify, abrir *Deploys* e ler a mensagem do primeiro deploy com falha depois de `dcc9562`; conferir *Team settings → Billing/Usage*. Enquanto isso não se resolve, juntar mudanças em um único merge economiza deploys: cada merge na `main` é um deploy de produção.
+
 ### P0-03 — Confirmar backups do Supabase
 
 **Estado:** NÃO INICIADA  
