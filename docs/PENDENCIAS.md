@@ -49,6 +49,11 @@ Mantiveram o número: P2-05 (política editorial), P2-06 (modelo de conteúdo pr
 
 **Ainda falta:** verificar as variáveis de ambiente configuradas no Netlify e no Supabase.
 
+### P0-03 — Confirmar backups do Supabase
+
+**Estado:** NÃO INICIADA  
+**Conclusão exige:** frequência, retenção, responsável e teste documentado de restauração.
+
 ### P0-04 — O Netlify parou de publicar a `main` em 20/09/2026
 
 **Estado:** EM ANÁLISE, aberta em 22/09/2026. Depende de alguém com acesso ao painel do Netlify.
@@ -62,11 +67,6 @@ Mantiveram o número: P2-05 (política editorial), P2-06 (modelo de conteúdo pr
 3. algum erro de build introduzido a partir de `126e3d7`. A reorganização não mexeu em `public/` nem na raiz, o que torna esta a menos provável.
 
 **Para resolver:** no Netlify, abrir *Deploys* e ler a mensagem do primeiro deploy com falha depois de `dcc9562`; conferir *Team settings → Billing/Usage*. Enquanto isso não se resolve, juntar mudanças em um único merge economiza deploys: cada merge na `main` é um deploy de produção.
-
-### P0-03 — Confirmar backups do Supabase
-
-**Estado:** NÃO INICIADA  
-**Conclusão exige:** frequência, retenção, responsável e teste documentado de restauração.
 
 ## 3. P1 — BETA PÚBLICO
 
