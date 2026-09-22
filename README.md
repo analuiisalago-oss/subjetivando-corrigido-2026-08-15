@@ -183,6 +183,7 @@ O projeto deve evoluir por alterações pequenas, reversíveis e testáveis. Uma
 | `docs/PENDENCIAS.md` | o que falta, por prioridade |
 | `docs/ALTERACOES.md` | registro de cada mudança, a mais recente primeiro |
 | `docs/IA-PROVA-ORAL.md` | proposta de treino oral com IA (OpenRouter, RAG, custos) |
+| `docs/IA-PROMPT-EXAMINADOR.md` | teste da correção por IA sem programar: instruções do examinador prontas para colar |
 | `docs/historico/` | auditorias e roteiros antigos |
 | `acervo/LEIA-ME.md` | o que é a pasta do acervo e como ela se liga ao site |
 | `supabase/LEIA-ME.md` | roteiro seguro para mexer no banco |

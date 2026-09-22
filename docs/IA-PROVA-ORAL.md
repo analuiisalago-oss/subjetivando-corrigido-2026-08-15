@@ -138,7 +138,7 @@ Preços mudam. O OpenRouter informa o custo exato de cada chamada, então o núm
 
 ## 8. FASES SUGERIDAS
 
-**Fase 0: testar sem programar nada.** Uma tarde e poucos centavos.
+**Fase 0: testar sem programar nada.** Uma tarde e poucos centavos. O passo a passo, as instruções do examinador prontas para colar e a tabela de comparação estão em `IA-PROMPT-EXAMINADOR.md`.
 
 1. Criar conta no OpenRouter, pôr de US$ 5 a 10 de créditos e definir um limite na chave.
 2. Gravar no celular a sua resposta a uma questão do acervo e transcrever com o próprio recurso de ditado do celular.

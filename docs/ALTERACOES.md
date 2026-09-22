@@ -83,6 +83,7 @@ A reorganização de 20/09/2026 mudou arquivos de lugar, e a documentação não
 - `PENDENCIAS.md` reorganizada: abertas por prioridade, concluídas na seção 7, IDs repetidos renumerados (tabela na seção 1.1: P2-13 a P2-17), P1-13 fechada por leitura do código, P2-03 e P2-17 fechadas, P2-18 aberta para a IA da prova oral, P3-10 registrada como citada e nunca escrita;
 - `ARQUITETURA.md`, `BANCO-DE-DADOS.md`, `SEGURANCA.md` e `TESTES.md` atualizados ao estado real;
 - `IA-PROVA-ORAL.md` criado: proposta de treino oral com IA em linguagem para quem não é da área, com OpenRouter, RAG, base vetorial no Supabase, custo estimado com preços consultados em 22/09/2026 e fases;
+- `IA-PROMPT-EXAMINADOR.md` criado: roteiro da fase 0, com as instruções do examinador prontas para colar no chat do OpenRouter e a tabela para comparar modelos;
 - `acervo/LEIA-ME.md` criado: o que é cada coisa em `acervo/`, relação com o site e como recuperar arquivos retirados;
 - `supabase/LEIA-ME.md`: estado da auditoria e URL `/dashboard` na lista de Redirect URLs;
 - comentários de `netlify.toml`, `app.js`, `paginas.css` e `copiar-vendor.mjs` apontam para `docs/`.

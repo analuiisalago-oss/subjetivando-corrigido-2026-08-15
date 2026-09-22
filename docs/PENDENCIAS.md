@@ -325,6 +325,8 @@ Contagem das marcas "a completar" em 22/09/2026: 9 na privacidade, 6 nos termos,
 **Objetivo:** a pessoa responde em voz alta, o site transcreve, compara com o padrão de resposta e devolve uma avaliação; depois, um examinador que faz reperguntas. É o diferencial do produto na visão da autora e já consta como recurso do nível pago na seção 2.6 de `ARQUITETURA.md`.  
 **Proposta técnica:** `IA-PROVA-ORAL.md`, escrita para quem não é da área: OpenRouter como ponto único de acesso aos modelos, RAG como "buscar antes de corrigir", base vetorial no próprio Supabase, custo estimado por treino e fases.
 
+**Próximo passo (fase 0, sem código):** testar a correção no chat do OpenRouter com as instruções de `IA-PROMPT-EXAMINADOR.md` e registrar aqui o modelo escolhido, os ajustes nas instruções e o custo por correção.
+
 **Dependências:**
 
 - chave da OpenRouter só no servidor (função do Supabase), nunca no `app.js`;
