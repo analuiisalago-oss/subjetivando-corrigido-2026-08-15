@@ -80,11 +80,9 @@
           <tbody>
             <tr><td>Netlify</td><td>hospedagem do site</td><td>endereço de IP, navegador e páginas acessadas</td></tr>
             <tr><td>Supabase</td><td>conta, autenticação, banco de dados e envio dos e-mails de confirmação e recuperação</td><td>e-mail, senha embaralhada, anotações, progresso e IP</td></tr>
-            <tr><td>Cloudflare, jsDelivr, Tailwind e Google Fonts</td><td>ícones, fontes e bibliotecas usadas na tela de treino</td><td><strong>endereço de IP de quem visita</strong>, mesmo sem conta</td></tr>
           </tbody>
         </table></div>
-        <p>A última linha merece destaque: ao abrir a tela de treino, seu endereço de IP é enviado a essas empresas ainda que você nunca crie conta. <strong>Esta página é exceção — ela não carrega nenhum recurso externo</strong>, e nenhum IP de quem a lê é entregue a terceiro.</p>
-        <p>Pretendemos passar a hospedar fontes, ícones e bibliotecas no próprio site, eliminando esse compartilhamento. <span class="pendente">a completar: prazo</span></p>
+        <p><strong>Nenhuma página do site carrega recurso de outras empresas.</strong> Fontes, ícones e bibliotecas são servidos pelo próprio site. Quem só visita, sem conta, tem o endereço de IP visto apenas pelo Netlify, que hospeda o site. O Supabase recebe dados quando você entra, cria conta, recupera a senha ou sincroniza o progresso.</p>
 
         <h2>6. Transferência internacional</h2>
         <p>Os fornecedores acima são empresas estrangeiras e podem processar dados fora do Brasil. A região do servidor de banco de dados é <span class="pendente">a completar</span> e a base legal aplicável à transferência é <span class="pendente">a completar</span>.</p>

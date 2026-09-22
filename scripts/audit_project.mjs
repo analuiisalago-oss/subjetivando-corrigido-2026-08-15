@@ -90,6 +90,8 @@ const expectedPublic = [
   '_redirects',
   'assets/app.js',
   'assets/conta.js',
+  'assets/fonts.css',
+  'assets/fonts/OFL.txt',
   'assets/paginas.css',
   'assets/styles.css',
   'assets/tailwind.css',
@@ -113,10 +115,21 @@ function listFiles(directory, prefix = '') {
       : [relative];
   });
 }
-const publicFiles = listFiles(PUBLIC).sort();
+// As fontes entram por padrão de nome, não uma a uma: são 18 subconjuntos
+// .woff2 e todos precisam estar citados em assets/fonts.css (conferido abaixo).
+const FONTE = /^assets\/fonts\/[a-z0-9-]+\.woff2$/;
+const allFiles = listFiles(PUBLIC).sort();
+const fontFiles = allFiles.filter((file) => FONTE.test(file));
+const publicFiles = allFiles.filter((file) => !FONTE.test(file));
 const publicOk = JSON.stringify(publicFiles) === JSON.stringify(expectedPublic);
 console.log(`${publicOk ? 'PASSOU' : 'FALHOU'}  Conteúdo isolado de public/: ${publicFiles.length} arquivos`);
 if (!publicOk) failures.push(`public/ contém: ${publicFiles.join(', ')}`);
+
+const fontsCss = fs.readFileSync(path.join(PUBLIC, 'assets', 'fonts.css'), 'utf8');
+const cited = [...fontsCss.matchAll(/url\(\/(assets\/fonts\/[^)]+)\)/g)].map((match) => match[1]).sort();
+const fontsOk = fontFiles.length > 0 && JSON.stringify(cited) === JSON.stringify(fontFiles);
+console.log(`${fontsOk ? 'PASSOU' : 'FALHOU'}  Fontes: ${fontFiles.length} arquivos, todos citados em fonts.css`);
+if (!fontsOk) failures.push(`fontes em public/assets/fonts/ e citações de fonts.css divergem`);
 
 const publicText = publicFiles
   .map((file) => fs.readFileSync(path.join(PUBLIC, file), 'utf8'))
