@@ -92,6 +92,7 @@ const expectedPublic = [
   'assets/conta.js',
   'assets/paginas.css',
   'assets/styles.css',
+  'assets/tailwind.css',
   'assets/v41.css',
   'cadastro.html',
   'index.html',
