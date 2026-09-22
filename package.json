@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "node scripts/servidor-local.js",
     "css": "tailwindcss -c tailwind.config.js -i tailwind-entrada.css -o public/assets/tailwind.css --minify",
-    "check": "node --check public/assets/app.js && node --check public/assets/conta.js && node scripts/audit_project.mjs && node scripts/teste_consentimento.mjs"
+    "check": "node --check public/assets/app.js && node --check public/assets/conta.js && node scripts/audit_project.mjs && node scripts/teste_consentimento.mjs",
+    "vendor": "node scripts/copiar-vendor.mjs"
   },
   "repository": {
     "type": "git",
@@ -14,6 +15,7 @@
   "private": true,
   "description": "Simulador de banca para provas orais e discursivas de Defensoria Pública",
   "devDependencies": {
+    "@supabase/supabase-js": "2.116.0",
     "tailwindcss": "3.4.19"
   },
   "engines": {

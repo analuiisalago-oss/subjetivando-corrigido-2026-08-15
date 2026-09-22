@@ -94,6 +94,7 @@ const expectedPublic = [
   'assets/styles.css',
   'assets/tailwind.css',
   'assets/v41.css',
+  'assets/vendor/supabase.js',
   'cadastro.html',
   'index.html',
   'inicio.html',

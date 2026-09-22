@@ -26,8 +26,10 @@
   const painel = $('painel-conta');
   if (!painel) return;
 
-  /* A biblioteca do Supabase vem de uma CDN e pode não chegar — rede corporativa,
-     bloqueador, queda do serviço. Neste caso o restante desta página precisa
+  /* A biblioteca do Supabase pode não chegar — rede instável, bloqueador,
+     falha no carregamento. Desde 22/09/2026 ela é servida pelo próprio site
+     (/assets/vendor/supabase.js), não mais por CDN, mas a proteção continua
+     valendo. Neste caso o restante desta página precisa
      continuar funcionando e, sobretudo, o formulário NÃO pode cair no envio
      nativo do navegador: sem `action`, o envio nativo recarregaria a página com
      e-mail e SENHA visíveis na barra de endereço. Por isso os manipuladores de
