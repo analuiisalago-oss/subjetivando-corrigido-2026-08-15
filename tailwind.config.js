@@ -7,7 +7,9 @@
  *  projeto continuam vindo de styles.css e v41.css, como sempre vieram.
  *
  *  Para gerar o CSS depois de acrescentar uma classe do Tailwind:
- *    node node_modules/tailwindcss/lib/cli.js -i tailwind-entrada.css -o public/assets/tailwind.css --minify
+ *    npm install      (só na primeira vez; instala a versão fixada em package.json)
+ *    npm run css
+ *  A versão 3.4.19 reproduz byte a byte o tailwind.css gerado em 20/09/2026.
  */
 module.exports = {
   content: [

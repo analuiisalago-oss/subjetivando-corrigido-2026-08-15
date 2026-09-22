@@ -1,0 +1,16 @@
+# Mantém o mesmo formato de arquivo em qualquer editor (VS Code, Cursor, etc.).
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+# Dois espaços no fim da linha são quebra de linha em Markdown.
+trim_trailing_whitespace = false
+
+[*.py]
+indent_size = 4

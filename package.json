@@ -1,0 +1,22 @@
+{
+  "name": "subjetivando",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "node scripts/servidor-local.js",
+    "css": "tailwindcss -c tailwind.config.js -i tailwind-entrada.css -o public/assets/tailwind.css --minify",
+    "check": "node --check public/assets/app.js && node --check public/assets/conta.js && node scripts/audit_project.mjs && node scripts/teste_consentimento.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/analuiisalago-oss/subjetivando-corrigido-2026-08-15.git"
+  },
+  "type": "commonjs",
+  "private": true,
+  "description": "Simulador de banca para provas orais e discursivas de Defensoria Pública",
+  "devDependencies": {
+    "tailwindcss": "3.4.19"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
