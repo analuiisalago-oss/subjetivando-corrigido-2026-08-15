@@ -104,11 +104,16 @@
     const noTopo = topActions.querySelector('#btnRedraw');
     const acoes = $('drawActions');
     const recemCriado = acoes ? acoes.querySelector('#btnRedraw') : null;
-    if (noTopo && recemCriado && noTopo !== recemCriado) { recemCriado.remove(); return; }
+    // O rótulo segue o que o sorteio escreveu: "Sortear outro" para tema,
+    // "Sortear outra" para questão, peça e prova (22/09/2026, resto da P1-17).
+    if (noTopo && recemCriado && noTopo !== recemCriado) {
+      noTopo.textContent = recemCriado.textContent;
+      recemCriado.remove();
+      return;
+    }
     const redraw = recemCriado || $('btnRedraw');
     if (!redraw || redraw.parentElement === topActions) return;
     topActions.appendChild(redraw);
-    redraw.textContent = 'Sortear outra';
     redraw.classList.remove('ghost');
     redraw.classList.add('top-action');
   }
@@ -1985,6 +1990,21 @@
     return template.innerHTML;
   }
 
+  // P1-16, 22/09/2026. Com o botão de resposta visível, o painel salvo precisa
+  // trazer o texto da resposta. Sem ele, o instantâneo foi gravado na janela
+  // entre limparEspelho() e a renderização, e restaurá-lo abre só o cabeçalho
+  // do painel ("aparece só a linha com o título e logo fecha"). Mesmo limite
+  // de 20 caracteres que garantirCache() usa para dizer que já renderizou.
+  function espelhoTemResposta(html) {
+    const template = document.createElement('template');
+    template.innerHTML = sanitizarFragmento(html);
+    const tamanho = (id) => {
+      const el = template.content.querySelector('#' + id);
+      return el ? el.textContent.trim().length : 0;
+    };
+    return tamanho('espelhoText') > 20 || tamanho('modeloText') > 20;
+  }
+
   function restaurar() {
     let s = null;
     try { s = JSON.parse(localStorage.getItem(K_SESSAO) || 'null'); } catch (e) {}
@@ -2005,6 +2025,9 @@
 
     const temQuestao = s.questao && s.questao.indexOf('topic-text') + s.questao.indexOf('enunciado-text') > -2;
     if (s.idle || !temQuestao) { restaurando = false; return; }
+    // Estado impossível é descartado na leitura: a configuração já foi reposta
+    // acima, a questão não. O próximo sorteio parte do zero, com resposta certa.
+    if (s.acoesEspelho && !espelhoTemResposta(s.espelhoHTML)) { restaurando = false; return; }
 
     // 2. sorteio sintético só para religar os botões que o app cria (Sortear
     //    outro / Iniciar tempo). O item sorteado é descartado logo em seguida,
@@ -2470,7 +2493,7 @@
      abrir o modal, de modo que "criar conta" deixa de existir no contexto de
      quem já está autenticado. O modal permanece neste arquivo porque continua
      servindo à definição de nova senha em /atualizar-senha — fluxo testado de
-     ponta a ponta em 09/09/2026, que não se mexe. Ver PENDENCIAS.md. */
+     ponta a ponta em 09/09/2026, que não se mexe. Ver docs/PENDENCIAS.md. */
   if ($('btnConta')) $('btnConta').addEventListener('click', () => { window.location.href = '/login'; });
   if ($('btnCloseAuth')) $('btnCloseAuth').addEventListener('click', fechar);
   backdrop.addEventListener('click', (e) => { if (e.target === backdrop) fechar(); });

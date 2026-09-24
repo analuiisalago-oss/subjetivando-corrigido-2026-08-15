@@ -115,7 +115,9 @@ Chave esperada: `usuario_id, modo, categoria`.
 
 ## 4. POLÍTICAS RLS OBRIGATÓRIAS
 
-Status atual: **NÃO AUDITADO**. Foi criado `supabase/auditoria_rls.sql`, somente leitura, para levantar o estado real antes de qualquer mudança.
+Status atual: **AUDITADO em 09/09/2026** (P0-01 em `PENDENCIAS.md`). `supabase/auditoria_rls.sql`, somente leitura, foi executado no SQL Editor: RLS ativada nas seis tabelas, 20 políticas, todas comparando `auth.uid()` com o dono da linha. Sessão anônima contra a API pública leu 0 linhas e teve a gravação recusada.
+
+Diferença em relação à lista abaixo: `perfis`, `questoes_customizadas`, `questoes_usadas` e `sessoes` não têm política de exclusão. Conferido no código em 22/09/2026 que o aplicativo não depende dela (P1-13): só `respostas` e `anotacoes` usam DELETE, e as outras tabelas são regravadas por `upsert`.
 
 Cada tabela com dados de usuário deve:
 
@@ -148,6 +150,18 @@ As políticas devem ser testadas no banco e não apenas inferidas do frontend.
 Inventário completo: **A CONFIRMAR ANTES DA REFATORAÇÃO**.
 
 ## 6. REGRAS DE SINCRONIZAÇÃO DESEJADAS
+
+Operações que o `app.js` executa hoje, conferidas em 22/09/2026 na camada de sincronização:
+
+| Tabela | Gravação | Exclusão |
+|---|---|---|
+| `respostas` | `upsert` por `usuario_id, questao_hash` | `delete` das linhas que saíram do navegador |
+| `anotacoes` | `upsert` por `usuario_id, questao_hash` | `delete` das linhas que saíram do navegador |
+| `questoes_usadas` | `upsert` da lista inteira por `usuario_id, modo, categoria` | não usa |
+| `questoes_customizadas` | `upsert` da lista inteira por `usuario_id, modo, categoria` | não usa |
+| `sessoes` | `upsert` de uma linha por `usuario_id` | não usa |
+
+Regras desejadas:
 
 | Tipo | Regra desejada |
 |---|---|

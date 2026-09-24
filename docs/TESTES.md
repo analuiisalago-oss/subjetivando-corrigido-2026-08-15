@@ -15,23 +15,38 @@ Não substituir teste por suposição.
 
 ### Validação automatizada local
 
-> **NÃO RODE `scripts/build_public.py`.** Desde 09/09/2026 a pasta `public/` é a
-> FONTE do site, e não mais a saída desse script. Executá-lo sobrescreve
-> `index.html`, `styles.css` e `app.js` com a versão gerada a partir de
-> `minha-banca.NOVO_3.html`, que ficou congelada no design anterior — e apaga o
-> design atual sem emitir erro nenhum. Ver P2-06 em `PENDENCIAS.md`.
+Desde 09/09/2026 a pasta `public/` é a fonte do site e não existe etapa de geração. O antigo `scripts/build_public.py`, que apagava o design atual sem erro, foi removido em 10/09/2026 e não deve voltar (P2-14 em `PENDENCIAS.md`).
 
-Antes de publicar:
+Antes de publicar, na pasta do projeto:
+
+```bash
+npm run check
+```
+
+Ele executa, em sequência e parando no primeiro erro:
 
 ```bash
 node --check public/assets/app.js
+node --check public/assets/conta.js
 node scripts/audit_project.mjs
 node scripts/teste_consentimento.mjs
 ```
 
-`teste_consentimento.mjs` é teste de regressão da P1-08: extrai a função de autorização do `app.js` gerado e confirma que uma recusa já registrada não volta a perguntar. Ele sai com código 1 se algum caso falhar, e pode ser encadeado com `&&`.
+Os mesmos passos rodam no GitHub Actions (`.github/workflows/verificacao.yml`) em todo push para `main` e em todo PR, junto com a conferência de que `public/assets/tailwind.css` corresponde às classes em uso. Se o Actions acusar o `tailwind.css`, rode `npm run css` e faça commit do resultado.
 
-Além disso, valide todos os arquivos JSON. `audit_project.mjs` confirma as contagens dos seis acervos, IDs únicos, ausência de padrões de segredos privados e a lista fechada de arquivos em `public/`. Desde 09/09/2026 esse script passa a ver um arquivo a mais em `public/` — o `v41.css` —, o que é esperado.
+`teste_consentimento.mjs` é teste de regressão da P1-08: extrai a função de autorização do `app.js` e confirma que uma recusa já registrada não volta a perguntar. Ele sai com código 1 se algum caso falhar.
+
+`audit_project.mjs` confirma as contagens dos seis acervos, IDs únicos no `index.html`, ausência de padrões de segredos privados, a lista fechada de arquivos em `public/` e que cada fonte de `public/assets/fonts/` está citada em `fonts.css`. Arquivo novo em `public/` precisa entrar na lista do script, de propósito: é o que impede um arquivo privado de ir ao ar por engano.
+
+### Conferência no navegador
+
+```bash
+npm run dev
+```
+
+Abre `http://localhost:8080`, servindo `public/` com as mesmas regras de `_redirects` e `_headers` do Netlify: `/` mostra o convite, `/dashboard` o simulador, `/login` a página de entrar. Para usar outra porta: `PORT=8090 npm run dev`.
+
+Primeira vez na máquina: `npm install`.
 
 ## 2. DADOS DE CADA EXECUÇÃO
 
@@ -48,9 +63,9 @@ Navegador e versão:
 
 ## 3. TESTE RÁPIDO APÓS QUALQUER ALTERAÇÃO
 
-- [ ] página inicial abre sem tela branca;
+- [ ] `/` abre o convite e `/dashboard` abre o simulador, sem tela branca;
 - [ ] console não apresenta erro novo;
-- [ ] botão “Iniciar treino” funciona;
+- [ ] cartão "Configurar treino" leva à configuração;
 - [ ] é possível sortear uma questão;
 - [ ] cronômetro inicia, pausa, retoma e encerra;
 - [ ] troca de modo funciona;
@@ -63,7 +78,10 @@ Navegador e versão:
 
 Testar em aba anônima e atualizar cada endereço:
 
-- [ ] `/`;
+- [ ] `/` (convite, `inicio.html`);
+- [ ] `/login`, `/cadastro`, `/recuperar-senha`;
+- [ ] `/sobre`, `/termos`, `/privacidade`;
+- [ ] `/dashboard` e `/treino`;
 - [ ] `/defensoria`;
 - [ ] `/defensoria/`;
 - [ ] `/oab`;
@@ -75,7 +93,7 @@ Testar em aba anônima e atualizar cada endereço:
 - [ ] endereço acompanha a troca de área;
 - [ ] botão voltar do navegador tem comportamento compreensível.
 - [ ] `/atualizar-senha` entrega a aplicação sem erro 404;
-- [ ] nenhum arquivo de `private/`, `pipeline/` ou documentação interna recebe URL pública.
+- [ ] nenhum arquivo de `private/`, `acervo/`, `docs/` ou outra documentação interna recebe URL pública.
 
 ## 5. RESPONSIVIDADE
 
@@ -95,7 +113,7 @@ Executar em 360×800, 768×1024, 1366×768 e 1920×1080:
 
 ## 6. TREINAMENTO
 
-Repetir para Defensorias, OAB e TCDF:
+Repetir para Defensorias (Temas do edital e Questões passadas). OAB e TCDF estão ocultos por CSS desde 09/09/2026 (P2-15); testá-los só se voltarem ao produto:
 
 - [ ] selecionar modo;
 - [ ] selecionar categoria;
@@ -115,7 +133,9 @@ Repetir para Defensorias, OAB e TCDF:
 - [ ] marcar respondida/não respondida;
 - [ ] imprimir enunciado;
 - [ ] imprimir folha de rascunho;
-- [ ] conteúdo indisponível é indicado antes de iniciar o fluxo.
+- [ ] conteúdo indisponível é indicado antes de iniciar o fluxo;
+- [ ] recarregar com a resposta aberta devolve a mesma questão com a mesma resposta;
+- [ ] "Sortear outra" aparece uma vez só, no topo, e troca o enunciado; em tema, o rótulo é "Sortear outro".
 
 ## 7. ANOTAÇÕES E HISTÓRICO
 

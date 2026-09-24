@@ -1,9 +1,11 @@
 [build]
   publish = "public"
-  # Build desligado em 09/09/2026. A pasta public/ passou a ser a FONTE do site,
-  # não mais a saída de scripts/build_public.py. Se este comando voltar a existir,
-  # o deploy regenera public/ a partir de minha-banca.NOVO_3.html e apaga o design
-  # atual sem gerar erro. Ver PENDENCIAS.md, P2-06.
+  # Sem build desde 09/09/2026: public/ é a FONTE do site e vai ao ar como está.
+  # O antigo scripts/build_public.py regenerava public/ a partir de um HTML
+  # congelado e apagava o design atual sem erro; foi removido em 10/09/2026.
+  # Não criar comando que escreva em public/. Ver docs/PENDENCIAS.md, P2-14.
+  # O package.json serve só às ferramentas da máquina (npm run dev, check,
+  # css, vendor); nada dele é necessário para publicar.
   command = ""
 
 [build.processing]

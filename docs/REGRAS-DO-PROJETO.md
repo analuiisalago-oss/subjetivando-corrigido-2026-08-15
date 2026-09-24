@@ -125,7 +125,7 @@ Requisitos mínimos:
 
 Antes de declarar a tarefa concluída:
 
-1. executar os testes aplicáveis de `TESTES.md`;
+1. executar os testes aplicáveis de `TESTES.md`, no mínimo `npm run check`;
 2. registrar testes executados e resultados;
 3. revisar erros do console;
 4. confirmar que nenhum segredo foi incluído;

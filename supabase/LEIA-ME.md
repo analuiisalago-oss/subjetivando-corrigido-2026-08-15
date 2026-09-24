@@ -1,5 +1,7 @@
 # SUPABASE — ROTEIRO SEGURO PARA A PRÓXIMA ETAPA
 
+> **Estado em 22/09/2026.** O roteiro abaixo foi escrito em 15/08/2026. A auditoria da seção 2 já foi executada em 09/09/2026: RLS ativa nas seis tabelas, 20 políticas, isolamento comprovado contra a API pública (P0-01 em `docs/PENDENCIAS.md`). A função `lidar_novo_usuario()` não é chamável pela API pública (`PGRST202`), e a correção da seção 3 virou endurecimento opcional. As URLs da seção 5 estão atualizadas.
+
 ## 1. O QUE FOI POSSÍVEL CONFERIR
 
 As evidências recebidas confirmam a existência das tabelas públicas `anotacoes`, `perfis`, `questoes_customizadas`, `questoes_usadas`, `respostas` e `sessoes`. O frontend utiliza cinco delas para sincronização. A estrutura de colunas, as restrições únicas e as políticas de Row Level Security (RLS) não aparecem integralmente nas capturas e, por isso, não foram inventadas nem alteradas.
@@ -47,6 +49,7 @@ Antes de testar recuperação de senha, inclua no painel do Supabase apenas os e
 
 - `https://subjetivando.netlify.app/`;
 - `https://subjetivando.netlify.app/atualizar-senha`;
+- `https://subjetivando.netlify.app/dashboard` — destino do link de confirmação de cadastro desde 09/09/2026 (E5 da P1-15). Não há registro de que tenha sido cadastrada: conferir no painel;
 - futuramente, os equivalentes no domínio próprio.
 
 Evite curingas amplos em produção. URLs de previews temporários devem permanecer restritas ao ambiente de homologação.
